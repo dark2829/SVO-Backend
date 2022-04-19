@@ -1,0 +1,102 @@
+package com.svo.svo.model;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Date;
+
+@Entity
+@Table(name="tpersonas")
+@NamedQueries({
+        //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
+})
+public class TpersonaVO implements Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String foto;
+    private String nombre;
+    private String apellido_paterno;
+    private String apellido_materno;
+    @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern="dd-MM-yyyy", timezone = "America/Mexico_City")
+    private Date fecha_nac;
+    private String genero;
+    private String telefono;
+    @ManyToOne
+    @JoinColumn(name="ttarjetas",referencedColumnName = "id")
+    private TtarjetasVO idTarjeta;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido_paterno() {
+        return apellido_paterno;
+    }
+
+    public void setApellido_paterno(String apellido_paterno) {
+        this.apellido_paterno = apellido_paterno;
+    }
+
+    public String getApellido_materno() {
+        return apellido_materno;
+    }
+
+    public void setApellido_materno(String apellido_materno) {
+        this.apellido_materno = apellido_materno;
+    }
+
+    public Date getFecha_nac() {
+        return fecha_nac;
+    }
+
+    public void setFecha_nac(Date fecha_nac) {
+        this.fecha_nac = fecha_nac;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public TtarjetasVO getIdTarjeta() {
+        return idTarjeta;
+    }
+
+    public void setIdTarjeta(TtarjetasVO idTarjeta) {
+        this.idTarjeta = idTarjeta;
+    }
+}
