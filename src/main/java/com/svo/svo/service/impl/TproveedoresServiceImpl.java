@@ -3,8 +3,6 @@ package com.svo.svo.service.impl;
 import com.svo.svo.model.*;
 import com.svo.svo.repository.TproveedoresRepository;
 import com.svo.svo.service.TproveedoresService;
-import mx.softitlan.utils.Utils;
-import mx.softitlan.utils.exception.AppException404NotFound;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,10 +51,11 @@ public class TproveedoresServiceImpl implements TproveedoresService {
     @Override
     public void update(Long id, Map<String, String> data) throws Exception {
         LOG.info("update()->id: {} data{}",id,data);
+        Optional<TproveedoresVO> vo=null;
         try{
-            Optional<TproveedoresVO> vo = tproveedoresRepository.findById(id);
+            vo = tproveedoresRepository.findById(id);
             if (!vo.isPresent()){
-                throw new AppException404NotFound("No se encuentra el periodo");
+                throw new RuntimeException("No se encuentra el periodo");
             }
             //nombre
             if (data.containsKey("nombre")){
@@ -80,7 +79,7 @@ public class TproveedoresServiceImpl implements TproveedoresService {
             }
             tproveedoresRepository.save(vo.get());
         }catch (Exception e){
-            Utils.raise(e, "Error Al actualizar un proveedor");
+            LOG.error("Error Al actualizar un proveedor");
         }
     }
 }
