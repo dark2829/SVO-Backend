@@ -42,8 +42,14 @@
 			<artifactId>spring-web</artifactId>
 			<version>5.3.19</version>
 		</dependency>
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+		</dependency>
 
-	</dependencies>
+    </dependencies>
 
 	<build>
 		<plugins>
