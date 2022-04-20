@@ -21,7 +21,7 @@ public class TproveedorEndpoint {
     @Autowired
     private TproveedoresService tproveedoresService;
 
-    @GetMapping("/findAllProveedores")
+    @GetMapping("/findAllProveedores") //Manda al Front
     public List<TproveedoresDTO> findAllProveedores(){
         List<TproveedoresDTO> listProveedores = null;
         LOG.info("findAllProveedores()");
