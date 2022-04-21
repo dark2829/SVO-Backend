@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Entity
 @Table(name="tusuarios")
 @NamedQueries({
-        //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
+        @NamedQuery(name = "TusuariosVO.findIdEmpleadoByIdUser", query = "select u from TusuariosVO u where u.id =:id"),
 })
 public class TusuariosVO implements Serializable {
     @Id
