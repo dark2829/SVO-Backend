@@ -1,11 +1,8 @@
 package com.svo.svo.service.impl;
 
-import com.sun.tools.jconsole.JConsoleContext;
+
 import com.svo.svo.model.*;
-import com.svo.svo.repository.TdireccionRepository;
-import com.svo.svo.repository.TpersonaRepository;
-import com.svo.svo.repository.TrolRepository;
-import com.svo.svo.repository.TusuariosRepository;
+import com.svo.svo.repository.*;
 import com.svo.svo.service.TpersonaService;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -36,6 +33,15 @@ public class TpersonaServiceImpl implements TpersonaService {
 
     @Autowired
     private TdireccionRepository tdireccionRepository;
+
+    @Autowired
+    private TtarjetaRepository ttarjetasRepository;
+
+    @Autowired
+    private TempleadosRepository templeadosRepository;
+
+    @Autowired
+    private TpuestoRepository tpuestoRepository;
 
     @Override
     @Transactional
@@ -68,6 +74,7 @@ public class TpersonaServiceImpl implements TpersonaService {
     }
 
     @Override
+    @Transactional
     public void updateUser(Long idPerson, Long idUser, Map<String, String> data) throws Exception {
         LOG.info("update()->id: {} data: {}", idPerson, data);
         TpersonaVO per = null;
@@ -109,6 +116,7 @@ public class TpersonaServiceImpl implements TpersonaService {
                 userVO.get().getIdPersona().setTelefono(data.get("telefono"));
 
             }
+            //Usuario cliente
             if(rol.get().getId() == 3){
                 //Direccion
                 if(data.containsKey("idDireccion")) {
@@ -147,35 +155,53 @@ public class TpersonaServiceImpl implements TpersonaService {
                     tdireccionRepository.save(direccion);
                 }
 
-                tpersonaRepository.save(userVO.get().getIdPersona());
-                tpersonaRepository.flush();
-                tusuariosRepository.save(userVO.get());
-
-//                //tarjetas
-//                if(data.containsKey("nombre_propietario")){
-//
-//                }
-//                if(data.containsKey("numero_tarjeta")){
-//
-//                }
-//                if(data.containsKey("fecha_vencimiento")){
-//
-//                }
-//                if(data.containsKey("cvv")){
-//
-//                }
-            }
-            if(rol.get().getId() == 2){
-                if(data.containsKey("curp")){
-
+                //tarjetas
+                if(data.containsKey("idTarjeta")) {
+                    tarjeta = ttarjetasRepository.findTarjetaById(Long.valueOf(data.get("idTarjeta")));
+                }else{
+                    tarjeta = new TtarjetasVO();
                 }
-                if(data.containsKey("puesto")){
+                if(data.containsKey("nombre_propietario")){
+                    tarjeta.setNombre_propietario(data.get("nombre_propietario"));
+                }
+                if(data.containsKey("numero_tarjeta")){
+                    tarjeta.setNumero(data.get("numero_tarjeta"));
+                }
+                if(data.containsKey("fecha_vencimiento")){
+                    tarjeta.setFecha_vencimiento(data.get("fecha_vencimiento"));
+                }
+                if(data.containsKey("cvv")){
+                    tarjeta.setCvv(Integer.parseInt(data.get("cvv")));
+                }
+                if(!data.containsKey("idTarjeta")){
+                    ttarjetasRepository.save(tarjeta);
+                    userVO.get().getIdPersona().getTarjeta().add(tarjeta);
+                }else{
+                    ttarjetasRepository.save(tarjeta);
+                }
 
+            }
+            //Usuario empleado
+            if(rol.get().getId() == 2){
+                emp = tusuariosRepository.findIdEmpleadoByIdUser(userVO.get().getId()).getIdEmpleado();
+                if(data.containsKey("curp")){
+                    emp.setCurp(data.get("curp"));
+                }
+                if(data.containsKey("idPuesto")){
+                    emp.setIdPuesto(tpuestoRepository.findPuestoById(Integer.valueOf(data.get("idPuesto"))));
                 }
                 if(data.containsKey("salario")){
-
+                    emp.setSalario(Float.parseFloat(data.get("salario")));
                 }
+                if(data.containsKey("estatus")){
+                    emp.setEstatus(data.get("estatus"));
+                }
+                templeadosRepository.save(emp);
             }
+
+            tpersonaRepository.save(userVO.get().getIdPersona());
+            tpersonaRepository.flush();
+            tusuariosRepository.save(userVO.get());
 
         }catch (Exception e){
             LOG.error("Error al actualizar usuario",e);

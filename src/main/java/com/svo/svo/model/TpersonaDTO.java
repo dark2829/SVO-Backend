@@ -22,6 +22,7 @@ public class TpersonaDTO {
     private String telefono;
     private String correo;
     private List<TdireccionVO> direccion = new ArrayList<TdireccionVO>();
+    private List<TtarjetasVO> tarjeta = new ArrayList<TtarjetasVO>();
 
     public Long getId() {
         return id;
@@ -101,6 +102,14 @@ public class TpersonaDTO {
 
     public void setDireccion(List<TdireccionVO> direccion) {
         this.direccion = direccion;
+    }
+
+    public List<TtarjetasVO> getTarjeta() {
+        return tarjeta;
+    }
+
+    public void setTarjeta(List<TtarjetasVO> tarjeta) {
+        this.tarjeta = tarjeta;
     }
 
     @Override

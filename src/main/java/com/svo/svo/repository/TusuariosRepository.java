@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TusuariosRepository extends JpaRepository<TusuariosVO, Long> {
     TusuariosVO findIdByCorreo(String correo);
+    TusuariosVO findIdEmpleadoByIdUser(Long id);
 
 }

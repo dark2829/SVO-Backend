@@ -13,7 +13,6 @@ public class TtarjetasBuilder {
         destin.setNumero(origen.getNumero());
         destin.setCvv(origen.getCvv());
         destin.setFecha_vencimiento(destin.getFecha_vencimiento());
-        destin.setIdPersona(origen.getIdPersona());
         return destin;
     }
 
@@ -26,7 +25,6 @@ public class TtarjetasBuilder {
         destin.setNumero(destin.getNumero());
         destin.setCvv(origen.getCvv());
         destin.setFecha_vencimiento(destin.getFecha_vencimiento());
-        destin.setIdPersona(origen.getIdPersona());
         return destin;
     }
 }

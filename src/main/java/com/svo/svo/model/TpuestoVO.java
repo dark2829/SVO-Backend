@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 @NamedQueries({
         @NamedQuery(name = "TpuestoVO.buscarPuesto", query = "select p from TpuestoVO p"),
+        @NamedQuery(name = "TpuestoVO.findPuestoById", query = "select p from TpuestoVO p where p.id =: id"),
 })
  public class TpuestoVO implements Serializable {
     @Id

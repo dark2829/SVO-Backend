@@ -35,6 +35,12 @@ public class TpersonaVO implements Serializable {
             joinColumns = @JoinColumn(name = "tpersonas_id"),
             inverseJoinColumns = @JoinColumn(name = "tdireccion_id"))
     private List<TdireccionVO> direccion = new ArrayList<TdireccionVO>();
+    @ManyToMany
+    @JoinTable(
+            name = "ttarjetas_has_tpersonas",
+            joinColumns = @JoinColumn(name = "tpersonas_id"),
+            inverseJoinColumns = @JoinColumn(name = "ttarjetas_id"))
+    private List<TtarjetasVO> tarjeta = new ArrayList<TtarjetasVO>();
 
     public Long getId() {
         return id;
@@ -114,6 +120,14 @@ public class TpersonaVO implements Serializable {
 
     public void setDireccion(List<TdireccionVO> direccion) {
         this.direccion = direccion;
+    }
+
+    public List<TtarjetasVO> getTarjeta() {
+        return tarjeta;
+    }
+
+    public void setTarjeta(List<TtarjetasVO> tarjeta) {
+        this.tarjeta = tarjeta;
     }
 
     @Override

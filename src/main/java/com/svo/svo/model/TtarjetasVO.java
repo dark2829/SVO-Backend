@@ -18,11 +18,7 @@ public class TtarjetasVO implements Serializable {
     private String nombre_propietario;
     private String numero;
     private int cvv;
-    @JsonFormat(pattern="dd-MM", timezone = "America/Mexico_City")
-    private Date fecha_vencimiento;
-    @ManyToOne
-    @JoinColumn(name="tpersona_id",referencedColumnName = "id")
-    private TpersonaVO idPersona;
+    private String fecha_vencimiento;
 
     public Long getId() {
         return id;
@@ -56,20 +52,13 @@ public class TtarjetasVO implements Serializable {
         this.cvv = cvv;
     }
 
-    public Date getFecha_vencimiento() {
+    public String getFecha_vencimiento() {
         return fecha_vencimiento;
     }
 
-    public void setFecha_vencimiento(Date fecha_vencimiento) {
+    public void setFecha_vencimiento(String fecha_vencimiento) {
         this.fecha_vencimiento = fecha_vencimiento;
     }
 
-    public TpersonaVO getIdPersona() {
-        return idPersona;
-    }
-
-    public void setIdPersona(TpersonaVO idPersona) {
-        this.idPersona = idPersona;
-    }
 }
 

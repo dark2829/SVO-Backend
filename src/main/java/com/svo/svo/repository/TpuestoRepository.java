@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface TpuestoRepository extends JpaRepository<TpuestoVO, Integer> {
     List<TpuestoVO> buscarPuesto();
+    TpuestoVO findPuestoById(Integer id);
 }
