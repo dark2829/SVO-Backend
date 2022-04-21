@@ -8,9 +8,10 @@ import java.util.Date;
 public class TtarjetasDTO {
     private Long id;
     private String nombre_propietario;
-    private String numero_tarj;
+    private String numero;
     private int cvv;
     private Date fecha_vencimiento;
+    private TpersonaVO idPersona;
 
     public Long getId() {
         return id;
@@ -28,12 +29,12 @@ public class TtarjetasDTO {
         this.nombre_propietario = nombre_propietario;
     }
 
-    public String getNumero_tarj() {
-        return numero_tarj;
+    public String getNumero() {
+        return numero;
     }
 
-    public void setNumero_tarj(String numero_tarj) {
-        this.numero_tarj = numero_tarj;
+    public void setNumero(String numero) {
+        this.numero = numero;
     }
 
     public int getCvv() {
@@ -50,6 +51,14 @@ public class TtarjetasDTO {
 
     public void setFecha_vencimiento(Date fecha_vencimiento) {
         this.fecha_vencimiento = fecha_vencimiento;
+    }
+
+    public TpersonaVO getIdPersona() {
+        return idPersona;
+    }
+
+    public void setIdPersona(TpersonaVO idPersona) {
+        this.idPersona = idPersona;
     }
 
     @Override

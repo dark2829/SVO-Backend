@@ -15,7 +15,7 @@ public class TpagosVO implements Serializable {
     private String tipo_pago;
     private String estatus;
     @ManyToOne
-    @JoinColumn(name="tcompras",referencedColumnName = "id")
+    @JoinColumn(name="tcompras_id",referencedColumnName = "id")
     private TcomprasVO idCompra;
 
     public Long getId() {

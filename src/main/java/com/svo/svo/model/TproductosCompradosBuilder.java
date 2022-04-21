@@ -14,6 +14,7 @@ public class TproductosCompradosBuilder {
         destin.setPrecio_total(origen.getPrecio_total());
         destin.setPrecio_descuento(origen.getPrecio_descuento());
         destin.setIdCompra(origen.getIdCompra());
+        destin.setIdProducto(origen.getIdProducto());
         return destin;
     }
 
@@ -27,6 +28,7 @@ public class TproductosCompradosBuilder {
         destin.setPrecio_total(origen.getPrecio_total());
         destin.setPrecio_descuento(origen.getPrecio_descuento());
         destin.setIdCompra(origen.getIdCompra());
+        destin.setIdProducto(origen.getIdProducto());
         return destin;
 
     }

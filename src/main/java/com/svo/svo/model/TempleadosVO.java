@@ -17,10 +17,10 @@ public class TempleadosVO implements Serializable {
     private float salario;
     private String estatus;
     @ManyToOne
-    @JoinColumn(name="tpersonas",referencedColumnName = "id")
+    @JoinColumn(name="tpersonas_id",referencedColumnName = "id")
     private TpersonaVO idPersona;
     @ManyToOne
-    @JoinColumn(name="tpuesto",referencedColumnName = "id")
+    @JoinColumn(name="tpuesto_id",referencedColumnName = "id")
     private TpuestoVO idPuesto;
 
     public Integer getId() {

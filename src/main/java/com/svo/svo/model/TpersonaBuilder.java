@@ -16,7 +16,8 @@ public class TpersonaBuilder {
         destin.setFecha_nac(origen.getFecha_nac());
         destin.setGenero(origen.getGenero());
         destin.setTelefono(origen.getTelefono());
-        destin.setIdTarjeta(origen.getIdTarjeta());
+        destin.setCorreo(origen.getCorreo());
+        destin.setDireccion(origen.getDireccion());
         return destin;
     }
 
@@ -32,7 +33,8 @@ public class TpersonaBuilder {
         destin.setFecha_nac(origen.getFecha_nac());
         destin.setGenero(origen.getGenero());
         destin.setTelefono(origen.getTelefono());
-        destin.setIdTarjeta(origen.getIdTarjeta());
+        destin.setCorreo(origen.getCorreo());
+        destin.setDireccion(origen.getDireccion());
         return destin;
     }
 }

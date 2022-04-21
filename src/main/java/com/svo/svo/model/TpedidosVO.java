@@ -20,7 +20,7 @@ public class TpedidosVO implements Serializable {
     private Date fecha_entrega;
     private String estatus;
     @ManyToOne
-    @JoinColumn(name="tcompras",referencedColumnName = "id")
+    @JoinColumn(name="tcompras_id",referencedColumnName = "id")
     private TcomprasVO idCompra;
 
     public Long getId() {

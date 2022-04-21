@@ -9,10 +9,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/personas")
@@ -23,13 +22,22 @@ public class TpersonaEndpoint {
     @Autowired
     private TpersonaService tpersonaService;
 
-    @PostMapping("/insertClient")
+    @PostMapping("/insertNewUser")
     public void insertPersonUser(@RequestBody String Json) {
         LOG.info("<<<<<insertClient() -> JSON: {}", Json);
         try {
-            JSONObject personObject = new JSONObject(Json);
-            tpersonaService.insertPersonUserRol(Json);
+            tpersonaService.insertNewUser(Json);
         } catch (Exception e) {
+        }
+    }
+
+    @PostMapping("/updateClient")
+    public void update(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
+        LOG.info("uptateClient()-> id: {} data: {}",idPerson,data);
+        try {
+            tpersonaService.updateUser(idPerson, idUser, data);
+        } catch (Exception e) {
+            LOG.error("Error e");
         }
     }
 

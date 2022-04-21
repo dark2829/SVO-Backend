@@ -10,6 +10,7 @@ public class TproductosCompradosDTO {
     private float precio_total;
     private float precio_descuento;
     private TcomprasVO idCompra;
+    private TproductosVO idProducto;
 
     public Long getId() {
         return id;
@@ -57,6 +58,14 @@ public class TproductosCompradosDTO {
 
     public void setIdCompra(TcomprasVO idCompra) {
         this.idCompra = idCompra;
+    }
+
+    public TproductosVO getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(TproductosVO idProducto) {
+        this.idProducto = idProducto;
     }
 
     @Override

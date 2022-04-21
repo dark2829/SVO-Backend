@@ -10,9 +10,10 @@ public class TtarjetasBuilder {
 
         destin.setId(origen.getId());
         destin.setNombre_propietario(origen.getNombre_propietario());
-        destin.setNumero_tarj(origen.getNumero_tarj());
+        destin.setNumero(origen.getNumero());
         destin.setCvv(origen.getCvv());
         destin.setFecha_vencimiento(destin.getFecha_vencimiento());
+        destin.setIdPersona(origen.getIdPersona());
         return destin;
     }
 
@@ -22,9 +23,10 @@ public class TtarjetasBuilder {
 
         destin.setId(origen.getId());
         destin.setNombre_propietario(origen.getNombre_propietario());
-        destin.setNumero_tarj(origen.getNumero_tarj());
+        destin.setNumero(destin.getNumero());
         destin.setCvv(origen.getCvv());
         destin.setFecha_vencimiento(destin.getFecha_vencimiento());
+        destin.setIdPersona(origen.getIdPersona());
         return destin;
     }
 }

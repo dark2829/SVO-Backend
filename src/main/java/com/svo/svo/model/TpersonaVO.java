@@ -1,15 +1,19 @@
 package com.svo.svo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="tpersonas")
 @NamedQueries({
-        //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
+        @NamedQuery(name = "TpersonaVO.findIdByCorreo", query = "select p from TpersonaVO p where p.correo =:correo"),
 })
 public class TpersonaVO implements Serializable {
     @Id
@@ -24,9 +28,13 @@ public class TpersonaVO implements Serializable {
     private Date fecha_nac;
     private String genero;
     private String telefono;
-    @ManyToOne
-    @JoinColumn(name="ttarjetas",referencedColumnName = "id")
-    private TtarjetasVO idTarjeta;
+    private String correo;
+    @ManyToMany
+    @JoinTable(
+            name = "tdireccion_has_tpersonas",
+            joinColumns = @JoinColumn(name = "tpersonas_id"),
+            inverseJoinColumns = @JoinColumn(name = "tdireccion_id"))
+    private List<TdireccionVO> direccion = new ArrayList<TdireccionVO>();
 
     public Long getId() {
         return id;
@@ -92,11 +100,29 @@ public class TpersonaVO implements Serializable {
         this.telefono = telefono;
     }
 
-    public TtarjetasVO getIdTarjeta() {
-        return idTarjeta;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setIdTarjeta(TtarjetasVO idTarjeta) {
-        this.idTarjeta = idTarjeta;
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public List<TdireccionVO> getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(List<TdireccionVO> direccion) {
+        this.direccion = direccion;
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

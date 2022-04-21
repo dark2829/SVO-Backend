@@ -6,7 +6,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class TpersonaDTO {
     private Long id;
@@ -18,7 +20,8 @@ public class TpersonaDTO {
     private Date fecha_nac;
     private String genero;
     private String telefono;
-    private TtarjetasVO idTarjeta;
+    private String correo;
+    private List<TdireccionVO> direccion = new ArrayList<TdireccionVO>();
 
     public Long getId() {
         return id;
@@ -84,12 +87,20 @@ public class TpersonaDTO {
         this.telefono = telefono;
     }
 
-    public TtarjetasVO getIdTarjeta() {
-        return idTarjeta;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setIdTarjeta(TtarjetasVO idTarjeta) {
-        this.idTarjeta = idTarjeta;
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public List<TdireccionVO> getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(List<TdireccionVO> direccion) {
+        this.direccion = direccion;
     }
 
     @Override

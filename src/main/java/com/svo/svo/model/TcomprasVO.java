@@ -24,7 +24,7 @@ public class TcomprasVO implements Serializable {
     private int facturado;
     private String direccion;
     @ManyToOne
-    @JoinColumn(name="tusuarios",referencedColumnName = "id")
+    @JoinColumn(name="tusuarios_id",referencedColumnName = "id")
     private TusuariosVO idUsuario;
 
 

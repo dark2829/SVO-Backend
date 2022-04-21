@@ -18,10 +18,10 @@ public class TcarritoVO {
     private float precio_descuento;
     private float precio_total;
     @ManyToOne
-    @JoinColumn(name="tusuarios",referencedColumnName = "id")
+    @JoinColumn(name="tusuarios_id",referencedColumnName = "id")
     private TusuariosVO idUsuario;
     @ManyToOne
-    @JoinColumn(name="tcompras",referencedColumnName = "id")
+    @JoinColumn(name="tcompras_id",referencedColumnName = "id")
     private TcomprasVO idCompra;
     @ManyToMany
     @JoinTable(

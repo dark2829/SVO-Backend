@@ -1,5 +1,8 @@
 package com.svo.svo.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -15,14 +18,14 @@ public class TusuariosVO implements Serializable {
     private String correo;
     private String contraseña;
     @ManyToOne
-    @JoinColumn(name="tpersonas",referencedColumnName = "id")
+    @JoinColumn(name="tpersonas_id",referencedColumnName = "id")
     private TpersonaVO idPersona;
     //tcompras
     @ManyToOne
-    @JoinColumn(name="templeados",referencedColumnName = "id")
+    @JoinColumn(name="templeados_id",referencedColumnName = "id")
     private TempleadosVO idEmpleado;
     @ManyToOne
-    @JoinColumn(name="trol",referencedColumnName = "id")
+    @JoinColumn(name="trol_id",referencedColumnName = "id")
     private TrolVO idRol;
 
     public Long getId() {
@@ -71,5 +74,15 @@ public class TusuariosVO implements Serializable {
 
     public void setIdRol(TrolVO idRol) {
         this.idRol = idRol;
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

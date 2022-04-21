@@ -13,10 +13,10 @@ public class TsolicitudCancelacionVO {
     private Long id;
     private String estatus;
     @ManyToOne
-    @JoinColumn(name="tusuarios",referencedColumnName = "id")
+    @JoinColumn(name="tusuarios_id",referencedColumnName = "id")
     private TusuariosVO idUsuario;
     @ManyToOne
-    @JoinColumn(name="tcompras",referencedColumnName = "id")
+    @JoinColumn(name="tcompras_id",referencedColumnName = "id")
     private TcomprasVO idCompra;
     private String motivo_cancel;
     private String motivo_resp;

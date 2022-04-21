@@ -17,8 +17,11 @@ public class TproductosCompradosVO implements Serializable {
     private float precio_total;
     private float precio_descuento;
     @ManyToOne
-    @JoinColumn(name="tcompras",referencedColumnName = "id")
+    @JoinColumn(name="tcompras_id",referencedColumnName = "id")
     private TcomprasVO idCompra;
+    @ManyToOne
+    @JoinColumn(name="tproductos_id",referencedColumnName = "id")
+    private TproductosVO idProducto;
 
     public Long getId() {
         return id;
@@ -66,5 +69,13 @@ public class TproductosCompradosVO implements Serializable {
 
     public void setIdCompra(TcomprasVO idCompra) {
         this.idCompra = idCompra;
+    }
+
+    public TproductosVO getIdProducto() {
+        return idProducto;
+    }
+
+    public void setIdProducto(TproductosVO idProducto) {
+        this.idProducto = idProducto;
     }
 }

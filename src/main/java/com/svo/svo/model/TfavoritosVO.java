@@ -13,10 +13,10 @@ public class TfavoritosVO implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name="tproductos",referencedColumnName = "id")
+    @JoinColumn(name="tproductos_id",referencedColumnName = "id")
     private TpedidosVO idProducto;
     @ManyToOne
-    @JoinColumn(name="tusuarios",referencedColumnName = "id")
+    @JoinColumn(name="tusuarios_id",referencedColumnName = "id")
     private TusuariosVO idUsuario;
 
     public Long getId() {
