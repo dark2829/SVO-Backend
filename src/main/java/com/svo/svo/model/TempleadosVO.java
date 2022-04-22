@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Table(name="templeados")
 @NamedQueries({
         @NamedQuery(name = "TempleadosVO.findEmpleadoById", query = "select e from TempleadosVO e where e.id =:id"),
+        @NamedQuery(name = "TempleadosVO.findIdByCurp", query = "select e from TempleadosVO e where e.curp =: curp"),
 })
 public class TempleadosVO implements Serializable {
     @Id
