@@ -92,6 +92,7 @@ public class TpersonaServiceImpl implements TpersonaService {
         correo
         contrasena
         telefono
+
         idDireccion -(si tiene direccion registrada)-
         calle
         colonia
@@ -137,8 +138,11 @@ public class TpersonaServiceImpl implements TpersonaService {
                 userVO.get().getIdPersona().setApellido_materno(data.get("apellido_materno"));
             }
             if(data.containsKey("fecha_nacimiento")){
-                Date fechaN = new SimpleDateFormat("dd/MM/yyyy").parse(data.get("fecha_nacimiento"));
-                userVO.get().getIdPersona().setFecha_nac(fechaN);
+                if (data.get("fecha_nacimiento") != null){
+                    Date fechaN = new SimpleDateFormat("dd/MM/yyyy").parse(data.get("fecha_nacimiento"));
+                    LOG.info(String.valueOf(new SimpleDateFormat("DD/MM/yyyy").parse(data.get("fecha_nacimiento"))));
+                    userVO.get().getIdPersona().setFecha_nac(fechaN);
+                }
             }
             if(data.containsKey("genero")){
                 userVO.get().getIdPersona().setGenero(data.get("genero"));
@@ -157,68 +161,74 @@ public class TpersonaServiceImpl implements TpersonaService {
             //Usuario cliente
             if(rol.get().getId() == 3){
                 //Direccion
-                if(data.containsKey("idDireccion")) {
-                    direccion = tdireccionRepository.findDireccionById(Long.valueOf(data.get("idDireccion")));
-                }else{
-                    direccion = new TdireccionVO();
+                if (data.containsKey("idDireccion") != false){
+                    if(data.containsKey("idDireccion")) {
+                        direccion = tdireccionRepository.findDireccionById(Long.valueOf(data.get("idDireccion")));
+                    }else{
+                        direccion = new TdireccionVO();
+                    }
+                    if(data.containsKey("calle")){
+                        direccion.setCalle(data.get("calle"));
+                    }
+                    if(data.containsKey("colonia")){
+                        direccion.setColonia(data.get("colonia"));
+                    }
+                    if(data.containsKey("municipio")){
+                        direccion.setMunicipio(data.get("municipio"));
+                    }
+                    if(data.containsKey("estado")){
+                        direccion.setEstado(data.get("estado"));
+                    }
+                    if(data.containsKey("cp")){
+                        direccion.setCp(Integer.parseInt(data.get("cp")));
+                    }
+                    if(data.containsKey("n_interior")){
+                        direccion.setN_interior(Integer.parseInt(data.get("n_interior")));
+                    }
+                    if(data.containsKey("n_exterior")){
+                        direccion.setN_exterior(Integer.parseInt(data.get("n_exterior")));
+                    }
+                    if(data.containsKey("referencia")){
+                        direccion.setReferencia(data.get("referencia"));
+                    }
+                    if(!data.containsKey("idDireccion")){
+                        tdireccionRepository.save(direccion);
+                        userVO.get().getIdPersona().getDireccion().add(direccion);
+                    }else{
+                        tdireccionRepository.save(direccion);
+                    }
                 }
-                if(data.containsKey("calle")){
-                    direccion.setCalle(data.get("calle"));
-                }
-                if(data.containsKey("colonia")){
-                    direccion.setColonia(data.get("colonia"));
-                }
-                if(data.containsKey("municipio")){
-                    direccion.setMunicipio(data.get("municipio"));
-                }
-                if(data.containsKey("estado")){
-                    direccion.setEstado(data.get("estado"));
-                }
-                if(data.containsKey("cp")){
-                    direccion.setCp(Integer.parseInt(data.get("cp")));
-                }
-                if(data.containsKey("n_interior")){
-                    direccion.setN_interior(Integer.parseInt(data.get("n_interior")));
-                }
-                if(data.containsKey("n_exterior")){
-                    direccion.setN_exterior(Integer.parseInt(data.get("n_exterior")));
-                }
-                if(data.containsKey("referencia")){
-                    direccion.setReferencia(data.get("referencia"));
-                }
-                if(!data.containsKey("idDireccion")){
-                    tdireccionRepository.save(direccion);
-                    userVO.get().getIdPersona().getDireccion().add(direccion);
-                }else{
-                    tdireccionRepository.save(direccion);
-                }
+
 
                 //tarjetas
-                if(data.containsKey("idTarjeta")) {
-                    tarjeta = ttarjetasRepository.findTarjetaById(Long.valueOf(data.get("idTarjeta")));
-                }else{
-                    tarjeta = new TtarjetasVO();
+                if(data.containsKey("idTarjeta") != false){
+                    if(data.containsKey("idTarjeta")) {
+                        tarjeta = ttarjetasRepository.findTarjetaById(Long.valueOf(data.get("idTarjeta")));
+                    }else{
+                        tarjeta = new TtarjetasVO();
+                    }
+                    if(data.containsKey("nombre_propietario")){
+                        tarjeta.setNombre_propietario(data.get("nombre_propietario"));
+                    }
+                    if(data.containsKey("numero_tarjeta")){
+                        tarjeta.setNumero(data.get("numero_tarjeta"));
+                    }
+                    if(data.containsKey("fecha_vencimiento")){
+                        tarjeta.setFecha_vencimiento(data.get("fecha_vencimiento"));
+                    }
+                    if(data.containsKey("cvv")){
+                        tarjeta.setCvv(Integer.parseInt(data.get("cvv")));
+                    }
+                    if(!data.containsKey("idTarjeta")){
+                        ttarjetasRepository.save(tarjeta);
+                        userVO.get().getIdPersona().getTarjeta().add(tarjeta);
+                    }else{
+                        ttarjetasRepository.save(tarjeta);
+                    }
+
                 }
-                if(data.containsKey("nombre_propietario")){
-                    tarjeta.setNombre_propietario(data.get("nombre_propietario"));
-                }
-                if(data.containsKey("numero_tarjeta")){
-                    tarjeta.setNumero(data.get("numero_tarjeta"));
-                }
-                if(data.containsKey("fecha_vencimiento")){
-                    tarjeta.setFecha_vencimiento(data.get("fecha_vencimiento"));
-                }
-                if(data.containsKey("cvv")){
-                    tarjeta.setCvv(Integer.parseInt(data.get("cvv")));
-                }
-                if(!data.containsKey("idTarjeta")){
-                    ttarjetasRepository.save(tarjeta);
-                    userVO.get().getIdPersona().getTarjeta().add(tarjeta);
-                }else{
-                    ttarjetasRepository.save(tarjeta);
                 }
 
-            }
             //Usuario empleado
             if(rol.get().getId() == 2){
                 emp = tusuariosRepository.findIdEmpleadoByIdUser(userVO.get().getId()).getIdEmpleado();
