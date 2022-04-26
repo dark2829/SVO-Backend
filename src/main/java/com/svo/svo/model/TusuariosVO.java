@@ -12,6 +12,8 @@ import java.io.Serializable;
         @NamedQuery(name = "TusuariosVO.findIdEmpleadoByIdUser", query = "select u from TusuariosVO u where u.id =:id"),
         @NamedQuery(name = "TusuariosVO.findUserByNoEmp", query = "select u from TusuariosVO u where (u.correo =:ident or u.idEmpleado.no_empleado =:ident) and u.contraseña =: contrasena"),
         @NamedQuery(name = "TusuariosVO.findUserByCorreo", query = "select u from TusuariosVO u where (u.correo =:correo) and u.contraseña =: contrasena"),
+        @NamedQuery(name = "TusuariosVO.findUserById", query = "select u from TusuariosVO u where u.id =: id"),
+
 
 
 

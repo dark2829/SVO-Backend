@@ -10,5 +10,6 @@ public interface TusuariosRepository extends JpaRepository<TusuariosVO, Long> {
     TusuariosVO findIdEmpleadoByIdUser(Long id);
     TusuariosVO findUserByNoEmp(String ident, String contrasena);
     TusuariosVO findUserByCorreo(String correo, String contrasena);
+    TusuariosVO findUserById(Long id);
 
 }
