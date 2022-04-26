@@ -50,4 +50,21 @@ public class TusuariosServiceImpl implements TusuariosService {
         }
         return user;
     }
+
+    @Override
+    public TusuariosVO findUserById(Long id) {
+        LOG.info("findUserById ()");
+        TusuariosVO user= null;
+        try{
+            user = tusuariosRepository.findUserById(id);
+            LOG.info("Usuario encontrado: "+user);
+            if (user == null){
+                LOG.error("Usuario no encontrado");
+            }
+        }catch (Exception e){
+            LOG.error("NO se pudo buscar usuario",e);
+        }
+
+        return user;
+    }
 }

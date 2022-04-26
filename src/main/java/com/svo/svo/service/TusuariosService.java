@@ -7,4 +7,5 @@ import java.util.Map;
 
 public interface TusuariosService {
     TusuariosVO login(Map<String, String> data);
+    TusuariosVO findUserById(Long idPerson);
 }
