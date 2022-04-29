@@ -1,6 +1,8 @@
 package com.svo.svo.endpoint;
 
 import com.svo.svo.model.*;
+import com.svo.svo.other.Utils.ResponseBody;
+import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.service.TpersonaService;
 import com.svo.svo.service.TusuariosService;
 import org.json.JSONObject;
@@ -27,22 +29,60 @@ public class TpersonaEndpoint {
     private TusuariosService tusuariosService;
 
     @PostMapping("/insertNewUser")
-    public void insertPersonUser(@RequestBody String Json) {
+    public ResponseEntity<ResponseBody<TusuariosDTO>> insertPersonUser(@RequestBody String Json) {
         LOG.info("<<<<<insertClient() -> JSON: {}", Json);
+        ResponseEntity<ResponseBody<TusuariosDTO>>res=null;
+        TusuariosVO userVO= null;
         try {
-            tpersonaService.insertNewUser(Json);
+            userVO = tpersonaService.insertNewUser(Json);
+            if(userVO!=null){
+                TusuariosDTO userDTO = TusuariosBuilder.fromVO(userVO);
+                res = Utils.response(HttpStatus.ACCEPTED,"Bienvenid@ "+userDTO.getIdPersona().getNombre(),userDTO);
+            }
+
         } catch (Exception e) {
+            res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
         }
+        return  res;
     }
 
-    @PostMapping("/updateClient")
-    public void update(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
-        LOG.info("uptateClient()-> id: {} data: {}",idPerson,data);
+    @PostMapping("/updateClientDatosGenerales")
+    public ResponseEntity<ResponseBody<Void>> updateDatosGenerales(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
+        ResponseEntity<ResponseBody<Void>> res= null;
+        LOG.info("updateClient()-> id: {} data: {}",idPerson,data);
         try {
-            tpersonaService.updateUser(idPerson, idUser, data);
+            tpersonaService.updateUserDatosGenerales(idPerson, idUser, data);
+            res= Utils.response(HttpStatus.ACCEPTED, "Informacion actualizada",null);
         } catch (Exception e) {
-            LOG.error("Error e");
+           res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
         }
+        return  res;
+    }
+
+    @PostMapping("/updateClientDirecciones")
+    public ResponseEntity<ResponseBody<Void>> updateDirecciones(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
+        ResponseEntity<ResponseBody<Void>> res= null;
+        LOG.info("updateClient()-> id: {} data: {}",idPerson,data);
+        try {
+            tpersonaService.updateUserDirecciones(idPerson, idUser, data);
+            res= Utils.response(HttpStatus.ACCEPTED, "Informacion de direccion actualizada",null);
+        } catch (Exception e) {
+            res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
+        }
+        return  res;
+    }
+
+    @PostMapping("/updateClientTarjetas")
+    public ResponseEntity<ResponseBody<Void>> updateTarjetas(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
+        ResponseEntity<ResponseBody<Void>> res= null;
+        LOG.info("updateClient()-> id: {} data: {}",idPerson,data);
+        try {
+            tpersonaService.updateUserTarjetas(idPerson, idUser, data);
+            res= Utils.response(HttpStatus.ACCEPTED, "Informacion de tarjeta actualizada",null);
+        } catch (Exception e) {
+            res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
+        }
+        return  res;
     }
 
     @GetMapping("/findUserById")//Buscar una persona
