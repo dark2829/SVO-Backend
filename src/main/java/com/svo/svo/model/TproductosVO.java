@@ -6,7 +6,7 @@ import java.io.Serializable;
 @Entity
 @Table(name="tproductos")
 @NamedQueries({
-        //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
+        @NamedQuery(name = "TproductosVO.findAllProductos", query = "select p from TproductosVO p"),
 })
 public class TproductosVO implements Serializable {
     @Id
@@ -22,7 +22,6 @@ public class TproductosVO implements Serializable {
     private float precio_descuento;
     private String descripcion;
     private String estatus;
-    //productos comprados
 
 
     public Long getId() {

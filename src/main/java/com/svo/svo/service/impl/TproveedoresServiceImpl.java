@@ -55,7 +55,7 @@ public class TproveedoresServiceImpl implements TproveedoresService {
         try{
             vo = tproveedoresRepository.findById(id);
             if (!vo.isPresent()){
-                throw new RuntimeException("No se encuentra el periodo");
+                throw new RuntimeException("No se encuentra el proveedor");
             }
             //nombre
             if (data.containsKey("nombre")){
