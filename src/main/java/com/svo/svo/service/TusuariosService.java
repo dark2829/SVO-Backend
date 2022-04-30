@@ -9,5 +9,5 @@ import java.util.Map;
 
 public interface TusuariosService {
     ResponseEntity<ResponseBody<TusuariosVO>> login(Map<String, String> data) throws AppException;
-    TusuariosVO findUserById(Long idPerson);
+    TusuariosVO findUserById(Long idPerson) throws AppException;
 }

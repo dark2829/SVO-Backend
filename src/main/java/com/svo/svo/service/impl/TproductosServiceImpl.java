@@ -1,13 +1,16 @@
 package com.svo.svo.service.impl;
 
 import com.svo.svo.model.*;
+import com.svo.svo.other.Utils.AppException;
+import com.svo.svo.other.Utils.ResponseBody;
+import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.repository.TproductosRepository;
-import com.svo.svo.repository.TproveedoresRepository;
 import com.svo.svo.service.TproductosService;
-import com.svo.svo.service.TproveedoresService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -99,8 +102,27 @@ public class TproductosServiceImpl implements TproductosService {
                 listProductos.add(tproductosDTO);
             }
         } catch (Exception e){
-
+            Utils.raise(e,"Error en buscar productos");
         }
         return listProductos;
+    }
+
+    @Override
+    public ResponseEntity<ResponseBody<TproductosVO>> findProductById(Long id) throws AppException {
+        LOG.info("findProductById ()");
+        TproductosVO tproductosVO= null;
+        ResponseEntity<ResponseBody<TproductosVO>> res= null;
+        try{
+            tproductosVO = tproductosRepository.findProductoById(id);
+            LOG.info("Producto encontrado: "+tproductosVO);
+            if (tproductosVO != null) {
+                res = Utils.response200OK("Producto encontrado",tproductosVO);
+            }else{
+                res = Utils.response(HttpStatus.BAD_REQUEST,"Producto no encontrado",null);
+            }
+        }catch (Exception e){
+            Utils.raise(e,e.getMessage());
+        }
+        return res;
     }
 }

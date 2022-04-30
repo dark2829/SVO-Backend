@@ -23,7 +23,7 @@ public class TusuariosEndpoint {
     @Autowired
     private TusuariosService tusuariosService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<ResponseBody<TusuariosDTO>> login (@RequestParam Map<String,String> data){
         /*Datos requeridos
         identificador

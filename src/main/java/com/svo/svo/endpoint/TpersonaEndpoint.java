@@ -1,6 +1,7 @@
 package com.svo.svo.endpoint;
 
 import com.svo.svo.model.*;
+import com.svo.svo.other.Utils.AppException;
 import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.service.TpersonaService;
@@ -29,7 +30,7 @@ public class TpersonaEndpoint {
     private TusuariosService tusuariosService;
 
     @PostMapping("/insertNewUser")
-    public ResponseEntity<ResponseBody<TusuariosDTO>> insertPersonUser(@RequestBody String Json) {
+    public ResponseEntity<ResponseBody<TusuariosDTO>> insertPersonUser(@RequestBody String Json) throws AppException {
         LOG.info("<<<<<insertClient() -> JSON: {}", Json);
         ResponseEntity<ResponseBody<TusuariosDTO>>res=null;
         TusuariosVO userVO= null;
@@ -41,6 +42,7 @@ public class TpersonaEndpoint {
             }
 
         } catch (Exception e) {
+            Utils.raise(e,"Error insert usuario");
             res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
         }
         return  res;
@@ -124,18 +126,22 @@ public class TpersonaEndpoint {
     }
 
     @GetMapping("/findUserById")//Buscar una persona
-    public ResponseEntity<TusuariosDTO>  findAllProveedores(@RequestParam("id") int id){
+    public ResponseEntity<ResponseBody<TusuariosDTO>>  findAllProveedores(@RequestParam("id") int id) throws AppException {
+        LOG.info("findUserById()--> id: "+ id);
         TusuariosDTO userDTO = null;
         TusuariosVO userVO = null;
-        LOG.info("findUserById()--> id: "+ id);
+        ResponseEntity<ResponseBody<TusuariosDTO>> res=null;
         try{
             userVO = tusuariosService.findUserById(Long.valueOf(id));
-            userDTO= TusuariosBuilder.fromVO(userVO);
-
-        }catch (Exception e){
-            new ResponseEntity<Exception>(e, HttpStatus.BAD_REQUEST);
+            if(userVO != null){
+                userDTO= TusuariosBuilder.fromVO(userVO);
+                res= Utils.response(HttpStatus.ACCEPTED,"Usuario existente",userDTO)  ;
+            }
+        }catch (AppException e){
+            Utils.raise(e,"Error al buscar Usuario");
+            res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
         }
-        return new ResponseEntity<TusuariosDTO>(userDTO,HttpStatus.ACCEPTED);
+        return res;
     }
 
 }
