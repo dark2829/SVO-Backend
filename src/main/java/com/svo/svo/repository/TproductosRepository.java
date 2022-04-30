@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface TproductosRepository extends JpaRepository<TproductosVO,Long> {
     List<TproductosVO> findAllProductos();
+    TproductosVO findProductoById(Long id);
 
 }

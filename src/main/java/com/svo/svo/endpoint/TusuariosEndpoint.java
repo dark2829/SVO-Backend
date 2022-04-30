@@ -1,11 +1,15 @@
 package com.svo.svo.endpoint;
 
 import com.svo.svo.model.*;
+import com.svo.svo.other.Utils.ResponseBody;
+import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.service.TusuariosService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -19,22 +23,29 @@ public class TusuariosEndpoint {
     @Autowired
     private TusuariosService tusuariosService;
 
-    @GetMapping("/login")
-    public TusuariosDTO login (@RequestParam Map<String,String> data){
+    @PostMapping("/login")
+    public ResponseEntity<ResponseBody<TusuariosDTO>> login (@RequestParam Map<String,String> data){
+        /*Datos requeridos
+        identificador
+        contrasena
+        */
         TusuariosDTO userDto= null;
-        TusuariosVO userVO = null;
+        ResponseEntity<ResponseBody<TusuariosVO>> userVO = null;
+        ResponseEntity<ResponseBody<TusuariosDTO>> res = null;
+
         try {
             userVO = tusuariosService.login(data);
-            if(userVO!=null){
-                userDto = TusuariosBuilder.fromVO(userVO);
+            if(userVO.getBody().getData()!=null){
+                userDto = TusuariosBuilder.fromVO(userVO.getBody().getData());
+                LOG.info(String.valueOf("USUARIO ENCONTRADO: "+userDto));
+                res= Utils.response200OK("Usuario registrado",userDto);
             }else {
-                LOG.info("No se encontró ninguno usuario");
+                res=Utils.response(HttpStatus.BAD_REQUEST,userVO.getBody().getMessage(),null);
             }
         }catch(Exception e) {
-            LOG.error("No se pudo loggear", e);
+           res= Utils.handle(e,"Error en el loggin");
         }
-        LOG.info(String.valueOf("USUARIO ENCONTRADO: "+userDto));
-        return  userDto;
+        return  res;
     }
 
 }

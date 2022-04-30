@@ -13,9 +13,9 @@ import java.io.Serializable;
         @NamedQuery(name = "TusuariosVO.findUserByNoEmp", query = "select u from TusuariosVO u where (u.correo =:ident or u.idEmpleado.no_empleado =:ident) and u.contraseña =: contrasena"),
         @NamedQuery(name = "TusuariosVO.findUserByCorreo", query = "select u from TusuariosVO u where (u.correo =:correo) and u.contraseña =: contrasena"),
         @NamedQuery(name = "TusuariosVO.findUserById", query = "select u from TusuariosVO u where u.id =: id"),
-
-
-
+        @NamedQuery(name = "TusuariosVO.findCorreo", query = "select u from TusuariosVO u where u.correo =: correo"),
+        @NamedQuery(name = "TusuariosVO.verificarContraseña", query = "select u from TusuariosVO u where u.correo =: correo"),
+        @NamedQuery(name = "TusuariosVO.findNoEmpleado", query = "select u from TusuariosVO u where u.idEmpleado.no_empleado =: noEmpleado"),
 
 })
 public class TusuariosVO implements Serializable {
