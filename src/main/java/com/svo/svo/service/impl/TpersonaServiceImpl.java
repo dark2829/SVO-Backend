@@ -101,6 +101,7 @@ public class TpersonaServiceImpl implements TpersonaService {
         correo
         contrasena
         telefono
+
         idDireccion -(si tiene direccion registrada)-
         calle
         colonia
@@ -147,8 +148,11 @@ public class TpersonaServiceImpl implements TpersonaService {
                 userVO.get().getIdPersona().setApellido_materno(data.get("apellido_materno"));
             }
             if(data.containsKey("fecha_nacimiento")){
-                Date fechaN = new SimpleDateFormat("dd/MM/yyyy").parse(data.get("fecha_nacimiento"));
-                userVO.get().getIdPersona().setFecha_nac(fechaN);
+                if (data.get("fecha_nacimiento") != null){
+                    Date fechaN = new SimpleDateFormat("dd/MM/yyyy").parse(data.get("fecha_nacimiento"));
+                    LOG.info(String.valueOf(new SimpleDateFormat("DD/MM/yyyy").parse(data.get("fecha_nacimiento"))));
+                    userVO.get().getIdPersona().setFecha_nac(fechaN);
+                }
             }
             if(data.containsKey("genero")){
                 userVO.get().getIdPersona().setGenero(data.get("genero"));
@@ -170,7 +174,6 @@ public class TpersonaServiceImpl implements TpersonaService {
                 userVO.get().getIdPersona().setTelefono(data.get("telefono"));
 
             }
-
             //Usuario empleado
             if(rol.get().getId() == 2){
                 emp = tusuariosRepository.findIdEmpleadoByIdUser(userVO.get().getId()).getIdEmpleado();
