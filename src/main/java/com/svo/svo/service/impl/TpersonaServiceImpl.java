@@ -92,45 +92,6 @@ public class TpersonaServiceImpl implements TpersonaService {
         TusuariosVO userEncontrado = null;
         String correo;
         try{
-        /*Datos para cliente
-        nombre
-        apellido_paterno
-        apellido_materno
-        fecha_nacimiento
-        genero
-        correo
-        contrasena
-        telefono
-
-        idDireccion -(si tiene direccion registrada)-
-        calle
-        colonia
-        municipio
-        estado
-        cp
-        n_interior
-        n_exterior
-        referencia
-        idTarjeta (si tiene tarjeta registrada)
-        nombre_propietario
-        numero_tarjeta
-        fecha_vencimiento
-        cvv
-
-        //Datos para empleado
-        nombre
-        apellido_paterno
-        apellido_materno
-        fecha_nacimiento
-        genero
-        correo
-        contrasena
-        telefono
-        curp
-        idPuesto
-        salario
-        estatus
-        */
             Optional<TusuariosVO> userVO = tusuariosRepository.findById(idUser);
             Optional<TrolVO> rol= trolRepository.findById(userVO.get().getIdRol().getId());
             LOG.info("Rol:"+rol);

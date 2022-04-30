@@ -46,6 +46,30 @@ public class TpersonaEndpoint {
         return  res;
     }
 
+        /*Datos para cliente
+    nombre
+    apellido_paterno
+    apellido_materno
+    fecha_nacimiento
+    genero
+    correo
+    contrasena
+    telefono
+
+    //Datos para empleado
+    nombre
+    apellido_paterno
+    apellido_materno
+    fecha_nacimiento
+    genero
+    correo
+    contrasena
+    telefono
+    curp
+    idPuesto
+    salario
+    estatus
+    */
     @PostMapping("/updateClientDatosGenerales")
     public ResponseEntity<ResponseBody<Void>> updateDatosGenerales(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
         ResponseEntity<ResponseBody<Void>> res= null;
@@ -59,6 +83,15 @@ public class TpersonaEndpoint {
         return  res;
     }
 
+//    idDireccion -(si tiene direccion registrada)-
+//    calle
+//    colonia
+//    municipio
+//    estado
+//    cp
+//    n_interior
+//    n_exterior
+//    referencia
     @PostMapping("/updateClientDirecciones")
     public ResponseEntity<ResponseBody<Void>> updateDirecciones(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
         ResponseEntity<ResponseBody<Void>> res= null;
@@ -72,6 +105,11 @@ public class TpersonaEndpoint {
         return  res;
     }
 
+//    idTarjeta (si tiene tarjeta registrada)
+//    nombre_propietario
+//    numero_tarjeta
+//    fecha_vencimiento
+//    cvv
     @PostMapping("/updateClientTarjetas")
     public ResponseEntity<ResponseBody<Void>> updateTarjetas(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
         ResponseEntity<ResponseBody<Void>> res= null;
