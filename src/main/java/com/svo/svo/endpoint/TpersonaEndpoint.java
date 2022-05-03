@@ -29,24 +29,24 @@ public class TpersonaEndpoint {
     @Autowired
     private TusuariosService tusuariosService;
 
-    @PostMapping("/insertNewUser")
-    public ResponseEntity<ResponseBody<TusuariosDTO>> insertPersonUser(@RequestBody String Json) throws AppException {
-        LOG.info("<<<<<insertClient() -> JSON: {}", Json);
-        ResponseEntity<ResponseBody<TusuariosDTO>>res=null;
-        TusuariosVO userVO= null;
-        try {
-            userVO = tpersonaService.insertNewUser(Json);
-            if(userVO!=null){
-                TusuariosDTO userDTO = TusuariosBuilder.fromVO(userVO);
-                res = Utils.response(HttpStatus.ACCEPTED,"Bienvenid@ "+userDTO.getIdPersona().getNombre(),userDTO);
-            }
-
-        } catch (Exception e) {
-            Utils.raise(e,"Error insert usuario");
-            res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
-        }
-        return  res;
-    }
+//    @PostMapping("/insertNewUser")
+//    public ResponseEntity<ResponseBody<TusuariosDTO>> insertPersonUser(@RequestBody String Json) throws AppException {
+//        LOG.info("<<<<<insertClient() -> JSON: {}", Json);
+//        ResponseEntity<ResponseBody<TusuariosDTO>>res=null;
+//        ResponseEntity<ResponseBody<TusuariosVO>> userVO= null;
+//        try {
+//            userVO = tpersonaService.insertNewUser(Json);
+//            if(userVO!=null){
+//                TusuariosDTO userDTO = TusuariosBuilder.fromVO(userVO);
+//                res = Utils.response(HttpStatus.ACCEPTED,"Bienvenid@ "+userDTO.getIdPersona().getNombre(),userDTO);
+//            }
+//
+//        } catch (Exception e) {
+//            Utils.raise(e,"Error insert usuario");
+//            res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
+//        }
+//        return  res;
+//    }
 
         /*Datos para cliente
     nombre
@@ -72,6 +72,7 @@ public class TpersonaEndpoint {
     salario
     estatus
     */
+
     @PostMapping("/updateClientDatosGenerales")
     public ResponseEntity<ResponseBody<Void>> updateDatosGenerales(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
         ResponseEntity<ResponseBody<Void>> res= null;
