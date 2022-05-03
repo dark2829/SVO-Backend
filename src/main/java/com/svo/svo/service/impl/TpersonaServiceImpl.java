@@ -80,6 +80,7 @@ public class TpersonaServiceImpl implements TpersonaService {
                 tusuariosRepository.save(user);
                 user.setId(tusuariosRepository.findIdByCorreo(user.getCorreo()).getId());
             }
+            LOG.info(String.valueOf(user));
 
         }catch (Exception e){
             Utils.raise(e,e.getMessage());

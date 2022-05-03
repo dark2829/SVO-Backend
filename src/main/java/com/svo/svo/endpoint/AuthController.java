@@ -11,6 +11,7 @@ import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.repository.TusuariosRepository;
 import com.svo.svo.service.TpersonaService;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,36 +46,43 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ResponseBody<LoginDTO>> authenticateUser(@RequestBody LoginDTO loginDTO){
-        Authentication authentication = authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(loginDTO.getIdentificador(),loginDTO.getContrasena()));
-        LoginDTO user = loginDTO;
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        TusuariosVO userE = tusuariosRepository.findCorreo(authentication.getName());
-        String token = tokenProvider.generarToken(authentication);
-        JWTAuthResonseDTO tokenDTO = new JWTAuthResonseDTO(token);
-        user.setIdPerson(userE.getIdPersona());
-        user.setIdUser(userE);
-        user.setTokenAccess(tokenDTO.getTokenDeAcceso());
-        user.setRol(authentication.getAuthorities());
-        LOG.info(String.valueOf(user));
-
-        return Utils.response200OK("Ha iniciado con exito",user);
+        return Utils.response200OK("Ha iniciado con exito", autentication(loginDTO.getIdentificador(), loginDTO.getContrasena()));
     }
 
     @PostMapping("/registro")
-    public ResponseEntity<ResponseBody<TusuariosDTO>> registro(@RequestBody String Json) throws AppException {
+    public ResponseEntity<ResponseBody<LoginDTO>> registro(@RequestBody String Json) throws AppException {
         LOG.info("<<<<<insertClient() -> JSON: {}", Json);
-        ResponseEntity<ResponseBody<TusuariosDTO>>res=null;
+        ResponseEntity<ResponseBody<LoginDTO>>res=null;
+        JSONObject JsonObject = new JSONObject(Json);
         TusuariosVO userVO= null;
+        LoginDTO user = null;
         try {
             userVO = tpersonaService.insertNewUser(Json);
             if(userVO!=null){
-                TusuariosDTO userDTO = TusuariosBuilder.fromVO(userVO);
-                res = Utils.response(HttpStatus.ACCEPTED,"Bienvenid@ "+userDTO.getIdPersona().getNombre(),userDTO);
+                user = autentication(userVO.getCorreo(),JsonObject.getString("contrasena"));
+                LOG.info(String.valueOf(user));
+                res = Utils.response200OK("Bienvenid@ "+userVO.getIdPersona().getNombre(),user);
             }
 
         } catch (Exception e) {
             res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
         }
         return  res;
+    }
+    
+    public LoginDTO autentication(String identificador, String contrasena){
+        Authentication authentication = authenticationManager.authenticate( new UsernamePasswordAuthenticationToken(identificador,contrasena));
+        LoginDTO user = new LoginDTO();
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        TusuariosVO userE = tusuariosRepository.findCorreo(authentication.getName());
+        String token = tokenProvider.generarToken(authentication);
+        JWTAuthResonseDTO tokenDTO = new JWTAuthResonseDTO(token);
+        user.setIdentificador(identificador);
+        user.setContrasena(contrasena);
+        user.setIdPerson(userE.getIdPersona());
+        user.setIdUser(userE);
+        user.setTokenAccess(tokenDTO.getTokenDeAcceso());
+        user.setRol(authentication.getAuthorities());
+        return user;
     }
 }
