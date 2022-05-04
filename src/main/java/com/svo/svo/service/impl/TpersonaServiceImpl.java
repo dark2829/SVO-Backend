@@ -2,6 +2,7 @@ package com.svo.svo.service.impl;
 
 
 import com.svo.svo.model.*;
+import com.svo.svo.other.PaswwordEncode;
 import com.svo.svo.other.Utils.AppException;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.repository.*;
@@ -10,6 +11,7 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +47,9 @@ public class TpersonaServiceImpl implements TpersonaService {
     @Autowired
     private TpuestoRepository tpuestoRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     @Transactional
     public TusuariosVO insertNewUser(String JSON) throws AppException {
@@ -69,12 +74,13 @@ public class TpersonaServiceImpl implements TpersonaService {
                 per.setId(tpersonaRepository.findIdByCorreo(per.getCorreo()).getId());
                 user.setId(0L);
                 user.setCorreo(userObject.getString("correo"));
-                user.setContraseña(userObject.getString("contrasena"));
+                user.setContraseña(passwordEncoder.encode(userObject.getString("contrasena")));
                 user.setIdPersona(per);
                 user.setIdRol(trolRepository.findById(personObject.getInt("idRol")));
                 tusuariosRepository.save(user);
                 user.setId(tusuariosRepository.findIdByCorreo(user.getCorreo()).getId());
             }
+            LOG.info(String.valueOf(user));
 
         }catch (Exception e){
             Utils.raise(e,e.getMessage());

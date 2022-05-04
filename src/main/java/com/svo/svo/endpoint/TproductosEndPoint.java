@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class TproductosEndPoint {
     "precio_descuento": 15,
     "descripcion" :"Cerillos LUMINA"
      */
+    @PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
     @PostMapping("/insertProduct")
     public void insertProduct(@RequestBody TproductosDTO tproductosDTO) {
         LOG.info("<<<<<insertProducto() -> ", tproductosDTO);
@@ -42,7 +44,7 @@ public class TproductosEndPoint {
         }
     }
 
-    //id
+    @PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
     @PostMapping("/update")
     public void update(@RequestParam("id") int id, @RequestBody Map<String,String> data){
         LOG.info("update()->id: {} data: {}",id,data);
