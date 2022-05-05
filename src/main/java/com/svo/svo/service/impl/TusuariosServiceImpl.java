@@ -68,7 +68,7 @@ public class TusuariosServiceImpl implements TusuariosService {
                 }
             }
         } catch (Exception e) {
-            res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(), null);
+            res = Utils.response(HttpStatus.BAD_REQUEST,"Contraseña incorrecta", null);
         }
         return res;
     }

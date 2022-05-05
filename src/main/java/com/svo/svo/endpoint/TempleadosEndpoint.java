@@ -1,10 +1,10 @@
 package com.svo.svo.endpoint;
 
 
+
 import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.service.TempleadosService;
-import com.svo.svo.service.TusuariosService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +33,7 @@ public class TempleadosEndpoint {
         }
         return  res;
     }
+
 
 
 }
