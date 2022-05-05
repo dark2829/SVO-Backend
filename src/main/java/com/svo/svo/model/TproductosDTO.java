@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TproductosDTO {
     private Long id;
-    private String imagen;
+    private byte[] imagen;
     private  String codigo_prod;
     private String nombre;
     private String categoria;
@@ -26,11 +26,11 @@ public class TproductosDTO {
         this.id = id;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 

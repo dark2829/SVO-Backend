@@ -1,5 +1,8 @@
 package com.svo.svo.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,7 +15,8 @@ public class TproductosVO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String imagen;
+    @Lob
+    private byte[] imagen;
     private  String codigo_prod;
     private String nombre;
     private String categoria;
@@ -32,11 +36,11 @@ public class TproductosVO implements Serializable {
         this.id = id;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 
@@ -110,5 +114,14 @@ public class TproductosVO implements Serializable {
 
     public void setEstatus(String estatus) {
         this.estatus = estatus;
+    }
+
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

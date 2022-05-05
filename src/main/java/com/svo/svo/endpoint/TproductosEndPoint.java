@@ -44,7 +44,7 @@ public class TproductosEndPoint {
         }
     }
 
-    @PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
+    //@PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
     @PostMapping("/update")
     public void update(@RequestParam("id") int id, @RequestBody Map<String,String> data){
         LOG.info("update()->id: {} data: {}",id,data);
@@ -56,7 +56,7 @@ public class TproductosEndPoint {
     }
     //id
     @GetMapping("/findProductById")//Buscar un producto
-    public ResponseEntity<ResponseBody<TproductosDTO>>  findAllProveedores(@RequestParam("id") int id) throws AppException {
+    public ResponseEntity<ResponseBody<TproductosDTO>>  findProductById(@RequestParam("id") int id) throws AppException {
         LOG.info("findProductById()--> id: "+ id);
         TproductosDTO tproductosDTO = null;
         ResponseEntity<ResponseBody<TproductosVO>> tproductosVO = null;
@@ -65,6 +65,7 @@ public class TproductosEndPoint {
             tproductosVO = tproductosService.findProductById(Long.valueOf(id));
             if(tproductosVO.getBody().getData() != null){
                 tproductosDTO= TproductosBuilder.fromVO(tproductosVO.getBody().getData());
+                System.out.println(tproductosVO.getBody().getData().getImagen());
                 res= Utils.response(HttpStatus.ACCEPTED,"Producto existente",tproductosDTO)  ;
             }else{
                 res = Utils.response(HttpStatus.BAD_REQUEST,tproductosVO.getBody().getMessage(),null);
@@ -76,7 +77,7 @@ public class TproductosEndPoint {
     }
 
     @GetMapping("/findAllProductos")
-    public ResponseEntity<ResponseBody<List<TproductosDTO>>> findAllProveedores() throws AppException {
+    public ResponseEntity<ResponseBody<List<TproductosDTO>>> findAllProveedores()throws AppException {
         List<TproductosDTO> listProductos = null;
         ResponseEntity<ResponseBody<List<TproductosDTO>>> res =null;
         LOG.info("findAllProductos()");
