@@ -44,14 +44,15 @@ public class TproductosEndPoint {
         }
     }
 
-    //@PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
+    @PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
     @PostMapping("/update")
-    public void update(@RequestParam("id") int id, @RequestBody Map<String,String> data){
+    public void update(@RequestParam("id") int id, @RequestBody Map<String,String> data) throws AppException {
         LOG.info("update()->id: {} data: {}",id,data);
         try {
             tproductosService.update((long) id, data);
+            Utils.response200OK("todo cotrecto");
         } catch (Exception e){
-            LOG.error(String.valueOf(e));
+            Utils.raise(e,"Eroor al actualizar");
         }
     }
     //id
