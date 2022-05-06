@@ -38,7 +38,7 @@ public class TproductosEndPoint {
     @PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
     @PostMapping("/insertProduct")
     public ResponseEntity<ResponseBody<Void>> insertProduct(@RequestBody TproductosDTO tproductosDTO) {
-        LOG.info("<<<<<insertProducto() -> ", tproductosDTO);
+        LOG.info("<<<<<insertProducto() -> ");
         ResponseEntity<ResponseBody<Void>> res = null;
         try {
             tproductosService.insert(tproductosDTO);
@@ -51,11 +51,11 @@ public class TproductosEndPoint {
 
     @PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
     @PostMapping("/update")
-    public ResponseEntity<ResponseBody<Void>> update(@RequestParam("id") int id, @RequestBody Map<String, String> data) throws AppException {
-        LOG.info("update()->id: {} data: {}", id, data);
+    public ResponseEntity<ResponseBody<Void>> update(@RequestParam("id") int id, @RequestBody TproductosDTO tproductosDTO) throws AppException {
+        LOG.info("update()->id: {} data: {}", id, tproductosDTO);
         ResponseEntity<ResponseBody<Void>> res = null;
         try {
-            tproductosService.update((long) id, data);
+            tproductosService.update((long) id, tproductosDTO);
             res = Utils.response200OK("Producto actualizado correctamente");
         } catch (Exception e) {
             res = Utils.response(HttpStatus.BAD_REQUEST, "Algo fallo al actualizar producto", null);

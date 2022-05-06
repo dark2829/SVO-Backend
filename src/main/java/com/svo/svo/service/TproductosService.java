@@ -11,7 +11,7 @@ import java.util.Map;
 
 public interface TproductosService {
     void insert (TproductosDTO tproductosDTO) throws Exception;
-    void update (Long id, Map<String,String> data) throws Exception;
+    void update (Long id, TproductosDTO tproductosDTO) throws Exception;
     List<TproductosDTO> findAllProductos() throws Exception;
     ResponseEntity<ResponseBody<TproductosVO>> findProductById(Long id) throws AppException;
 
