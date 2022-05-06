@@ -7,7 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class PaswwordEncode {
     public static void main(String[] args) {
 //        PasswordEncoder paswwordEncode = new BCryptPasswordEncoder();
-//        System.out.println(paswwordEncode.encode("emple1"));
+ //       System.out.println(paswwordEncode.encode("qwertyui"));
 
     }
 
