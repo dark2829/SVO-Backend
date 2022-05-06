@@ -74,7 +74,6 @@ public class TproductosEndPoint {
             tproductosVO = tproductosService.findProductById(Long.valueOf(id));
             if (tproductosVO.getBody().getData() != null) {
                 tproductosDTO = TproductosBuilder.fromVO(tproductosVO.getBody().getData());
-                System.out.println(tproductosVO.getBody().getData().getImagen());
                 res = Utils.response(HttpStatus.ACCEPTED, "Producto existente", tproductosDTO);
             } else {
                 res = Utils.response(HttpStatus.BAD_REQUEST, tproductosVO.getBody().getMessage(), null);
