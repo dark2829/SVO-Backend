@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface TproveedoresRepository extends JpaRepository<TproveedoresVO, Long> {
     List<TproveedoresVO> findAllProveedores();
+
     TproveedoresVO findById(int id);
 }

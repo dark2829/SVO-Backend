@@ -21,14 +21,14 @@ public class TpuestosEndpoint {
     private TpuestoService puestoService;
 
     @GetMapping("/buscarPuestos")
-    public List<TpuestoDTO>buscarPuestos (){
-        List<TpuestoDTO> listPuestos=null;
+    public List<TpuestoDTO> buscarPuestos() {
+        List<TpuestoDTO> listPuestos = null;
         LOG.info("buscarPuestos()");
-        try{
-            listPuestos= puestoService.buscarPuesto();
+        try {
+            listPuestos = puestoService.buscarPuesto();
 
-        }catch (Exception e){
-        LOG.error(String.valueOf(e));
+        } catch (Exception e) {
+            LOG.error(String.valueOf(e));
         }
         return listPuestos;
     }

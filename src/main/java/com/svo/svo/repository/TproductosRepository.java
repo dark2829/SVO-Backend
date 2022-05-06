@@ -8,8 +8,10 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface TproductosRepository extends JpaRepository<TproductosVO,Long> {
+public interface TproductosRepository extends JpaRepository<TproductosVO, Long> {
     List<TproductosVO> findAllProductos();
+
     TproductosVO findProductoById(Long id);
+
 
 }

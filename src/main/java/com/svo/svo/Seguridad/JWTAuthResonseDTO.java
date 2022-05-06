@@ -34,6 +34,7 @@ public class JWTAuthResonseDTO {
     public void setTipoDeToken(String tipoDeToken) {
         this.tipoDeToken = tipoDeToken;
     }
+
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();
