@@ -5,6 +5,7 @@ import com.svo.svo.other.Utils.AppException;
 import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.service.TproductosService;
+import jdk.jshell.execution.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,57 +37,64 @@ public class TproductosEndPoint {
      */
     @PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
     @PostMapping("/insertProduct")
-    public void insertProduct(@RequestBody TproductosDTO tproductosDTO) {
+    public ResponseEntity<ResponseBody<Void>> insertProduct(@RequestBody TproductosDTO tproductosDTO) {
         LOG.info("<<<<<insertProducto() -> ", tproductosDTO);
+        ResponseEntity<ResponseBody<Void>> res = null;
         try {
             tproductosService.insert(tproductosDTO);
+            res = Utils.response200OK("Producto agregado");
         } catch (Exception e) {
+            res = Utils.response(HttpStatus.BAD_REQUEST, "Error al guardar producto", null);
         }
+        return res;
     }
 
     @PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
     @PostMapping("/update")
-    public void update(@RequestParam("id") int id, @RequestBody Map<String,String> data) throws AppException {
-        LOG.info("update()->id: {} data: {}",id,data);
+    public ResponseEntity<ResponseBody<Void>> update(@RequestParam("id") int id, @RequestBody Map<String, String> data) throws AppException {
+        LOG.info("update()->id: {} data: {}", id, data);
+        ResponseEntity<ResponseBody<Void>> res = null;
         try {
             tproductosService.update((long) id, data);
-            Utils.response200OK("todo cotrecto");
-        } catch (Exception e){
-            Utils.raise(e,"Eroor al actualizar");
+            res = Utils.response200OK("Producto actualizado correctamente");
+        } catch (Exception e) {
+            res = Utils.response(HttpStatus.BAD_REQUEST, "Algo fallo al actualizar producto", null);
         }
+        return res;
     }
+
     //id
     @GetMapping("/findProductById")//Buscar un producto
-    public ResponseEntity<ResponseBody<TproductosDTO>>  findProductById(@RequestParam("id") int id) throws AppException {
-        LOG.info("findProductById()--> id: "+ id);
+    public ResponseEntity<ResponseBody<TproductosDTO>> findProductById(@RequestParam("id") int id) throws AppException {
+        LOG.info("findProductById()--> id: " + id);
         TproductosDTO tproductosDTO = null;
         ResponseEntity<ResponseBody<TproductosVO>> tproductosVO = null;
-        ResponseEntity<ResponseBody<TproductosDTO>> res=null;
-        try{
+        ResponseEntity<ResponseBody<TproductosDTO>> res = null;
+        try {
             tproductosVO = tproductosService.findProductById(Long.valueOf(id));
-            if(tproductosVO.getBody().getData() != null){
-                tproductosDTO= TproductosBuilder.fromVO(tproductosVO.getBody().getData());
+            if (tproductosVO.getBody().getData() != null) {
+                tproductosDTO = TproductosBuilder.fromVO(tproductosVO.getBody().getData());
                 System.out.println(tproductosVO.getBody().getData().getImagen());
-                res= Utils.response(HttpStatus.ACCEPTED,"Producto existente",tproductosDTO)  ;
-            }else{
-                res = Utils.response(HttpStatus.BAD_REQUEST,tproductosVO.getBody().getMessage(),null);
+                res = Utils.response(HttpStatus.ACCEPTED, "Producto existente", tproductosDTO);
+            } else {
+                res = Utils.response(HttpStatus.BAD_REQUEST, tproductosVO.getBody().getMessage(), null);
             }
-        }catch (AppException e){
-            Utils.raise(e,"Error al buscar producto");
+        } catch (AppException e) {
+            Utils.raise(e, "Error al buscar producto");
         }
         return res;
     }
 
     @GetMapping("/findAllProductos")
-    public ResponseEntity<ResponseBody<List<TproductosDTO>>> findAllProveedores()throws AppException {
+    public ResponseEntity<ResponseBody<List<TproductosDTO>>> findAllProveedores() throws AppException {
         List<TproductosDTO> listProductos = null;
-        ResponseEntity<ResponseBody<List<TproductosDTO>>> res =null;
+        ResponseEntity<ResponseBody<List<TproductosDTO>>> res = null;
         LOG.info("findAllProductos()");
-        try{
-            listProductos= tproductosService.findAllProductos();
-            res=Utils.response200OK("Lista de productos",listProductos);
-        }catch (Exception e){
-           Utils.raise(e,"Error al buscar todos los productos");
+        try {
+            listProductos = tproductosService.findAllProductos();
+            res = Utils.response200OK("Lista de productos", listProductos);
+        } catch (Exception e) {
+            Utils.raise(e, "Error al buscar todos los productos");
         }
         return res;
     }

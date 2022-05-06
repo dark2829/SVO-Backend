@@ -23,14 +23,14 @@ public class TproveedoresEndpoint {
     private TproveedoresService tproveedoresService;
 
     @GetMapping("/findAllProveedores") //Manda al Front
-    public ResponseEntity<List<TproveedoresDTO>> findAllProveedores(){
+    public ResponseEntity<List<TproveedoresDTO>> findAllProveedores() {
         List<TproveedoresDTO> listProveedores = null;
         LOG.info("findAllProveedores()");
-        try{
-            listProveedores= tproveedoresService.findAllProveedores();
+        try {
+            listProveedores = tproveedoresService.findAllProveedores();
 
-        }catch (Exception e){
-            new ResponseEntity<Exception>(e,HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            new ResponseEntity<Exception>(e, HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<List<TproveedoresDTO>>(listProveedores, HttpStatus.ACCEPTED);
     }
@@ -43,17 +43,17 @@ public class TproveedoresEndpoint {
             tproveedoresService.insert(tproveedoresDTO);
             Utils.response200OK("Proveedor agregado correctamente");
         } catch (Exception e) {
-           LOG.error(String.valueOf(e));
+            LOG.error(String.valueOf(e));
         }
     }
 
     @PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
     @PostMapping("/update")
-    public void update(@RequestParam("id") int id, @RequestBody Map<String,String> data){
-        LOG.info("update()->id: {} data: {}",id,data);
+    public void update(@RequestParam("id") int id, @RequestBody Map<String, String> data) {
+        LOG.info("update()->id: {} data: {}", id, data);
         try {
             tproveedoresService.update((long) id, data);
-        } catch (Exception e){
+        } catch (Exception e) {
             LOG.error(String.valueOf(e));
         }
     }

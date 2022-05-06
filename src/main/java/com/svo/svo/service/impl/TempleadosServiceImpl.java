@@ -1,8 +1,9 @@
 package com.svo.svo.service.impl;
 
-import com.svo.svo.model.TempleadosVO;
-import com.svo.svo.model.TpersonaVO;
-import com.svo.svo.model.TusuariosVO;
+import com.svo.svo.model.*;
+import com.svo.svo.other.Utils.AppException;
+import com.svo.svo.other.Utils.ResponseBody;
+import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.repository.*;
 import com.svo.svo.other.GenerateNempleado;
 import com.svo.svo.service.TempleadosService;
@@ -10,12 +11,16 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class TempleadosServiceImpl implements TempleadosService {
@@ -41,20 +46,20 @@ public class TempleadosServiceImpl implements TempleadosService {
     @Override
     @Transactional
     public void insertEmpleado(String JSON) throws Exception, ParseException {
-        LOG.info("insertEmpleado-->JSON"+JSON);
+        LOG.info("insertEmpleado-->JSON" + JSON);
         TpersonaVO per = new TpersonaVO();
         TusuariosVO user = new TusuariosVO();
         TempleadosVO emp = new TempleadosVO();
         GenerateNempleado num_emp = new GenerateNempleado();
-        try{
+        try {
             JSONObject personObject = new JSONObject(JSON);
             JSONObject empObject = new JSONObject();
-            empObject.put("curp",personObject.remove("curp"));
-            empObject.put("idPuesto",personObject.remove("idPuesto"));
-            empObject.put("salario",personObject.remove("salario"));
+            empObject.put("curp", personObject.remove("curp"));
+            empObject.put("idPuesto", personObject.remove("idPuesto"));
+            empObject.put("salario", personObject.remove("salario"));
             JSONObject userObject = new JSONObject();
-            userObject.put("correo",personObject.remove("correo")).toString();
-            userObject.put("contrasena",personObject.remove("contrasena")).toString();
+            userObject.put("correo", personObject.remove("correo")).toString();
+            userObject.put("contrasena", personObject.remove("contrasena")).toString();
             per.setId(0L);
             per.setNombre(personObject.getString("nombre"));
             per.setApellido_paterno(personObject.getString("apellido_paterno"));
@@ -86,8 +91,43 @@ public class TempleadosServiceImpl implements TempleadosService {
             tusuariosRepository.save(user);
             user.setId(tusuariosRepository.findIdByCorreo(user.getCorreo()).getId());
 
-        }catch (Exception e){
-            LOG.error("Error al registrar empleado",e);
+        } catch (Exception e) {
+            LOG.error("Error al registrar empleado", e);
         }
+    }
+
+    @Override
+    public List<TempleadosDTO> findAllEmpleados() throws Exception {
+        List<TempleadosDTO> listEmpleados = null;
+        LOG.info("findAllEmpleados()");
+        try {
+            List<TempleadosVO> templeadosVOList = templeadosRepository.findAllEmpleados();
+            listEmpleados = new ArrayList<>();
+            for (TempleadosVO templeadosVO : templeadosVOList) {
+                TempleadosDTO templeadosDTO = TempleadosBuilder.fromVO(templeadosVO);
+                listEmpleados.add(templeadosDTO);
+            }
+        } catch (Exception e) {
+            Utils.raise(e, "Error en buscar productos");
+        }
+        return listEmpleados;
+    }
+
+    @Override
+    public ResponseEntity<ResponseBody<TempleadosVO>> findEmpleadoById(Integer id) throws AppException {
+        LOG.info("findEmpleadoById ()");
+        TempleadosVO templeadosVO = null;
+        ResponseEntity<ResponseBody<TempleadosVO>> res = null;
+        try {
+            templeadosVO = templeadosRepository.findEmpleadoById(id);
+            if (templeadosVO != null) {
+                res = Utils.response200OK("Empleado encontrado", templeadosVO);
+            } else {
+                res = Utils.response(HttpStatus.BAD_REQUEST, "Empleado no encontrado", null);
+            }
+        } catch (Exception e) {
+            Utils.raise(e, e.getMessage());
+        }
+        return res;
     }
 }

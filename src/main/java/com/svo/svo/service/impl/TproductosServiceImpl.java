@@ -97,12 +97,12 @@ public class TproductosServiceImpl implements TproductosService {
         try {
             List<TproductosVO> tproductosVOList = tproductosRepository.findAllProductos();
             listProductos = new ArrayList<>();
-            for (TproductosVO tproductosVO1 : tproductosVOList){
+            for (TproductosVO tproductosVO1 : tproductosVOList) {
                 TproductosDTO tproductosDTO = TproductosBuilder.fromVO(tproductosVO1);
                 listProductos.add(tproductosDTO);
             }
-        } catch (Exception e){
-            Utils.raise(e,"Error en buscar productos");
+        } catch (Exception e) {
+            Utils.raise(e, "Error en buscar productos");
         }
         return listProductos;
     }

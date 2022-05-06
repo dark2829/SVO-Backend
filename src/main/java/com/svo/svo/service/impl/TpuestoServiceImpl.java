@@ -27,11 +27,11 @@ public class TpuestoServiceImpl implements TpuestoService {
         try {
             List<TpuestoVO> listPuestosVO = puestoRepository.buscarPuesto();
             listPuestos = new ArrayList<>();
-            for (TpuestoVO tpuestoVO : listPuestosVO){
+            for (TpuestoVO tpuestoVO : listPuestosVO) {
                 TpuestoDTO puestosDTO = TpuestoBuilder.fromVO(tpuestoVO);
                 listPuestos.add(puestosDTO);
             }
-        } catch (Exception e){
+        } catch (Exception e) {
 
         }
         return listPuestos;

@@ -4,14 +4,13 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 
-public class LoginDTO{
+public class LoginDTO {
     private String identificador;
     private String contrasena;
     private TpersonaVO idPerson;
     private TusuariosVO idUser;
     private String tokenAccess;
     private Collection<? extends GrantedAuthority> rol;
-
 
 
     public String getIdentificador() {

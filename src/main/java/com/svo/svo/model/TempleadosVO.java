@@ -7,10 +7,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="templeados")
+@Table(name = "templeados")
 @NamedQueries({
         @NamedQuery(name = "TempleadosVO.findEmpleadoById", query = "select e from TempleadosVO e where e.id =:id"),
         @NamedQuery(name = "TempleadosVO.findIdByCurp", query = "select e from TempleadosVO e where e.curp =: curp"),
+        @NamedQuery(name = "TempleadosVO.findAllEmpleados", query = "select e from TempleadosVO e"),
+
 })
 public class TempleadosVO implements Serializable {
     @Id
@@ -21,17 +23,19 @@ public class TempleadosVO implements Serializable {
     private float salario;
     private String estatus;
     @ManyToOne
-    @JoinColumn(name="tpersonas_id",referencedColumnName = "id")
+    @JoinColumn(name = "tpersonas_id", referencedColumnName = "id")
     private TpersonaVO idPersona;
     @ManyToOne
-    @JoinColumn(name="tpuesto_id",referencedColumnName = "id")
+    @JoinColumn(name = "tpuesto_id", referencedColumnName = "id")
     private TpuestoVO idPuesto;
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) { this.id = id; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getNo_empleado() {
         return no_empleado;
@@ -57,9 +61,13 @@ public class TempleadosVO implements Serializable {
         this.salario = salario;
     }
 
-    public String getEstatus() { return estatus; }
+    public String getEstatus() {
+        return estatus;
+    }
 
-    public void setEstatus(String estatus) { this.estatus = estatus; }
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
 
     public TpersonaVO getIdPersona() {
         return idPersona;

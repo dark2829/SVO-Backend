@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TdireccionRepository extends JpaRepository<TdireccionVO,Long> {
+public interface TdireccionRepository extends JpaRepository<TdireccionVO, Long> {
     TdireccionVO findDireccionById(Long id);
 }

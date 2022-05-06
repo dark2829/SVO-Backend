@@ -30,13 +30,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = obtenerJWTdeLaSolicitud(request);
 
         //validamos el token
-        if(StringUtils.hasText(token) && jwtTokenProvider.validarToken(token)) {
+        if (StringUtils.hasText(token) && jwtTokenProvider.validarToken(token)) {
             //obtenemos el username del token
             String username = jwtTokenProvider.obtenerUserNameDeJwt(token);
 
             //cargamos el usuario asociado al token
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null,userDetails.getAuthorities());
+            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
             authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
             //establecemos la seguridad
@@ -48,8 +48,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     //Bearer token de acceso
     private String obtenerJWTdeLaSolicitud(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if(StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
-            return bearerToken.substring(7,bearerToken.length());
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
+            return bearerToken.substring(7, bearerToken.length());
         }
         return null;
     }
