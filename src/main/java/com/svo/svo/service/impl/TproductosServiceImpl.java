@@ -13,10 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TproductosServiceImpl implements TproductosService {
@@ -27,7 +24,7 @@ public class TproductosServiceImpl implements TproductosService {
 
     @Override
     public void insert(TproductosDTO tproductosDTO) throws Exception {
-        LOG.info("insert-> producto: {}",tproductosDTO);
+        //LOG.info("insert-> producto: {}",tproductosDTO);
         TproductosVO producto = null;
         try {
             producto = TproductosBuilder.fromDTO(tproductosDTO);
@@ -40,50 +37,36 @@ public class TproductosServiceImpl implements TproductosService {
     }
 
     @Override
-    public void update(Long id, Map<String, String> data) throws Exception {
-        LOG.info("update()->id: {} data{}", id, data);
+    public void update(Long id, TproductosDTO tproductosDTO) throws Exception {
+        //LOG.info("update()->id: {} data{}", id, data);
         Optional<TproductosVO> vo = null;
+        byte[] bite ;
         try {
             vo = tproductosRepository.findById(id);
             if (!vo.isPresent()) {
                 throw new RuntimeException("No se encuentra el producto");
             }
-            //codigo_prod
-            if (data.containsKey("codigo_prod")) {
-               vo.get().setCodigo_prod(data.get("codigo_prod"));
-            }
-            //nombre
-            if (data.containsKey("nombre")) {
-                vo.get().setNombre(data.get("nombre"));
-            }
-            //categoria
-            if (data.containsKey("categoria")) {
-                vo.get().setCategoria(data.get("categoria"));
-            }
-            //cantidad
-            if (data.containsKey("cantidad")) {
-                vo.get().setCantidad(Integer.parseInt(data.get("cantidad")));
-            }
-            //precio_compra
-            if (data.containsKey("precio_compra")) {
-                vo.get().setPrecio_compra(Float.parseFloat(data.get("precio_compra")));
-            }
-            //precio_venta
-            if (data.containsKey("precio_venta")) {
-                vo.get().setPrecio_venta(Float.parseFloat(data.get("precio_venta")));
-            }
-            //precio_descuento
-            if (data.containsKey("precio_descuento")) {
-                vo.get().setPrecio_descuento(Float.parseFloat(data.get("precio_descuento")));
-            }
-            //descripcion
-            if (data.containsKey("descripcion")) {
-                vo.get().setDescripcion(data.get("descripcion"));
-            }
-            //estatus
-            if (data.containsKey("estatus")) {
-                vo.get().setEstatus(data.get("estatus"));
-            }
+            /*imagen
+            codigo_prod
+            nombre
+            categoria
+            cantidad
+            precio_compra
+            precio_venta
+            precio_descuento
+            descripcion
+            estatus
+            */
+            vo.get().setImagen(tproductosDTO.getImagen());
+            vo.get().setCodigo_prod(tproductosDTO.getCodigo_prod());
+            vo.get().setNombre(tproductosDTO.getNombre());
+            vo.get().setCategoria(tproductosDTO.getCategoria());
+            vo.get().setCantidad(tproductosDTO.getCantidad());
+            vo.get().setPrecio_compra(tproductosDTO.getPrecio_compra());
+            vo.get().setPrecio_venta(tproductosDTO.getPrecio_venta());
+            vo.get().setPrecio_descuento(tproductosDTO.getPrecio_descuento());
+            vo.get().setDescripcion(tproductosDTO.getDescripcion());
+            vo.get().setEstatus(tproductosDTO.getEstatus());
             tproductosRepository.save(vo.get());
         } catch (Exception e) {
             LOG.error("Error Al actualizar un producto",e);
