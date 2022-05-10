@@ -13,6 +13,6 @@ public interface TproductosService {
     void insert (TproductosDTO tproductosDTO) throws Exception;
     void update (Long id, TproductosDTO tproductosDTO) throws Exception;
     List<TproductosDTO> findAllProductos() throws Exception;
-    ResponseEntity<ResponseBody<TproductosVO>> findProductById(Long id) throws AppException;
+    TproductosVO findProductById(Long id) throws AppException;
 
 }

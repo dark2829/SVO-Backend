@@ -14,7 +14,7 @@ public class TcarritoDTO {
     private float precio_total;
     private TusuariosVO idUsuario;
     private TcomprasVO idCompra;
-    private List<TproductosVO> persona = new ArrayList<TproductosVO>();
+    private List<TproductosVO> producto = new ArrayList<TproductosVO>();
 
 
     public Long getId() {
@@ -73,12 +73,12 @@ public class TcarritoDTO {
         this.idCompra = idCompra;
     }
 
-    public List<TproductosVO> getPersona() {
-        return persona;
+    public List<TproductosVO> getProducto() {
+        return producto;
     }
 
-    public void setPersona(List<TproductosVO> persona) {
-        this.persona = persona;
+    public void setProducto(List<TproductosVO> producto) {
+        this.producto = producto;
     }
 
     @Override

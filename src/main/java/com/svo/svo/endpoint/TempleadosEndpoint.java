@@ -39,19 +39,19 @@ public class TempleadosEndpoint {
         return res;
     }
 
-    @GetMapping("/findEmpleadoById")//Buscar un producto
-    public ResponseEntity<ResponseBody<TempleadosDTO>> findEmpleadoById(@RequestParam("id") int id) throws AppException {
+    @GetMapping("/findEmpleadoById")
+    public ResponseEntity<ResponseBody<TusuariosDTO>>  findEmpleadoById(@RequestParam("id") int id) throws AppException {
         LOG.info("findEmpleadoById()--> id: " + id);
-        TempleadosDTO templeadosDTO = null;
-        ResponseEntity<ResponseBody<TempleadosVO>> templeadoVO = null;
-        ResponseEntity<ResponseBody<TempleadosDTO>> res = null;
+        TusuariosDTO tusuariosDTO = null;
+        TusuariosVO tusuariosVO = null;
+        ResponseEntity<ResponseBody<TusuariosDTO>> res = null;
         try {
-            templeadoVO = templeadosService.findEmpleadoById(id);
-            if (templeadoVO.getBody().getData() != null) {
-                templeadosDTO = TempleadosBuilder.fromVO(templeadoVO.getBody().getData());
-                res = Utils.response(HttpStatus.ACCEPTED, "Empleado existente", templeadosDTO);
+            tusuariosVO = templeadosService.findEmpleadoById(id);
+            if (tusuariosVO != null) {
+                tusuariosDTO = TusuariosBuilder.fromVO(tusuariosVO);
+                res = Utils.response(HttpStatus.ACCEPTED, "Empleado existente", tusuariosDTO);
             } else {
-                res = Utils.response(HttpStatus.BAD_REQUEST, templeadoVO.getBody().getMessage(), null);
+                res = Utils.response(HttpStatus.BAD_REQUEST, "Empleado no encontrado", null);
             }
         } catch (AppException e) {
             Utils.raise(e, "Error al buscar empleado");

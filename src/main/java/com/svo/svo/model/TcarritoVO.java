@@ -28,7 +28,7 @@ public class TcarritoVO {
             name = "tcarrito_has_tproductos",
             joinColumns = @JoinColumn(name = "tcarrito_id"),
             inverseJoinColumns = @JoinColumn(name = "tproductos_id"))
-    private List<TproductosVO> persona = new ArrayList<TproductosVO>();
+    private List<TproductosVO> producto = new ArrayList<TproductosVO>();
 
     public Long getId() {
         return id;
@@ -86,11 +86,11 @@ public class TcarritoVO {
         this.idCompra = idCompra;
     }
 
-    public List<TproductosVO> getPersona() {
-        return persona;
+    public List<TproductosVO> getProducto() {
+        return producto;
     }
 
-    public void setPersona(List<TproductosVO> persona) {
-        this.persona = persona;
+    public void setProducto(List<TproductosVO> producto) {
+        this.producto = producto;
     }
 }
