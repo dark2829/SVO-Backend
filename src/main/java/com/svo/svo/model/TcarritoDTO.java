@@ -12,9 +12,7 @@ public class TcarritoDTO {
     private float precio_unitario;
     private float precio_descuento;
     private float precio_total;
-    private TusuariosVO idUsuario;
-    private TcomprasVO idCompra;
-    private List<TproductosVO> producto = new ArrayList<TproductosVO>();
+    private TproductosVO idProducto;
 
 
     public Long getId() {
@@ -57,28 +55,12 @@ public class TcarritoDTO {
         this.precio_total = precio_total;
     }
 
-    public TusuariosVO getIdUsuario() {
-        return idUsuario;
+    public TproductosVO getIdProducto() {
+        return idProducto;
     }
 
-    public void setIdUsuario(TusuariosVO idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public TcomprasVO getIdCompra() {
-        return idCompra;
-    }
-
-    public void setIdCompra(TcomprasVO idCompra) {
-        this.idCompra = idCompra;
-    }
-
-    public List<TproductosVO> getProducto() {
-        return producto;
-    }
-
-    public void setProducto(List<TproductosVO> producto) {
-        this.producto = producto;
+    public void setIdProducto(TproductosVO idProducto) {
+        this.idProducto = idProducto;
     }
 
     @Override

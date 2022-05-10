@@ -18,17 +18,8 @@ public class TcarritoVO {
     private float precio_descuento;
     private float precio_total;
     @ManyToOne
-    @JoinColumn(name="tusuarios_id",referencedColumnName = "id")
-    private TusuariosVO idUsuario;
-    @ManyToOne
-    @JoinColumn(name="tcompras_id",referencedColumnName = "id")
-    private TcomprasVO idCompra;
-    @ManyToMany
-    @JoinTable(
-            name = "tcarrito_has_tproductos",
-            joinColumns = @JoinColumn(name = "tcarrito_id"),
-            inverseJoinColumns = @JoinColumn(name = "tproductos_id"))
-    private List<TproductosVO> producto = new ArrayList<TproductosVO>();
+    @JoinColumn(name="tproducto_id",referencedColumnName = "id")
+    private TproductosVO idProducto;
 
     public Long getId() {
         return id;
@@ -70,27 +61,11 @@ public class TcarritoVO {
         this.precio_total = precio_total;
     }
 
-    public TusuariosVO getIdUsuario() {
-        return idUsuario;
+    public TproductosVO getIdProducto() {
+        return idProducto;
     }
 
-    public void setIdUsuario(TusuariosVO idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public TcomprasVO getIdCompra() {
-        return idCompra;
-    }
-
-    public void setIdCompra(TcomprasVO idCompra) {
-        this.idCompra = idCompra;
-    }
-
-    public List<TproductosVO> getProducto() {
-        return producto;
-    }
-
-    public void setProducto(List<TproductosVO> producto) {
-        this.producto = producto;
+    public void setIdProducto(TproductosVO idProducto) {
+        this.idProducto = idProducto;
     }
 }

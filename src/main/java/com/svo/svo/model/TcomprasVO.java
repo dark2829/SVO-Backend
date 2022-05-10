@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="tcompras")
@@ -26,6 +28,12 @@ public class TcomprasVO implements Serializable {
     @ManyToOne
     @JoinColumn(name="tusuarios_id",referencedColumnName = "id")
     private TusuariosVO idUsuario;
+    @ManyToMany
+    @JoinTable(
+            name = "tcompras_has_tcarrito",
+            joinColumns = @JoinColumn(name = "tcompras_id"),
+            inverseJoinColumns = @JoinColumn(name = "tcarrito_id"))
+    private List<TcarritoVO> carrito = new ArrayList<TcarritoVO>();
 
 
     public Long getId() {
@@ -90,5 +98,13 @@ public class TcomprasVO implements Serializable {
 
     public void setIdUsuario(TusuariosVO idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public List<TcarritoVO> getCarrito() {
+        return carrito;
+    }
+
+    public void setCarrito(List<TcarritoVO> carrito) {
+        this.carrito = carrito;
     }
 }

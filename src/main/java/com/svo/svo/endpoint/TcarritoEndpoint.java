@@ -32,7 +32,7 @@ public class TcarritoEndpoint {
     /*id:Number
     cantidad:number*/
     @PostMapping("/carrito")
-    public List<TcarritoVO> añadirCarrito(@RequestParam Long id, @RequestParam Integer cantidad) throws AppException {
+    public TcomprasVO añadirCarrito(@RequestParam Long id, @RequestParam Integer cantidad) throws AppException {
         TcarritoVO detalleOrden = new TcarritoVO();
         TproductosVO producto = new TproductosVO();
         float total = 0;
@@ -51,15 +51,17 @@ public class TcarritoEndpoint {
             total = producto.getPrecio_venta()* cantidad;
         }
         detalleOrden.setPrecio_total(total);
+        detalleOrden.setIdProducto(producto);
 
         detalles.add(detalleOrden);
 
         sumaTotal = detalles.stream().mapToDouble(dt -> dt.getPrecio_total()).sum();
 
         orden.setPago_total((float) sumaTotal);
+        orden.setCarrito(detalles);
         LOG.info(String.valueOf(sumaTotal));
-        detalleOrden.setIdCompra(orden);
-        return detalles ;
+
+        return orden;
 
     }
 }
