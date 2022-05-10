@@ -91,21 +91,14 @@ public class TproductosServiceImpl implements TproductosService {
     }
 
     @Override
-    public ResponseEntity<ResponseBody<TproductosVO>> findProductById(Long id) throws AppException {
+    public TproductosVO findProductById(Long id) throws AppException {
         LOG.info("findProductById ()");
         TproductosVO tproductosVO= null;
-        ResponseEntity<ResponseBody<TproductosVO>> res= null;
         try{
             tproductosVO = tproductosRepository.findProductoById(id);
-           // LOG.info("Producto encontrado: "+tproductosVO);
-            if (tproductosVO != null) {
-                res = Utils.response200OK("Producto encontrado",tproductosVO);
-            }else{
-                res = Utils.response(HttpStatus.BAD_REQUEST,"Producto no encontrado",null);
-            }
         }catch (Exception e){
             Utils.raise(e,e.getMessage());
         }
-        return res;
+        return tproductosVO;
     }
 }

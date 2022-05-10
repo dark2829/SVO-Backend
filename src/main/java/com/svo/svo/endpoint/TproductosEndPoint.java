@@ -5,7 +5,6 @@ import com.svo.svo.other.Utils.AppException;
 import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.service.TproductosService;
-import jdk.jshell.execution.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/productos")
@@ -65,18 +64,18 @@ public class TproductosEndPoint {
 
     //id
     @GetMapping("/findProductById")//Buscar un producto
-    public ResponseEntity<ResponseBody<TproductosDTO>> findProductById(@RequestParam("id") int id) throws AppException {
+    public ResponseEntity<ResponseBody<TproductosDTO>> findProductById(@RequestParam("id") Long id) throws AppException {
         LOG.info("findProductById()--> id: " + id);
         TproductosDTO tproductosDTO = null;
-        ResponseEntity<ResponseBody<TproductosVO>> tproductosVO = null;
+        TproductosVO tproductosVO = null;
         ResponseEntity<ResponseBody<TproductosDTO>> res = null;
         try {
-            tproductosVO = tproductosService.findProductById(Long.valueOf(id));
-            if (tproductosVO.getBody().getData() != null) {
-                tproductosDTO = TproductosBuilder.fromVO(tproductosVO.getBody().getData());
+            tproductosVO = tproductosService.findProductById(id);
+            if (tproductosVO != null) {
+                tproductosDTO = TproductosBuilder.fromVO(tproductosVO);
                 res = Utils.response(HttpStatus.ACCEPTED, "Producto existente", tproductosDTO);
             } else {
-                res = Utils.response(HttpStatus.BAD_REQUEST, tproductosVO.getBody().getMessage(), null);
+                res = Utils.response(HttpStatus.BAD_REQUEST, "Producto no encontrado", null);
             }
         } catch (AppException e) {
             Utils.raise(e, "Error al buscar producto");
@@ -97,4 +96,6 @@ public class TproductosEndPoint {
         }
         return res;
     }
+
+
 }

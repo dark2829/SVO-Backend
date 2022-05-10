@@ -114,20 +114,16 @@ public class TempleadosServiceImpl implements TempleadosService {
     }
 
     @Override
-    public ResponseEntity<ResponseBody<TempleadosVO>> findEmpleadoById(Integer id) throws AppException {
+    public TusuariosVO findEmpleadoById(Integer id) throws AppException {
         LOG.info("findEmpleadoById ()");
-        TempleadosVO templeadosVO = null;
+        TusuariosVO tusuariosVO = null;
         ResponseEntity<ResponseBody<TempleadosVO>> res = null;
         try {
-            templeadosVO = templeadosRepository.findEmpleadoById(id);
-            if (templeadosVO != null) {
-                res = Utils.response200OK("Empleado encontrado", templeadosVO);
-            } else {
-                res = Utils.response(HttpStatus.BAD_REQUEST, "Empleado no encontrado", null);
-            }
+            tusuariosVO = tusuariosRepository.findUserByIdEmpleado(id);
+
         } catch (Exception e) {
             Utils.raise(e, e.getMessage());
         }
-        return res;
+        return tusuariosVO;
     }
 }
