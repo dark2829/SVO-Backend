@@ -1,5 +1,8 @@
 package com.svo.svo.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +21,7 @@ public class TcarritoVO {
     private float precio_descuento;
     private float precio_total;
     @ManyToOne
-    @JoinColumn(name="tproducto_id",referencedColumnName = "id")
+    @JoinColumn(name="tproductos_id",referencedColumnName = "id")
     private TproductosVO idProducto;
 
     public Long getId() {
@@ -67,5 +70,14 @@ public class TcarritoVO {
 
     public void setIdProducto(TproductosVO idProducto) {
         this.idProducto = idProducto;
+    }
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

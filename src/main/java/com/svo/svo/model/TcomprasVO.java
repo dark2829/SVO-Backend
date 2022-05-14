@@ -1,6 +1,8 @@
 package com.svo.svo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,7 +23,7 @@ public class TcomprasVO implements Serializable {
     private float pago_total;
     private String tipo_envio;
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern="yyyy-MM-dd", timezone = "America/Mexico_City")
+    @JsonFormat(pattern="dd-MM-yyyy", timezone = "America/Mexico_City")
     private Date fecha_venta;
     private int facturado;
     private String direccion;
@@ -30,7 +32,7 @@ public class TcomprasVO implements Serializable {
     private TusuariosVO idUsuario;
     @ManyToMany
     @JoinTable(
-            name = "tcompras_has_tcarrito",
+            name = "tcarrito_has_tcompras",
             joinColumns = @JoinColumn(name = "tcompras_id"),
             inverseJoinColumns = @JoinColumn(name = "tcarrito_id"))
     private List<TcarritoVO> carrito = new ArrayList<TcarritoVO>();
@@ -106,5 +108,15 @@ public class TcomprasVO implements Serializable {
 
     public void setCarrito(List<TcarritoVO> carrito) {
         this.carrito = carrito;
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }
