@@ -99,6 +99,11 @@ public class TcarritoEndpoint {
 
     }
 
+    @GetMapping("/findCarrProducts")
+    public TcomprasVO findCarrProducts(){
+        return orden;
+    }
+
     //quitar producto del carrito
     // id:number
     @GetMapping("/delete/cart")
