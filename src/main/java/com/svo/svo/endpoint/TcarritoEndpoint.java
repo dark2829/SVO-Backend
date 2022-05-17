@@ -45,81 +45,94 @@ public class TcarritoEndpoint {
     /*id:Number
     cantidad:number*/
     @PostMapping("/carrito")
-    public TcomprasVO añadirCarrito(@RequestParam Long id, @RequestParam Integer cantidad) throws AppException {
+    public ResponseEntity<ResponseBody<TcomprasVO>> añadirCarrito(@RequestParam Long id, @RequestParam Integer cantidad) throws AppException {
         TcarritoVO detalleOrden = new TcarritoVO();
         TproductosVO producto = new TproductosVO();
         float total = 0;
         double sumaTotal = 0;
         int index = 0;
         TcarritoVO carritoAux = null;
+        ResponseEntity<ResponseBody<TcomprasVO>> res = null;
 
-        Optional<TproductosVO> optionalTproducto = Optional.ofNullable(tproductosService.findProductById(id));
-//        LOG.info("Producto a añadir: " + optionalTproducto);
-//        LOG.info("Cantidad: {}", cantidad);
-        producto = optionalTproducto.get();
-        detalleOrden.setCantidad(cantidad);
-        detalleOrden.setPrecio_unitario(producto.getPrecio_venta());
-        detalleOrden.setPrecio_descuento(producto.getPrecio_descuento());
-        if (producto.getPrecio_descuento() != 0) {
-            total = producto.getPrecio_descuento()*cantidad;
-        }else{
-            total = producto.getPrecio_venta()* cantidad;
-        }
-        detalleOrden.setPrecio_total(total);
-        detalleOrden.setIdProducto(producto);
-
-        //Validar que un producto no se agregue dos veces
-        Long idProducto= producto.getId();
-        boolean ingresado = detalles.stream().anyMatch(p-> Objects.equals(p.getIdProducto().getId(), idProducto));
-        //si no esta agregado se agrega
-        if(!ingresado){
-            detalles.add(detalleOrden);
-        }else{
-            //si no, Busca producto y le suma la nueva cantidad
-            for(TcarritoVO detalleProducto:detalles){
-                if(Objects.equals(detalleProducto.getIdProducto().getId(), idProducto)){
-                    LOG.info("entro"+index);
-                    carritoAux= detalleProducto;
-                    carritoAux.setCantidad(detalleProducto.getCantidad()+cantidad);
-                    break;
-                }
-                index++;
-                LOG.info(String.valueOf(index));
+        try {
+            Optional<TproductosVO> optionalTproducto = Optional.ofNullable(tproductosService.findProductById(id));
+            //buscar producto a agregar
+            producto = optionalTproducto.get();
+            //verifica que cantidad no revase stock, si revasa cancela proceso y mando msj
+            if (cantidad > producto.getCantidad()) {
+                throw new RuntimeException("Stock insuficiente");
             }
-            detalles.set(index,carritoAux);
+            detalleOrden.setCantidad(cantidad);
+            detalleOrden.setPrecio_unitario(producto.getPrecio_venta());
+            detalleOrden.setPrecio_descuento(producto.getPrecio_descuento());
+            //si el producto tiene descuento la cantidad de multiplicara por el
+            if (producto.getPrecio_descuento() != 0) {
+                total = producto.getPrecio_descuento() * cantidad;
+            } else {//si no , sera pro el precio de venta
+                total = producto.getPrecio_venta() * cantidad;
+            }
+            detalleOrden.setPrecio_total(total);
+            detalleOrden.setIdProducto(producto);
+
+            //Validar que un producto no se agregue dos veces
+            Long idProducto = producto.getId();
+            boolean ingresado = detalles.stream().anyMatch(p -> Objects.equals(p.getIdProducto().getId(), idProducto));
+            //si no esta agregado se agrega
+            if (!ingresado) {
+                detalles.add(detalleOrden);
+            } else {
+                //si no, Busca producto y le suma la nueva cantidad
+                for (TcarritoVO detalleProducto : detalles) {
+                    //si encuentra el producto
+                    if (Objects.equals(detalleProducto.getIdProducto().getId(), idProducto)) {
+                        //verifica que sumandole la cantidad no revase el stock
+                        //si si, cancela proceso y manda msj
+                        if (detalleProducto.getCantidad() + cantidad > detalleProducto.getIdProducto().getCantidad()) {
+                            throw new RuntimeException("La cantidad revasa el stock");
+                        } else {
+                            //si no, suma cantidad
+                            carritoAux.setCantidad(detalleProducto.getCantidad() + cantidad);
+                            break;
+                        }
+                    }
+                    index++;
+                }
+                //actualiza producto conla nueva cantidad
+                detalles.set(index, carritoAux);
+            }
+            sumaTotal = detalles.stream().mapToDouble(dt -> dt.getPrecio_total()).sum();
+            orden.setPago_total((float) sumaTotal);
+            orden.setCarrito(detalles);
+
+            res = Utils.response200OK("Carrito actualizado", orden);
+        } catch (Exception e) {
+            res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), orden);
         }
-
-
-        sumaTotal = detalles.stream().mapToDouble(dt -> dt.getPrecio_total()).sum();
-
-        orden.setPago_total((float) sumaTotal);
-        orden.setCarrito(detalles);
-
-        return orden;
+        return res;
 
     }
 
     //quitar producto del carrito
     // id:number
     @GetMapping("/delete/cart")
-    public TcomprasVO deleteProductCart(@RequestParam Long id){
-        LOG.info("Eliminar producto de carrito: ",id);
+    public ResponseEntity<ResponseBody<TcomprasVO>> deleteProductCart(@RequestParam Long id) {
+        LOG.info("Eliminar producto de carrito: ", id);
+        ResponseEntity<ResponseBody<TcomprasVO>> res = null;
         //lista nueva de productos
         List<TcarritoVO> ordenNueva = new ArrayList<TcarritoVO>();
-        for(TcarritoVO detalleOrden: detalles) {
+        for (TcarritoVO detalleOrden : detalles) {
             if (!Objects.equals(detalleOrden.getIdProducto().getId(), id)) {
                 ordenNueva.add(detalleOrden);
             }
         }
         //mandar nueva lista
-        detalles=ordenNueva;
-        double sumaTotal =0;
+        detalles = ordenNueva;
+        double sumaTotal = 0;
         sumaTotal = detalles.stream().mapToDouble(dt -> dt.getPrecio_total()).sum();
-
         orden.setPago_total((float) sumaTotal);
         orden.setCarrito(detalles);
-        LOG.info("ELIMINADO CORRECTAMENTE");
-        return orden;
+        res = Utils.response200OK("Producto eliminado de carrito", orden);
+        return res;
     }
 
     /*
@@ -131,9 +144,12 @@ public class TcarritoEndpoint {
     @PostMapping("/guardarCompra")
     public ResponseEntity<ResponseBody<TcomprasVO>> guardarCompra(@RequestParam Long id, @RequestBody TcomprasVO tcomprasVO) throws ParseException {
         GenerateCodigoCompra codigoCompraNew = new GenerateCodigoCompra();
-        TcomprasVO newCompra= new TcomprasVO();
-        TusuariosVO  user = tusuariosRepository.findUserById(id);
-        newCompra.setCodigo_compra(codigoCompraNew.recuperarInformacion(user,tcomprasVO));
+        TcomprasVO newCompra = new TcomprasVO();
+
+        //Recupera datos para la compra
+        TusuariosVO user = tusuariosRepository.findUserById(id);
+        //Llama a la funcion codigoCompra para generar el codigo
+        newCompra.setCodigo_compra(codigoCompraNew.recuperarInformacion(user, tcomprasVO));
         newCompra.setPago_total(tcomprasVO.getPago_total());
         newCompra.setTipo_envio(tcomprasVO.getTipo_envio());
         newCompra.setFecha_venta(tcomprasVO.getFecha_venta());
@@ -141,20 +157,53 @@ public class TcarritoEndpoint {
         newCompra.setDireccion(tcomprasVO.getDireccion());
         newCompra.setIdUsuario(user);
         //guardar productos a tcarrito
-        for(TcarritoVO productos: detalles){
+        for (TcarritoVO productos : detalles) {
             tcarritoRepository.save(productos);
-            productos=productos;
+            productos = productos;
+            //los agrega a la compra
             newCompra.getCarrito().add(productos);
         }
-        //LOG.error("detalles"+String.valueOf(detalles));
-       // newCompra.setCarrito(detalles);
-        LOG.info(String.valueOf(newCompra));
-
-       tcomprasRepository.save(newCompra);
-       tcomprasRepository.flush();
-
-
-        return Utils.response(HttpStatus.ACCEPTED,"Se registro compras",newCompra);
+        ;
+        tcomprasRepository.save(newCompra);
+        tcomprasRepository.flush();
+        return Utils.response(HttpStatus.ACCEPTED, "Se registro compras", newCompra);
     }
 
+    /*
+    idProducto:number,
+    cantidad: number
+     */
+    @PostMapping("/actualizarCantidadProducto")
+    public ResponseEntity<ResponseBody<TcomprasVO>> actualizarCantidadProducto(@RequestParam Long idProducto, @RequestParam int cantidad) {
+        int index = 0;
+        TcarritoVO carritoAux = null;
+        double sumaTotal = 0;
+        ResponseEntity<ResponseBody<TcomprasVO>> res = null;
+        try {
+            //Recorre producto del carrito hasta encontrar el producto a actualizar cantidad
+            for (TcarritoVO detalleProducto : detalles) {
+                if (Objects.equals(detalleProducto.getIdProducto().getId(), idProducto)) {
+                    carritoAux = detalleProducto;
+                    //si lo encuentra verifiqu}a que la nueva cantidad no revase el stock
+                    if (cantidad > detalleProducto.getIdProducto().getCantidad()) {
+                        throw new RuntimeException("No contamos con el stock suficiente");
+                    } else {
+                        //si no revasa cantidad, actualiza cantidad
+                        carritoAux.setCantidad(cantidad);
+                        break;
+                    }
+                }
+                index++;
+            }
+            detalles.set(index, carritoAux);
+            sumaTotal = detalles.stream().mapToDouble(dt -> dt.getPrecio_total()).sum();
+            orden.setPago_total((float) sumaTotal);
+            orden.setCarrito(detalles);
+            res = Utils.response200OK("Actualización correcta", orden);
+        } catch (Exception e) {
+            res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), orden);
+        }
+        return res;
+
+    }
 }
