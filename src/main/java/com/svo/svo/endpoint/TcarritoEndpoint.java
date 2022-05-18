@@ -85,6 +85,7 @@ public class TcarritoEndpoint {
                 for (TcarritoVO detalleProducto : detalles) {
                     //si encuentra el producto
                     if (Objects.equals(detalleProducto.getIdProducto().getId(), idProducto)) {
+                        carritoAux=detalleProducto;
                         //verifica que sumandole la cantidad no revase el stock
                         //si si, cancela proceso y manda msj
                         if (detalleProducto.getCantidad() + cantidad > detalleProducto.getIdProducto().getCantidad()) {
