@@ -97,6 +97,35 @@ public class TproductosEndPoint {
         return res;
     }
 
+    @GetMapping("/findStockBajo")
+    public ResponseEntity<ResponseBody<List<TproductosDTO>>> findStockBajo() throws AppException {
+        List<TproductosDTO> listProductos = null;
+        ResponseEntity<ResponseBody<List<TproductosDTO>>> res = null;
+        LOG.info("findStockBajo()");
+        try {
+            listProductos = tproductosService.findStockBajo();
+            res = Utils.response200OK("Lista de productos por terminarse", listProductos);
+        } catch (Exception e) {
+            Utils.raise(e, "Error al buscar los productos");
+        }
+        return res;
+    }
+
+    //idProducto:number
+    @GetMapping("/anadirFavoritos")
+    public ResponseEntity<ResponseBody<Void>> anadirFavoritos(@RequestParam Long idProducto,@RequestParam Long idUser) throws AppException {
+        ResponseEntity<ResponseBody<Void>> res = null;
+        LOG.info("anadirFavoritos()");
+        try {
+            tproductosService.anadirFavoritos(idProducto, idUser);
+            res = Utils.response200OK("Producto añadido a favoritos");
+        } catch (Exception e) {
+            Utils.raise(e, "Error añadire producto a favoritos");
+        }
+        return res;
+    }
+
+
 
 
 

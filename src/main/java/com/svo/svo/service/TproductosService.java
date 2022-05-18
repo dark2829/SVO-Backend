@@ -14,5 +14,8 @@ public interface TproductosService {
     void update (Long id, TproductosDTO tproductosDTO) throws Exception;
     List<TproductosDTO> findAllProductos() throws Exception;
     TproductosVO findProductById(Long id) throws AppException;
+    List<TproductosDTO> findStockBajo() throws AppException;
+    void anadirFavoritos(Long idProducto, Long idUser);
+
 
 }
