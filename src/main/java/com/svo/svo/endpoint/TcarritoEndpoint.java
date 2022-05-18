@@ -189,20 +189,31 @@ public class TcarritoEndpoint {
     @PostMapping("/actualizarCantidadProducto")
     public ResponseEntity<ResponseBody<TcomprasVO>> actualizarCantidadProducto(@RequestParam Long idProducto, @RequestParam int cantidad) {
         int index = 0;
+        float total = 0;
         TcarritoVO carritoAux = null;
         double sumaTotal = 0;
+        TproductosVO producto =null;
         ResponseEntity<ResponseBody<TcomprasVO>> res = null;
         try {
+            Optional<TproductosVO> optionalTproducto = Optional.ofNullable(tproductosService.findProductById(idProducto));
+            //buscar producto a agregar
+            producto = optionalTproducto.get();
             //Recorre producto del carrito hasta encontrar el producto a actualizar cantidad
             for (TcarritoVO detalleProducto : detalles) {
                 if (Objects.equals(detalleProducto.getIdProducto().getId(), idProducto)) {
                     carritoAux = detalleProducto;
-                    //si lo encuentra verifiqu}a que la nueva cantidad no revase el stock
+                    //si lo encuentra verifique que la nueva cantidad no revase el stock
                     if (cantidad > detalleProducto.getIdProducto().getCantidad()) {
                         throw new RuntimeException("No contamos con el stock suficiente");
                     } else {
                         //si no revasa cantidad, actualiza cantidad
                         carritoAux.setCantidad(cantidad);
+                        if (carritoAux.getPrecio_descuento() != 0) {
+                            total = producto.getPrecio_descuento() * carritoAux.getCantidad();
+                        } else {//si no , sera pro el precio de venta
+                            total = producto.getPrecio_venta() * carritoAux.getCantidad();
+                        }
+                        carritoAux.setPrecio_total(total);
                         break;
                     }
                 }
