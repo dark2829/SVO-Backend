@@ -101,4 +101,29 @@ public class TproductosServiceImpl implements TproductosService {
         }
         return tproductosVO;
     }
+
+    @Override
+    public List<TproductosDTO> findStockBajo() throws AppException {
+        List<TproductosDTO> listProductos = null;
+        LOG.info("findStockBajoServImplement()");
+        try {
+            List<TproductosVO> tproductosVOList = tproductosRepository.findStockBajo();
+            listProductos = new ArrayList<>();
+            for (TproductosVO tproductosVO1 : tproductosVOList) {
+                TproductosDTO tproductosDTO = TproductosBuilder.fromVO(tproductosVO1);
+                listProductos.add(tproductosDTO);
+            }
+        } catch (Exception e) {
+            Utils.raise(e, "Error en buscar productos con stock bajo");
+        }
+        return listProductos;
+    }
+
+    @Override
+    public void anadirFavoritos(Long idProducto, Long idUser) {
+        TproductosVO producto = null;
+       // TfavoritosVO
+      //  producto = tproductosRepository.findProductoById(idProducto);
+
+    }
 }

@@ -65,7 +65,7 @@ public class TcarritoEndpoint {
             detalleOrden.setCantidad(cantidad);
             detalleOrden.setPrecio_unitario(producto.getPrecio_venta());
             detalleOrden.setPrecio_descuento(producto.getPrecio_descuento());
-            //si el producto tiene descuento la cantidad de multiplicara por el
+            //si el producto tiene descuento la cantidad de multiplicara por él
             if (producto.getPrecio_descuento() != 0) {
                 total = producto.getPrecio_descuento() * cantidad;
             } else {//si no , sera pro el precio de venta
@@ -93,6 +93,13 @@ public class TcarritoEndpoint {
                         } else {
                             //si no, suma cantidad
                             carritoAux.setCantidad(detalleProducto.getCantidad() + cantidad);
+                            //si el producto tiene descuento la cantidad de multiplicara por él
+                            if (producto.getPrecio_descuento() != 0) {
+                                total = producto.getPrecio_descuento() * carritoAux.getCantidad();
+                            } else {//si no , sera pro el precio de venta
+                                total = producto.getPrecio_venta() * carritoAux.getCantidad();
+                            }
+                            carritoAux.setPrecio_total(total);
                             break;
                         }
                     }
