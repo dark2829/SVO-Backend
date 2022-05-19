@@ -194,6 +194,7 @@ public class TcarritoEndpoint {
 
     }
 
+    //idUsuario:number
     @GetMapping("/actualizarProductosCarrito")
     public ResponseEntity<ResponseBody<TcomprasVO>> actualizarProductosCarrito(@RequestParam Long idUsuario) throws AppException {
         int indiceCar = 0;
@@ -240,10 +241,10 @@ public class TcarritoEndpoint {
 
     }
 
-    /*quitar producto del carrito
-    idProducto:number
-    idUsuario:number
-     */
+
+    //quitar producto del carrito
+    // idProducto:number
+    //idUsuario:number
     @GetMapping("/delete/cart")
     public ResponseEntity<ResponseBody<TcomprasVO>> deleteProductCart(@RequestParam Long idProducto, @RequestParam Long idUsuario) throws AppException {
         LOG.info("Eliminar producto de carrito: ", idProducto);
