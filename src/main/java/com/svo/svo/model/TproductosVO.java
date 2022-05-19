@@ -10,6 +10,7 @@ import java.io.Serializable;
 @Table(name="tproductos")
 @NamedQueries({
         @NamedQuery(name = "TproductosVO.findAllProductos", query = "select p from TproductosVO p"),
+        @NamedQuery(name = "TproductosVO.findStockBajo", query = "select p from TproductosVO p where p.cantidad<=5"),
 })
 public class TproductosVO implements Serializable {
     @Id
