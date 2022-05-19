@@ -31,7 +31,7 @@ public class TproductosServiceImpl implements TproductosService {
             producto.setEstatus("Disponible");
             producto.setId(0L);
             tproductosRepository.save(producto);
-        } catch (Exception e){
+        } catch (Exception e) {
             LOG.error(String.valueOf(e));
         }
     }
@@ -40,7 +40,7 @@ public class TproductosServiceImpl implements TproductosService {
     public void update(Long id, TproductosDTO tproductosDTO) throws Exception {
         //LOG.info("update()->id: {} data{}", id, data);
         Optional<TproductosVO> vo = null;
-        byte[] bite ;
+        byte[] bite;
         try {
             vo = tproductosRepository.findById(id);
             if (!vo.isPresent()) {
@@ -67,9 +67,13 @@ public class TproductosServiceImpl implements TproductosService {
             vo.get().setPrecio_descuento(tproductosDTO.getPrecio_descuento());
             vo.get().setDescripcion(tproductosDTO.getDescripcion());
             vo.get().setEstatus(tproductosDTO.getEstatus());
+            if (vo.get().getCantidad() > 5) {
+                vo.get().setContactado(0);
+            }
             tproductosRepository.save(vo.get());
+
         } catch (Exception e) {
-            LOG.error("Error Al actualizar un producto",e);
+            LOG.error("Error Al actualizar un producto", e);
         }
     }
 
@@ -93,11 +97,11 @@ public class TproductosServiceImpl implements TproductosService {
     @Override
     public TproductosVO findProductById(Long id) throws AppException {
         LOG.info("findProductById ()");
-        TproductosVO tproductosVO= null;
-        try{
+        TproductosVO tproductosVO = null;
+        try {
             tproductosVO = tproductosRepository.findProductoById(id);
-        }catch (Exception e){
-            Utils.raise(e,e.getMessage());
+        } catch (Exception e) {
+            Utils.raise(e, e.getMessage());
         }
         return tproductosVO;
     }
@@ -122,8 +126,20 @@ public class TproductosServiceImpl implements TproductosService {
     @Override
     public void anadirFavoritos(Long idProducto, Long idUser) {
         TproductosVO producto = null;
-       // TfavoritosVO
-      //  producto = tproductosRepository.findProductoById(idProducto);
+        // TfavoritosVO
+        //  producto = tproductosRepository.findProductoById(idProducto);
 
+    }
+
+    @Override
+    public void contactado(Long idProducto) throws AppException {
+        TproductosVO producto = null;
+        try {
+            producto = tproductosRepository.findProductoById(idProducto);
+            producto.setContactado(1);
+            tproductosRepository.save(producto);
+        } catch (Exception e) {
+            Utils.raise(e, "Error al actualizar contactado");
+        }
     }
 }

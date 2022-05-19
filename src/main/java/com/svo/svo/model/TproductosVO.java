@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="tproductos")
+@Table(name = "tproductos")
 @NamedQueries({
         @NamedQuery(name = "TproductosVO.findAllProductos", query = "select p from TproductosVO p"),
         @NamedQuery(name = "TproductosVO.findStockBajo", query = "select p from TproductosVO p where p.cantidad<=5"),
@@ -18,7 +18,7 @@ public class TproductosVO implements Serializable {
     private Long id;
     @Lob
     private byte[] imagen;
-    private  String codigo_prod;
+    private String codigo_prod;
     private String nombre;
     private String categoria;
     private int cantidad;
@@ -27,6 +27,7 @@ public class TproductosVO implements Serializable {
     private float precio_descuento;
     private String descripcion;
     private String estatus;
+    private int contactado;
 
 
     public Long getId() {
@@ -115,6 +116,14 @@ public class TproductosVO implements Serializable {
 
     public void setEstatus(String estatus) {
         this.estatus = estatus;
+    }
+
+    public int getContactado() {
+        return contactado;
+    }
+
+    public void setContactado(int contactado) {
+        this.contactado = contactado;
     }
 
     public String toString() {

@@ -1,6 +1,7 @@
 package com.svo.svo.other;
 
 
+import com.svo.svo.model.TusuariosVO;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

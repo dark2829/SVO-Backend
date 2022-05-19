@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -50,11 +51,11 @@ public class TproductosEndPoint {
 
     @PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
     @PostMapping("/update")
-    public ResponseEntity<ResponseBody<Void>> update(@RequestParam("id") int id, @RequestBody TproductosDTO tproductosDTO) throws AppException {
+    public ResponseEntity<ResponseBody<Void>> update(@RequestParam("id") Long id, @RequestBody TproductosDTO tproductosDTO) throws AppException {
         LOG.info("update()->id: {} data: {}", id, tproductosDTO);
         ResponseEntity<ResponseBody<Void>> res = null;
         try {
-            tproductosService.update((long) id, tproductosDTO);
+            tproductosService.update(id, tproductosDTO);
             res = Utils.response200OK("Producto actualizado correctamente");
         } catch (Exception e) {
             res = Utils.response(HttpStatus.BAD_REQUEST, "Algo fallo al actualizar producto", null);
@@ -112,8 +113,23 @@ public class TproductosEndPoint {
     }
 
     //idProducto:number
+    @GetMapping("/contactado")
+    public ResponseEntity<ResponseBody<Void>> contactado(@RequestParam Long idProducto) throws AppException {
+        List<TproductosDTO> listProductos = null;
+        ResponseEntity<ResponseBody<Void>> res = null;
+        LOG.info("findStockBajo()");
+        try {
+            tproductosService.contactado(idProducto);
+            res = Utils.response200OK("Se ha contactado correctamente");
+        } catch (Exception e) {
+            Utils.raise(e, "Error contactar");
+        }
+        return res;
+    }
+
+    //idProducto:number
     @GetMapping("/anadirFavoritos")
-    public ResponseEntity<ResponseBody<Void>> anadirFavoritos(@RequestParam Long idProducto,@RequestParam Long idUser) throws AppException {
+    public ResponseEntity<ResponseBody<Void>> anadirFavoritos(@RequestParam Long idProducto, @RequestParam Long idUser) throws AppException {
         ResponseEntity<ResponseBody<Void>> res = null;
         LOG.info("anadirFavoritos()");
         try {
@@ -124,9 +140,6 @@ public class TproductosEndPoint {
         }
         return res;
     }
-
-
-
 
 
 }

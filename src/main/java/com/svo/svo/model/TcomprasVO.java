@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name="tcompras")
 @NamedQueries({
-        //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
+        @NamedQuery(name = "TcomprasVO.findCompra", query = "select c from TcomprasVO c where c.codigo_compra =: codigo"),
 })
 public class TcomprasVO implements Serializable {
     @Id

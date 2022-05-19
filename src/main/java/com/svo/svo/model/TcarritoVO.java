@@ -23,6 +23,9 @@ public class TcarritoVO {
     @ManyToOne
     @JoinColumn(name="tproductos_id",referencedColumnName = "id")
     private TproductosVO idProducto;
+    @ManyToOne
+    @JoinColumn(name="tusuarios_id",referencedColumnName = "id")
+    private TusuariosVO idUsuario;
 
     public Long getId() {
         return id;
@@ -71,6 +74,15 @@ public class TcarritoVO {
     public void setIdProducto(TproductosVO idProducto) {
         this.idProducto = idProducto;
     }
+
+    public TusuariosVO getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(TusuariosVO idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
     @Override
     public String toString() {
         ObjectMapper mapper = new ObjectMapper();

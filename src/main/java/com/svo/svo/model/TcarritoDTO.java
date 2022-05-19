@@ -13,7 +13,7 @@ public class TcarritoDTO {
     private float precio_descuento;
     private float precio_total;
     private TproductosVO idProducto;
-
+    private TusuariosVO idUsuario;
 
     public Long getId() {
         return id;
@@ -61,6 +61,14 @@ public class TcarritoDTO {
 
     public void setIdProducto(TproductosVO idProducto) {
         this.idProducto = idProducto;
+    }
+
+    public TusuariosVO getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(TusuariosVO idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     @Override

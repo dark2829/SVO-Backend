@@ -14,6 +14,7 @@ public class TcarritoBuilder {
         destin.setPrecio_total(origen.getPrecio_total());
         destin.setPrecio_descuento(origen.getPrecio_descuento());
         destin.setIdProducto(origen.getIdProducto());
+        destin.setIdUsuario(origen.getIdUsuario());
 
         return destin;
     }
@@ -28,6 +29,8 @@ public class TcarritoBuilder {
         destin.setPrecio_total(origen.getPrecio_total());
         destin.setPrecio_descuento(origen.getPrecio_descuento());
         destin.setIdProducto(origen.getIdProducto());
+        destin.setIdUsuario(origen.getIdUsuario());
+
 
         return destin;
     }

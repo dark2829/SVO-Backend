@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TproductosDTO {
     private Long id;
     private byte[] imagen;
-    private  String codigo_prod;
+    private String codigo_prod;
     private String nombre;
     private String categoria;
     private int cantidad;
@@ -15,6 +15,7 @@ public class TproductosDTO {
     private float precio_descuento;
     private String descripcion;
     private String estatus;
+    private int contactado;
     //productos comprados
 
 
@@ -104,6 +105,14 @@ public class TproductosDTO {
 
     public void setEstatus(String estatus) {
         this.estatus = estatus;
+    }
+
+    public int getContactado() {
+        return contactado;
+    }
+
+    public void setContactado(int contactado) {
+        this.contactado = contactado;
     }
 
     @Override

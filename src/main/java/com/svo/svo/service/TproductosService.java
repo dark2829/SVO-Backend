@@ -10,12 +10,19 @@ import java.util.List;
 import java.util.Map;
 
 public interface TproductosService {
-    void insert (TproductosDTO tproductosDTO) throws Exception;
-    void update (Long id, TproductosDTO tproductosDTO) throws Exception;
+    void insert(TproductosDTO tproductosDTO) throws Exception;
+
+    void update(Long id, TproductosDTO tproductosDTO) throws Exception;
+
     List<TproductosDTO> findAllProductos() throws Exception;
+
     TproductosVO findProductById(Long id) throws AppException;
+
     List<TproductosDTO> findStockBajo() throws AppException;
+
     void anadirFavoritos(Long idProducto, Long idUser);
+
+    void contactado(Long idProducto) throws AppException;
 
 
 }
