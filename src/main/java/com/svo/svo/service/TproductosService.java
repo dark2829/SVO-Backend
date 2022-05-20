@@ -20,7 +20,9 @@ public interface TproductosService {
 
     List<TproductosDTO> findStockBajo() throws AppException;
 
-    void anadirFavoritos(Long idProducto, Long idUser);
+    void anadirFavoritos(Long idProducto, Long idUsuario) throws AppException;
+
+    void borrarProductoFavorito(Long idProducto, Long idUsuario) throws AppException;
 
     void contactado(Long idProducto) throws AppException;
 

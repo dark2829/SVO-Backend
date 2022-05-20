@@ -1,7 +1,6 @@
 package com.svo.svo.service.impl;
 
-import com.svo.svo.model.TproveedoresDTO;
-import com.svo.svo.model.TusuariosVO;
+import com.svo.svo.model.*;
 import com.svo.svo.other.Regex;
 import com.svo.svo.other.Utils.AppException;
 import com.svo.svo.other.Utils.ResponseBody;
@@ -15,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -89,4 +90,28 @@ public class TusuariosServiceImpl implements TusuariosService {
         }
         return user;
     }
+
+    @Override
+    public List<TproductosDTO> mostrarFavoritosPorUsuario(Long idUsuario) throws AppException {
+        TusuariosVO usuario = null;
+        List<TproductosVO> productosFavoritosVO = new ArrayList<>();
+        TproductosDTO tproductosDTO = null;
+        List<TproductosDTO> productosFavoritosDTO = new ArrayList<>();
+
+        try{
+            usuario = tusuariosRepository.findUserById(idUsuario);
+            productosFavoritosVO=usuario.getProductosFavoritos();
+            for (TproductosVO productoVO: productosFavoritosVO){
+                tproductosDTO = TproductosBuilder.fromVO(productoVO);
+                productosFavoritosDTO.add(tproductosDTO);
+            }
+
+        }catch (Exception e){
+            Utils.raise(e, "Error al buscar favoritos");
+        }
+        return productosFavoritosDTO;
+
+    }
+
+
 }

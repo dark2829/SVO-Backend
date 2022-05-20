@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="tusuarios")
@@ -37,6 +39,14 @@ public class TusuariosVO implements Serializable {
     @ManyToOne
     @JoinColumn(name="trol_id",referencedColumnName = "id")
     private TrolVO idRol;
+    @ManyToMany
+    @JoinTable(
+            name = "tfavoritos",
+            joinColumns = @JoinColumn(name = "tproductos_id"),
+            inverseJoinColumns = @JoinColumn(name = "tusuarios_id"))
+    private List<TproductosVO> productosFavoritos = new ArrayList<TproductosVO>();
+
+
 
     public Long getId() {
         return id;
@@ -84,6 +94,14 @@ public class TusuariosVO implements Serializable {
 
     public void setIdRol(TrolVO idRol) {
         this.idRol = idRol;
+    }
+
+    public List<TproductosVO> getProductosFavoritos() {
+        return productosFavoritos;
+    }
+
+    public void setProductosFavoritos(List<TproductosVO> productosFavoritos) {
+        this.productosFavoritos = productosFavoritos;
     }
 
     @Override

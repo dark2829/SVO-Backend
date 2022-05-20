@@ -4,7 +4,9 @@ import com.svo.svo.model.*;
 import com.svo.svo.other.Utils.AppException;
 import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
+import com.svo.svo.repository.TusuariosRepository;
 import com.svo.svo.service.TproductosService;
+import com.svo.svo.service.TusuariosService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class TproductosEndPoint {
 
     @Autowired
     private TproductosService tproductosService;
+
+    @Autowired
+    private TusuariosService tusuariosService;
 
     /*
     "codigo_prod" : "00058",
@@ -128,15 +133,49 @@ public class TproductosEndPoint {
     }
 
     //idProducto:number
+    //idUsuario:number
     @GetMapping("/anadirFavoritos")
-    public ResponseEntity<ResponseBody<Void>> anadirFavoritos(@RequestParam Long idProducto, @RequestParam Long idUser) throws AppException {
+    public ResponseEntity<ResponseBody<Void>> anadirFavoritos(@RequestParam Long idProducto, @RequestParam Long idUsuario) throws AppException {
         ResponseEntity<ResponseBody<Void>> res = null;
         LOG.info("anadirFavoritos()");
         try {
-            tproductosService.anadirFavoritos(idProducto, idUser);
+            tproductosService.anadirFavoritos(idProducto, idUsuario);
             res = Utils.response200OK("Producto añadido a favoritos");
         } catch (Exception e) {
-            Utils.raise(e, "Error añadire producto a favoritos");
+            Utils.raise(e, "Error añadir a producto a favoritos");
+        }
+        return res;
+    }
+
+    //idProducto:number
+    //idUsuario:number
+    @GetMapping("/borrarProductoFavorito")
+    public ResponseEntity<ResponseBody<Void>> borrarProductoFavorito(@RequestParam Long idProducto, @RequestParam Long idUsuario) throws AppException {
+        ResponseEntity<ResponseBody<Void>> res = null;
+        LOG.info("borrarProductoFavorito()");
+        try {
+            tproductosService.borrarProductoFavorito(idProducto, idUsuario);
+            res = Utils.response200OK("Producto eliminado de tus favoritos");
+        } catch (Exception e) {
+            Utils.raise(e, "Error al eliminar producto de tus favoritos favoritos");
+        }
+        return res;
+    }
+
+    //idUsuario:number
+    @GetMapping("/mostrarFavoritosPorUsuario")
+    public ResponseEntity<ResponseBody<List<TproductosDTO>>> mostrarFavoritosPorUsuario(@RequestParam Long idUsuario) throws AppException {
+        ResponseEntity<ResponseBody<List<TproductosDTO>>> res = null;
+        List<TproductosDTO> tproductosDTOS = null;
+        LOG.info("MostraFavoritosPorUsuario()");
+        try {
+            tproductosDTOS = tusuariosService.mostrarFavoritosPorUsuario(idUsuario);
+            if(tproductosDTOS.isEmpty()){
+                res = Utils.response(HttpStatus.ACCEPTED,"No hay productos en favoritos",null);
+            }
+            res = Utils.response200OK("Productos favoritos",tproductosDTOS);
+        } catch (Exception e) {
+            res= Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
         }
         return res;
     }

@@ -16,7 +16,6 @@ public class TproductosDTO {
     private String descripcion;
     private String estatus;
     private int contactado;
-    //productos comprados
 
 
     public Long getId() {

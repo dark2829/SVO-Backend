@@ -5,6 +5,7 @@ import com.svo.svo.other.Utils.AppException;
 import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.repository.TproductosRepository;
+import com.svo.svo.repository.TusuariosRepository;
 import com.svo.svo.service.TproductosService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,10 @@ public class TproductosServiceImpl implements TproductosService {
 
     @Autowired
     private TproductosRepository tproductosRepository;
+
+    @Autowired
+    private TusuariosRepository tusuariosRepository;
+
 
     @Override
     public void insert(TproductosDTO tproductosDTO) throws Exception {
@@ -124,12 +129,51 @@ public class TproductosServiceImpl implements TproductosService {
     }
 
     @Override
-    public void anadirFavoritos(Long idProducto, Long idUser) {
+    public void anadirFavoritos(Long idProducto, Long idUsuario) throws AppException {
         TproductosVO producto = null;
-        // TfavoritosVO
-        //  producto = tproductosRepository.findProductoById(idProducto);
+        TusuariosVO usuario =null;
+        try{
+            List<TproductosVO> listProducto = new ArrayList<>();
+            producto = tproductosRepository.findProductoById(idProducto);
+            usuario = tusuariosRepository.findUserById(idUsuario);
+            listProducto= usuario.getProductosFavoritos();
+            listProducto.add(producto);
+            usuario.setProductosFavoritos(listProducto);
+            tusuariosRepository.save(usuario);
+            tusuariosRepository.flush();
 
+        }catch (Exception e){
+            Utils.raise(e,"Error al agregar agregar a carrito");
+        }
     }
+
+    @Override
+    public void borrarProductoFavorito(Long idProducto, Long idUsuario) throws AppException {
+        TproductosVO producto = null;
+        TusuariosVO usuario =null;
+        List<TproductosVO> newListProductosFavoritos = new ArrayList<>();
+
+        try{
+            List<TproductosVO> listProductosFavoritos = new ArrayList<>();
+            producto = tproductosRepository.findProductoById(idProducto);
+            usuario = tusuariosRepository.findUserById(idUsuario);
+            listProductosFavoritos = usuario.getProductosFavoritos();
+
+            for (TproductosVO productoCarrito: listProductosFavoritos){
+                if(productoCarrito != producto){
+                    newListProductosFavoritos.add(productoCarrito);
+                }
+            }
+            usuario.setProductosFavoritos(newListProductosFavoritos);
+            tusuariosRepository.save(usuario);
+            tusuariosRepository.flush();
+
+        }catch (Exception e){
+            Utils.raise(e,"Error al eliminar producto de favoritos");
+        }
+    }
+
+
 
     @Override
     public void contactado(Long idProducto) throws AppException {
