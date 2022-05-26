@@ -58,7 +58,7 @@ estatus:string
             if (!tpedidos.isEmpty()) {
                 res = Utils.response(HttpStatus.ACCEPTED, "Compras encontradas", tpedidos);
             } else {
-                res = Utils.response(HttpStatus.BAD_REQUEST, "No se encontro ninguna compra", null);
+                res = Utils.response(HttpStatus.ACCEPTED, "No se encontro ninguna compra", null);
             }
         } catch (AppException e) {
             Utils.raise(e, "Error al buscar compras");
