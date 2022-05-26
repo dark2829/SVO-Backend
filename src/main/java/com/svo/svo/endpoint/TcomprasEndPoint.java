@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/compras")
 public class TcomprasEndPoint {
@@ -39,6 +41,27 @@ public class TcomprasEndPoint {
             }
         } catch (AppException e) {
             Utils.raise(e, "Error al buscar compra");
+        }
+        return res;
+    }
+/*
+idUsuario: number
+estatus:string
+ */
+    @GetMapping("/buscarComprasPorUsuario")
+    public ResponseEntity<ResponseBody<List<TpedidosDTO>>> buscarComprasPorUsuario(@RequestParam("idUsuario") Long idUsuario, @RequestParam("estatus") String estatusPedido) throws AppException {
+        LOG.info("buscarComprasPorUsuario()--> idUsuario: " + idUsuario);
+        List<TpedidosDTO> tpedidos = null;
+        ResponseEntity<ResponseBody<List<TpedidosDTO>>> res = null;
+        try {
+            tpedidos = tcomprasService.buscarComprasPorUsuario(idUsuario, estatusPedido);
+            if (!tpedidos.isEmpty()) {
+                res = Utils.response(HttpStatus.ACCEPTED, "Compras encontradas", tpedidos);
+            } else {
+                res = Utils.response(HttpStatus.BAD_REQUEST, "No se encontro ninguna compra", null);
+            }
+        } catch (AppException e) {
+            Utils.raise(e, "Error al buscar compras");
         }
         return res;
     }

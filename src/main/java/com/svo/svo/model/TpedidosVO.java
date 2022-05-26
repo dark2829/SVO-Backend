@@ -14,6 +14,8 @@ import java.util.Date;
         @NamedQuery(name = "TpedidosVO.buscarTodosPedidos", query = "select p from TpedidosVO p"),
         @NamedQuery(name = "TpedidosVO.buscarPedidoPorIdCompra", query = "select p from TpedidosVO p where p.idCompra.id=: idCompra"),
         @NamedQuery(name = "TpedidosVO.buscarPedidoPorId", query = "select p from TpedidosVO p where p.id=: idPedido"),
+        @NamedQuery(name = "TpedidosVO.buscarPedidosPorIdUsuario", query = "select p from TpedidosVO p where p.idCompra.idUsuario.id=: idUsuario and p.estatus=: estatusPedido"),
+
 
 
 })
