@@ -11,6 +11,7 @@ import java.util.List;
 
 public interface TpedidosService {
     List<TpedidosDTO> buscarTodosPedidos() throws Exception;
+    List<TpedidosDTO> searchTipeSend(String tipoEnvio) throws Exception;
     TpedidosDTO crearSolicitudCancelacion(Long idCompra, String motivoCancelacion) throws AppException;
     TpedidosDTO buscarPedidoPorId(Long idPedido) throws AppException;
     TpedidosDTO responderSolicitudCancelacion(Long idPedido, JSONObject respuestaSolicitud) throws AppException;

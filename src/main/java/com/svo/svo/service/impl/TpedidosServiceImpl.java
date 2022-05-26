@@ -45,7 +45,27 @@ public class TpedidosServiceImpl implements TpedidosService {
     }
 
     @Override
-    public TpedidosDTO crearSolicitudCancelacion(Long idCompra, String motivoCancelacion) throws AppException {
+    public List<TpedidosDTO> searchTipeSend(String tipo) throws Exception {
+        List<TpedidosDTO> tpedidosDTOList = null;
+        LOG.info("buscarTodosPedidos()");
+        try {
+            List<TpedidosVO> tpedidosVOS = tpedidosRepository.buscarTodosPedidos();
+            tpedidosDTOList = new ArrayList<>();
+            for (TpedidosVO tpedidosVO1 : tpedidosVOS) {
+                if(tpedidosVO1.getIdCompra().getTipo_envio().equals(tipo)){
+                    LOG.info(tpedidosVO1.getIdCompra().getTipo_envio());
+                    TpedidosDTO tpedidosDTO = TpedidosBuilder.fromVO(tpedidosVO1);
+                    tpedidosDTOList.add(tpedidosDTO);
+                }
+            }
+        } catch (Exception e) {
+            Utils.raise(e, "Error en buscar todos los pedidos");
+        }
+        return tpedidosDTOList;
+    }
+
+    @Override
+    public TpedidosDTO crearSolicitudCancelacion(Long idCompra,String motivoCancelacion) throws AppException {
         TsolicitudCancelacionVO nuevaSolicitud = new TsolicitudCancelacionVO();
         TpedidosDTO pedidoDTO = null;
         try {

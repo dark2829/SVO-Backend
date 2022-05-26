@@ -44,6 +44,20 @@ public class TpedidosEndpoint {
         return res;
     }
 
+    //envio: string [envio: tienda]
+    @GetMapping("/searchTipeSend")
+    public ResponseEntity<ResponseBody<List<TpedidosDTO>>> searchTipeSend(@RequestParam String envio) throws AppException {
+        List<TpedidosDTO> listPedidos = null;
+        ResponseEntity<ResponseBody<List<TpedidosDTO>>> res = null;
+        LOG.info("buscarTodosPedidos()");
+        try {
+            listPedidos = tpedidosService.searchTipeSend(envio);
+            res = Utils.response200OK("Lista de pedidos", listPedidos);
+        } catch (Exception e) {
+            Utils.raise(e, "Error al buscar todos los pedidso");
+        }
+        return res;
+    }
     /*
     url: idCompra:number
     body: "motivoCancelacion":string
