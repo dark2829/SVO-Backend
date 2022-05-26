@@ -100,6 +100,25 @@ public class TproductosServiceImpl implements TproductosService {
     }
 
     @Override
+    public List<TproductosDTO> findRealProductos() throws Exception {
+        List<TproductosDTO> listProductos = null;
+        LOG.info(">>findTipeProductos()");
+        try {
+            List<TproductosVO> tproductosVOList = tproductosRepository.findAllProductos();
+            listProductos = new ArrayList<>();
+            for (TproductosVO tproductosVO1 : tproductosVOList) {
+                if(tproductosVO1.getCantidad() != 0){
+                    TproductosDTO tproductosDTO = TproductosBuilder.fromVO(tproductosVO1);
+                    listProductos.add(tproductosDTO);
+                }
+            }
+        } catch (Exception e) {
+            Utils.raise(e, "Error en buscar productos");
+        }
+        return listProductos;
+    }
+
+    @Override
     public List<TproductosDTO> findTipeProductos(String tipo) throws Exception {
         List<TproductosDTO> listProductos = null;
         LOG.info(">>findTipeProductos()");
