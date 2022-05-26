@@ -10,6 +10,8 @@ public class TpedidosDTO {
     private Date fecha_entrega;
     private String estatus;
     private TcomprasVO idCompra;
+    private TsolicitudCancelacionVO solicitudCancelacion;
+
 
     public Long getId() {
         return id;
@@ -41,6 +43,14 @@ public class TpedidosDTO {
 
     public void setIdCompra(TcomprasVO idCompra) {
         this.idCompra = idCompra;
+    }
+
+    public TsolicitudCancelacionVO getSolicitudCancelacion() {
+        return solicitudCancelacion;
+    }
+
+    public void setSolicitudCancelacion(TsolicitudCancelacionVO solicitudCancelacion) {
+        this.solicitudCancelacion = solicitudCancelacion;
     }
 
     @Override

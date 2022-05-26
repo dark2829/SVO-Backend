@@ -14,6 +14,7 @@ import java.util.List;
 @Table(name="tcompras")
 @NamedQueries({
         @NamedQuery(name = "TcomprasVO.findCompra", query = "select c from TcomprasVO c where c.codigo_compra =: codigo"),
+        @NamedQuery(name = "TcomprasVO.findCompraPorId", query = "select c from TcomprasVO c where c.id=: idCompra"),
 })
 public class TcomprasVO implements Serializable {
     @Id

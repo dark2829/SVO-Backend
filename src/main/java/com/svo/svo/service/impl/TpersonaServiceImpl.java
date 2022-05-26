@@ -134,7 +134,7 @@ public class TpersonaServiceImpl implements TpersonaService {
                 }
             }
             if(data.containsKey("contrasena")){
-                userVO.get().setContraseña(data.get("contrasena"));
+                userVO.get().setContraseña(passwordEncoder.encode(data.get("contrasena")));
             }
             if(data.containsKey("telefono")){
                 userVO.get().getIdPersona().setTelefono(data.get("telefono"));

@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class TsolicitudCancelacionDTO {
     private Long id;
     private String estatus;
-    private TusuariosVO idUsuario;
-    private TcomprasVO idCompra;
     private String motivo_cancel;
     private String motivo_resp;
 
@@ -25,22 +23,6 @@ public class TsolicitudCancelacionDTO {
 
     public void setEstatus(String estatus) {
         this.estatus = estatus;
-    }
-
-    public TusuariosVO getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(TusuariosVO idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public TcomprasVO getIdCompra() {
-        return idCompra;
-    }
-
-    public void setIdCompra(TcomprasVO idCompra) {
-        this.idCompra = idCompra;
     }
 
     public String getMotivo_cancel() {

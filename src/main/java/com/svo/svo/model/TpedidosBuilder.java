@@ -11,6 +11,7 @@ public class TpedidosBuilder {
         destin.setFecha_entrega(origin.getFecha_entrega());
         destin.setEstatus(origin.getEstatus());
         destin.setIdCompra(origin.getIdCompra());
+        destin.setSolicitudCancelacion(origin.getSolicitudCancelacion());
         return destin;
     }
 
@@ -22,6 +23,7 @@ public class TpedidosBuilder {
         destin.setFecha_entrega(origin.getFecha_entrega());
         destin.setEstatus(origin.getEstatus());
         destin.setIdCompra(origin.getIdCompra());
+        destin.setSolicitudCancelacion(origin.getSolicitudCancelacion());
         return destin;
     }
 }

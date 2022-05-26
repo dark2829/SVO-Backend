@@ -6,20 +6,20 @@ import com.svo.svo.other.GenerateCodigoCompra;
 import com.svo.svo.other.Utils.AppException;
 import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
-import com.svo.svo.repository.TcarritoRepository;
-import com.svo.svo.repository.TcomprasRepository;
-import com.svo.svo.repository.TproductosRepository;
-import com.svo.svo.repository.TusuariosRepository;
+import com.svo.svo.repository.*;
 import com.svo.svo.service.TproductosService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.file.LinkOption;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -40,7 +40,13 @@ public class TcarritoEndpoint {
     private TcarritoRepository tcarritoRepository;
 
     @Autowired
+    private TpagoRepository tpagoRepository;
+
+    @Autowired
     private TcomprasRepository tcomprasRepository;
+
+    @Autowired
+    private TpedidosRepository tpedidosRepository;
 
 
     List<TcomprasVO> listOrdenes = new ArrayList<>();
@@ -279,13 +285,19 @@ public class TcarritoEndpoint {
     "direccion":sring(cuando sea envio a domicilio)
     "fecha_venta":"12-05-2000" fecha,
     "facturado": number (0 o 1)
+    "tipo_pago":string
+    "tarjetaUtilizada: string"
     }
     */
     @PostMapping("/guardarCompra")
-    public ResponseEntity<ResponseBody<TcomprasVO>> guardarCompra(@RequestParam Long idUsuario, @RequestBody TcomprasVO tcomprasVO) throws ParseException, AppException {
+    public ResponseEntity<ResponseBody<TcomprasVO>> guardarCompra(@RequestParam Long idUsuario, @RequestBody Map<String,String> data) throws ParseException, AppException {
         GenerateCodigoCompra codigoCompraNew = new GenerateCodigoCompra();
         TcomprasVO newCompra = findCompras(idUsuario);
         ResponseEntity<ResponseBody<TcomprasVO>> res = null;
+        String fechaVenta = data.get("fecha_venta");
+        Date date =new SimpleDateFormat("dd-MM-yyyy").parse(fechaVenta);
+        TpagosVO pago = new TpagosVO();
+        TpedidosVO pedido = new TpedidosVO();
 
         try {
             TusuariosVO user = tusuariosRepository.findUserById(idUsuario);
@@ -295,16 +307,16 @@ public class TcarritoEndpoint {
             } else {
                 //si tiene, Recupera datos para la compra
                 //Llama a la funcion codigoCompra para generar el codigo
-                String codigo = codigoCompraNew.codigo(user, tcomprasVO);
+                String codigo = codigoCompraNew.codigo(user, date);
 
                 while (tcomprasRepository.findCompra(codigo) != null) {
-                    codigo = codigoCompraNew.codigo(user, tcomprasVO);
+                    codigo = codigoCompraNew.codigo(user, date);
                 }
                 newCompra.setCodigo_compra(codigo);
-                newCompra.setTipo_envio(tcomprasVO.getTipo_envio());
-                newCompra.setFecha_venta(tcomprasVO.getFecha_venta());
-                newCompra.setFacturado(tcomprasVO.getFacturado());
-                newCompra.setDireccion(tcomprasVO.getDireccion());
+                newCompra.setTipo_envio(data.get("tipo_envio"));
+                newCompra.setFecha_venta(date);
+                newCompra.setFacturado(Integer.parseInt(data.get("facturado")));
+                newCompra.setDireccion(data.get("direccion"));
                 //guardar productos a tcarrito
                 for (TcarritoVO productos : newCompra.getCarrito()) {
                     //va a hasta producto y le resta la cantidad comprada
@@ -315,15 +327,35 @@ public class TcarritoEndpoint {
                 }
             }
 
+
+            //guarda informacion de pago
+            pago.setTipo_pago(data.get("tipo_pago"));
+            if(Objects.equals(pago.getTipo_pago(), "Efectivo")){
+                pago.setEstatus("Pendiente");
+            }else{
+                pago.setEstatus("Pagado");
+                pago.setTarjetautilizada(data.get("tarjetaUtilizada"));
+            }
             //guarda compra
             tcomprasRepository.save(newCompra);
             tcomprasRepository.flush();
+            pago.setIdCompra(newCompra);
+            //guarda pago
+            tpagoRepository.save(pago);
+            Calendar c = Calendar.getInstance();
+            c.setTime(date);
+            c.add(Calendar.DATE, 2);
+            date = c.getTime();
+            pedido.setFecha_entrega(date);
+            pedido.setEstatus("Nuevo");
+            pedido.setIdCompra(newCompra);
+            tpedidosRepository.save(pedido);
+            LOG.info("PEDIDO"+pedido);
             //elimina de lista ordenes
             listOrdenes.remove(idx);
             idx = 0;
             res = Utils.response(HttpStatus.ACCEPTED, "Se registro compra correctamente", newCompra);
         } catch (Exception e) {
-            Utils.raise(e, "erro");
             res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), null);
         }
         return res;

@@ -10,8 +10,6 @@ public class TsolicitudCancelacionBuilder {
 
         destin.setId(origen.getId());
         destin.setEstatus(origen.getEstatus());
-        destin.setIdUsuario(origen.getIdUsuario());
-        destin.setIdCompra(origen.getIdCompra());
         destin.setMotivo_cancel(origen.getMotivo_cancel());
         destin.setMotivo_resp(origen.getMotivo_resp());
         return destin;
@@ -23,8 +21,6 @@ public class TsolicitudCancelacionBuilder {
 
         destin.setId(origen.getId());
         destin.setEstatus(origen.getEstatus());
-        destin.setIdUsuario(origen.getIdUsuario());
-        destin.setIdCompra(origen.getIdCompra());
         destin.setMotivo_cancel(origen.getMotivo_cancel());
         destin.setMotivo_resp(origen.getMotivo_resp());
         return destin;

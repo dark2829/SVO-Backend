@@ -18,7 +18,7 @@ import java.util.*;
 
 @Service
 public class TproductosServiceImpl implements TproductosService {
-    private static final Logger LOG = LoggerFactory.getLogger(TproductosService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TproductosServiceImpl.class);
 
     @Autowired
     private TproductosRepository tproductosRepository;

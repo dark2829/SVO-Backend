@@ -23,29 +23,5 @@ public class TusuariosEndpoint {
     @Autowired
     private TusuariosService tusuariosService;
 
-//    @PostMapping("/login")
-//    public ResponseEntity<ResponseBody<TusuariosDTO>> login (@RequestParam Map<String,String> data){
-//        /*Datos requeridos
-//        identificador
-//        contrasena
-//        */
-//        TusuariosDTO userDto= null;
-//        ResponseEntity<ResponseBody<TusuariosVO>> userVO = null;
-//        ResponseEntity<ResponseBody<TusuariosDTO>> res = null;
-//
-//        try {
-//            userVO = tusuariosService.login(data);
-//            if(userVO.getBody().getData()!=null){
-//                userDto = TusuariosBuilder.fromVO(userVO.getBody().getData());
-//                LOG.info(String.valueOf("USUARIO ENCONTRADO: "+userDto));
-//                res= Utils.response200OK("Usuario registrado",userDto);
-//            }else {
-//                res=Utils.response(HttpStatus.BAD_REQUEST,userVO.getBody().getMessage(),null);
-//            }
-//        }catch(Exception e) {
-//           res= Utils.handle(e,"Error en el loggin");
-//        }
-//        return  res;
-//    }
 
 }

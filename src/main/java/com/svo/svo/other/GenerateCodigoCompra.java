@@ -17,8 +17,8 @@ public class GenerateCodigoCompra {
     private static final Logger LOG = LoggerFactory.getLogger(GenerateCodigoCompra.class);
 
 
-    public String codigo(TusuariosVO tusuarios, TcomprasVO tcompras) throws ParseException {
-        Date fechaV = tcompras.getFecha_venta();
+    public String codigo(TusuariosVO tusuarios, Date fecha_venta) throws ParseException {
+        Date fechaV = fecha_venta;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String fechaTexto = formatter.format(fechaV);
 

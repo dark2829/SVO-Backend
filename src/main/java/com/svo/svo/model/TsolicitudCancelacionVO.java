@@ -12,12 +12,6 @@ public class TsolicitudCancelacionVO {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String estatus;
-    @ManyToOne
-    @JoinColumn(name="tusuarios_id",referencedColumnName = "id")
-    private TusuariosVO idUsuario;
-    @ManyToOne
-    @JoinColumn(name="tcompras_id",referencedColumnName = "id")
-    private TcomprasVO idCompra;
     private String motivo_cancel;
     private String motivo_resp;
 
@@ -35,22 +29,6 @@ public class TsolicitudCancelacionVO {
 
     public void setEstatus(String estatus) {
         this.estatus = estatus;
-    }
-
-    public TusuariosVO getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(TusuariosVO idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public TcomprasVO getIdCompra() {
-        return idCompra;
-    }
-
-    public void setIdCompra(TcomprasVO idCompra) {
-        this.idCompra = idCompra;
     }
 
     public String getMotivo_cancel() {
