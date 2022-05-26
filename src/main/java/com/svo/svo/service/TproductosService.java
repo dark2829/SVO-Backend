@@ -15,6 +15,7 @@ public interface TproductosService {
     void update(Long id, TproductosDTO tproductosDTO) throws Exception;
 
     List<TproductosDTO> findAllProductos() throws Exception;
+    List<TproductosDTO> findTipeProductos(String tipo) throws Exception;
 
     TproductosVO findProductById(Long id) throws AppException;
 
