@@ -14,5 +14,6 @@ public interface TpedidosService {
     TpedidosDTO crearSolicitudCancelacion(Long idCompra, String motivoCancelacion) throws AppException;
     TpedidosDTO buscarPedidoPorId(Long idPedido) throws AppException;
     TpedidosDTO responderSolicitudCancelacion(Long idPedido, JSONObject respuestaSolicitud) throws AppException;
-
+    void actualizarEstatusPedido(Long idPedido, String estatus) throws  AppException;
 }
+

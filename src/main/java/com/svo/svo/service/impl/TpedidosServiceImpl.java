@@ -103,4 +103,16 @@ public class TpedidosServiceImpl implements TpedidosService {
 
 
     }
+
+    @Override
+    public void actualizarEstatusPedido(Long idPedido, String estatus) throws AppException {
+        try{
+            TpedidosVO pedido = tpedidosRepository.buscarPedidoPorId(idPedido);
+            pedido.setEstatus(estatus);
+            tpedidosRepository.save(pedido);
+        }catch (Exception e){
+            Utils.raise(e,"Error al actualizar estatus de pedido");
+        }
+
+    }
 }

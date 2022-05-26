@@ -12,6 +12,7 @@ import java.io.Serializable;
         @NamedQuery(name = "TempleadosVO.findEmpleadoById", query = "select e from TempleadosVO e where e.id =:id"),
         @NamedQuery(name = "TempleadosVO.findIdByCurp", query = "select e from TempleadosVO e where e.curp =: curp"),
         @NamedQuery(name = "TempleadosVO.findAllEmpleados", query = "select e from TempleadosVO e"),
+        @NamedQuery(name = "TempleadosVO.buscarCurpDuplicado", query = "select e from TempleadosVO e where e.curp=:curp")
 
 })
 public class TempleadosVO implements Serializable {

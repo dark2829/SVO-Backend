@@ -62,6 +62,19 @@ public class TpedidosEndpoint {
         return res;
     }
 
+    @GetMapping("/actualizarEstatusPedido")
+    public ResponseEntity<ResponseBody<Void>> actualizarEstatusPedido(@RequestParam Long idPedido, @RequestParam String nuevoEstatus) {
+        LOG.info("<<<<<actualizarEstatusPedido() -> "+idPedido);
+        ResponseEntity<ResponseBody<Void>> res = null;
+        try {
+            tpedidosService.actualizarEstatusPedido(idPedido,nuevoEstatus);
+            res = Utils.response200OK("Pedido actualizado");
+        } catch (Exception e) {
+            res = Utils.response(HttpStatus.BAD_REQUEST, "Error al crear la solicitud", null);
+        }
+        return res;
+    }
+
     //url idPedido:number
     @GetMapping("/buscarPedidoPorId")
     public ResponseEntity<ResponseBody<TpedidosDTO>> buscarPedidoPorId(@RequestParam("idPedido") Long idPedido) throws AppException {

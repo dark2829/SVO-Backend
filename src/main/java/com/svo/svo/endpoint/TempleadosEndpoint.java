@@ -34,7 +34,7 @@ public class TempleadosEndpoint {
             templeadosService.insertEmpleado(Json);
             res = Utils.response200OK("Empleado agregado correctamente");
         } catch (Exception e) {
-            res = Utils.response(HttpStatus.BAD_REQUEST, "Error al registra empleado", null);
+            res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), null);
         }
         return res;
     }

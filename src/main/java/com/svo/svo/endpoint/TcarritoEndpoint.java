@@ -222,6 +222,7 @@ public class TcarritoEndpoint {
                 productoCarrito.setIdProducto(producto);
                 //si el producto tiene 0 en cantidad
                 if (productoCarrito.getIdProducto().getCantidad() == 0) {
+
                     //lo elimina de la lista de carrito en curso
                     msj = "Lo sentimos el producto " + productoCarrito.getIdProducto().getNombre() + " se agotó";
                     //si la cantidad de carrito es mayor a la cantidad en carrito
@@ -320,7 +321,11 @@ public class TcarritoEndpoint {
                 //guardar productos a tcarrito
                 for (TcarritoVO productos : newCompra.getCarrito()) {
                     //va a hasta producto y le resta la cantidad comprada
+                    LOG.info("PR1"+productos.getIdProducto().getCantidad()+" - "+productos.getCantidad());
                     productos.getIdProducto().setCantidad(productos.getIdProducto().getCantidad() - productos.getCantidad());
+                    if(productos.getIdProducto().getCantidad()==0){
+                        productos.getIdProducto().setEstatus("Agotado");
+                    }
                     //guarda en productos
                     tproductosRepository.save(productos.getIdProducto());
                     tcarritoRepository.save(productos);
