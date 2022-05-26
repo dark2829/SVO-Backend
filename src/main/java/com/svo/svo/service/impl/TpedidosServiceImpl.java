@@ -45,13 +45,13 @@ public class TpedidosServiceImpl implements TpedidosService {
     }
 
     @Override
-    public TpedidosDTO crearSolicitudCancelacion(Long idCompra,String motivoCancelacion) throws AppException {
+    public TpedidosDTO crearSolicitudCancelacion(Long idCompra, String motivoCancelacion) throws AppException {
         TsolicitudCancelacionVO nuevaSolicitud = new TsolicitudCancelacionVO();
         TpedidosDTO pedidoDTO = null;
-        try{
+        try {
             TpedidosVO pedido = tpedidosRepository.buscarPedidoPorIdCompra(idCompra);
-            LOG.info("ESTE ES EL PEDIDO"+pedido);
-            if(pedido==null){
+            LOG.info("ESTE ES EL PEDIDO" + pedido);
+            if (pedido == null) {
                 throw new RuntimeException("No existe el pedido");
             }
             nuevaSolicitud.setMotivo_cancel(motivoCancelacion);
@@ -59,8 +59,8 @@ public class TpedidosServiceImpl implements TpedidosService {
             pedido.setSolicitudCancelacion(nuevaSolicitud);
             tpedidosRepository.save(pedido);
             pedidoDTO = TpedidosBuilder.fromVO(pedido);
-        }catch (Exception e){
-            Utils.raise(e,"Error al registrar solicitud");
+        } catch (Exception e) {
+            Utils.raise(e, "Error al registrar solicitud");
         }
 
         return pedidoDTO;
@@ -70,7 +70,7 @@ public class TpedidosServiceImpl implements TpedidosService {
     public TpedidosDTO buscarPedidoPorId(Long idPedido) throws AppException {
         LOG.info("buscarPedidoPorId ()");
         TpedidosVO tpedidosVO = null;
-        TpedidosDTO  tpedidosDTO = null;
+        TpedidosDTO tpedidosDTO = null;
         try {
             tpedidosVO = tpedidosRepository.buscarPedidoPorId(idPedido);
             tpedidosDTO = TpedidosBuilder.fromVO(tpedidosVO);
@@ -83,20 +83,20 @@ public class TpedidosServiceImpl implements TpedidosService {
     @Override
     public TpedidosDTO responderSolicitudCancelacion(Long idPedido, JSONObject respuestaSolicitud) throws AppException {
         TpedidosDTO tpedidosDTO = null;
-        try{
+        try {
             TpedidosVO pedido = tpedidosRepository.buscarPedidoPorId(idPedido);
-            if(pedido == null){
+            if (pedido == null) {
                 throw new RuntimeException("El pedido no existe");
             }
-            TsolicitudCancelacionVO  solicitud = pedido.getSolicitudCancelacion();
+            TsolicitudCancelacionVO solicitud = pedido.getSolicitudCancelacion();
             solicitud.setMotivo_resp(respuestaSolicitud.getString("motivo_res"));
             solicitud.setEstatus(respuestaSolicitud.getString("estatus"));
             tsolicitudCancelacionRepository.save(solicitud);
             pedido.setSolicitudCancelacion(solicitud);
             tpedidosRepository.save(pedido);
             tpedidosDTO = TpedidosBuilder.fromVO(pedido);
-        }catch (Exception e){
-            Utils.raise(e,"Error al buscar un pedido");
+        } catch (Exception e) {
+            Utils.raise(e, "Error al buscar un pedido");
         }
 
         return tpedidosDTO;
@@ -106,12 +106,12 @@ public class TpedidosServiceImpl implements TpedidosService {
 
     @Override
     public void actualizarEstatusPedido(Long idPedido, String estatus) throws AppException {
-        try{
+        try {
             TpedidosVO pedido = tpedidosRepository.buscarPedidoPorId(idPedido);
             pedido.setEstatus(estatus);
             tpedidosRepository.save(pedido);
-        }catch (Exception e){
-            Utils.raise(e,"Error al actualizar estatus de pedido");
+        } catch (Exception e) {
+            Utils.raise(e, "Error al actualizar estatus de pedido");
         }
 
     }

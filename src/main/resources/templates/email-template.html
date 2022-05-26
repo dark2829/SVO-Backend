@@ -9,10 +9,10 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
-    <h3> <span>Hola</span> <span th:text="${userName}">user</span> </h3>
-    <h4>haz click en el siguiente enlace para modificar tu contraseña</h4>
+    <h3> <span>Hola,</span> <span th:text="${userName}">user</span> </h3>
+    <h4>Haz click en el siguiente enlace para crear una nueva contraseña</h4>
     <a th:href="@{${url}}">
-      <button class="btn btn-success rounded rounded-pill">Ir a mi cuenta</button>
+      <button class="btn btn-success rounded rounded-pill">Cambiar contraseña</button>
     </a>
 </body>
 </html>

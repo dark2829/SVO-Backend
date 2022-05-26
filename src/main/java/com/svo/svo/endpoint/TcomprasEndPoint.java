@@ -25,8 +25,8 @@ public class TcomprasEndPoint {
     @Autowired
     private TcomprasService tcomprasService;
 
-     /*url:idCompra:cumber
-      */
+    /*url:idCompra:cumber
+     */
     @GetMapping("/buscarCompraPorId")
     public ResponseEntity<ResponseBody<TcomprasDTO>> buscarCompraPorId(@RequestParam("idCompra") Long idCompra) throws AppException {
         LOG.info("buscarCompraPorId()--> id: " + idCompra);
@@ -44,10 +44,11 @@ public class TcomprasEndPoint {
         }
         return res;
     }
-/*
-idUsuario: number
-estatus:string
- */
+
+    /*
+    idUsuario: number
+    estatus:string
+     */
     @GetMapping("/buscarComprasPorUsuario")
     public ResponseEntity<ResponseBody<List<TpedidosDTO>>> buscarComprasPorUsuario(@RequestParam("idUsuario") Long idUsuario, @RequestParam("estatus") String estatusPedido) throws AppException {
         LOG.info("buscarComprasPorUsuario()--> idUsuario: " + idUsuario);

@@ -40,7 +40,7 @@ public class TempleadosEndpoint {
     }
 
     @GetMapping("/findEmpleadoById")
-    public ResponseEntity<ResponseBody<TusuariosDTO>>  findEmpleadoById(@RequestParam("id") int id) throws AppException {
+    public ResponseEntity<ResponseBody<TusuariosDTO>> findEmpleadoById(@RequestParam("id") int id) throws AppException {
         LOG.info("findEmpleadoById()--> id: " + id);
         TusuariosDTO tusuariosDTO = null;
         TusuariosVO tusuariosVO = null;

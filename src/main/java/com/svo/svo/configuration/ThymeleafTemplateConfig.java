@@ -9,7 +9,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 public class ThymeleafTemplateConfig {
 
     @Bean
-    public ClassLoaderTemplateResolver templateResolver(){
+    public ClassLoaderTemplateResolver templateResolver() {
         ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
         resolver.setPrefix("templates/");//Aqui va la direccion
         resolver.setSuffix(".html");

@@ -28,15 +28,15 @@ public class TtarjetasServiceImpl implements TtarjetasService {
 
     @Override
     public void deleteTarjeta(Long idTarjeta, Long idPersona) throws AppException {
-        LOG.info("deleteTarjeta -> idTarjeta: {}",idTarjeta);
+        LOG.info("deleteTarjeta -> idTarjeta: {}", idTarjeta);
         List<TtarjetasVO> nuevasTarjetas = new ArrayList<>();
         try {
             TpersonaVO persona = tpersonaRepository.getById(idPersona);
             TtarjetasVO ttarjetas = ttarjetaRepository.findTarjetaById(idTarjeta);
             List<TtarjetasVO> listarjetas = persona.getTarjeta();
 
-            for(TtarjetasVO tarjetas: listarjetas){
-                if(tarjetas!=ttarjetas){
+            for (TtarjetasVO tarjetas : listarjetas) {
+                if (tarjetas != ttarjetas) {
                     nuevasTarjetas.add(tarjetas);
                 }
             }
@@ -44,8 +44,8 @@ public class TtarjetasServiceImpl implements TtarjetasService {
             tpersonaRepository.save(persona);
             tpersonaRepository.flush();
             ttarjetaRepository.delete(ttarjetas);
-        } catch (Exception e){
-            Utils.raise(e,"Error Al eliminar una tarjeta");
+        } catch (Exception e) {
+            Utils.raise(e, "Error Al eliminar una tarjeta");
         }
     }
 }

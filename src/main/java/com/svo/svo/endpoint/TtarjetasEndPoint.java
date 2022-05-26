@@ -35,7 +35,7 @@ public class TtarjetasEndPoint {
                 ttarjetasService.deleteTarjeta(idTarjeta, idPersona);
                 res = Utils.response200OK("La tarjeta fue eliminada exitosamente");
             }else{
-                res =Utils.response(HttpStatus.ACCEPTED,"No se seleccionado ninguna tarjeta",null);
+                res = Utils.response(HttpStatus.ACCEPTED, "No se seleccionado ninguna tarjeta", null);
             }
 
         } catch (Exception e) {

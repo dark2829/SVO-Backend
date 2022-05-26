@@ -10,6 +10,7 @@ import java.util.List;
 public interface TcomprasRepository extends JpaRepository<TcomprasVO, Long> {
 
     TcomprasVO findCompra(String codigo);
+
     TcomprasVO findCompraPorId(Long idCompra);
 
 

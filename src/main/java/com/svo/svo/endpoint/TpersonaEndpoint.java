@@ -56,19 +56,19 @@ public class TpersonaEndpoint {
     */
 
     @PostMapping("/updateClientDatosGenerales")
-    public ResponseEntity<ResponseBody<Void>> updateDatosGenerales(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
-        ResponseEntity<ResponseBody<Void>> res= null;
-        LOG.info("updateClient()-> id: {} data: {}",idPerson,data);
+    public ResponseEntity<ResponseBody<Void>> updateDatosGenerales(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data) {
+        ResponseEntity<ResponseBody<Void>> res = null;
+        LOG.info("updateClient()-> id: {} data: {}", idPerson, data);
         try {
             tpersonaService.updateUserDatosGenerales(idPerson, idUser, data);
-            res= Utils.response(HttpStatus.ACCEPTED, "Informacion actualizada",null);
+            res = Utils.response(HttpStatus.ACCEPTED, "Informacion actualizada", null);
         } catch (Exception e) {
-           res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
+            res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), null);
         }
-        return  res;
+        return res;
     }
 
-//    idDireccion -(si tiene direccion registrada)-
+    //    idDireccion -(si tiene direccion registrada)-
 //    calle
 //    colonia
 //    municipio
@@ -78,51 +78,51 @@ public class TpersonaEndpoint {
 //    n_exterior
 //    referencia
     @PostMapping("/updateClientDirecciones")
-    public ResponseEntity<ResponseBody<Void>> updateDirecciones(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
-        ResponseEntity<ResponseBody<Void>> res= null;
-        LOG.info("updateClient()-> id: {} data: {}",idPerson,data);
+    public ResponseEntity<ResponseBody<Void>> updateDirecciones(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data) {
+        ResponseEntity<ResponseBody<Void>> res = null;
+        LOG.info("updateClient()-> id: {} data: {}", idPerson, data);
         try {
             tpersonaService.updateUserDirecciones(idPerson, idUser, data);
-            res= Utils.response(HttpStatus.ACCEPTED, "Informacion de direccion actualizada",null);
+            res = Utils.response(HttpStatus.ACCEPTED, "Informacion de direccion actualizada", null);
         } catch (Exception e) {
-            res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
+            res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), null);
         }
-        return  res;
+        return res;
     }
 
-//    idTarjeta (si tiene tarjeta registrada)
+    //    idTarjeta (si tiene tarjeta registrada)
 //    nombre_propietario
 //    numero_tarjeta
 //    fecha_vencimiento
 //    cvv
     @PostMapping("/updateClientTarjetas")
-    public ResponseEntity<ResponseBody<Void>> updateTarjetas(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data){
-        ResponseEntity<ResponseBody<Void>> res= null;
-        LOG.info("updateClient()-> id: {} data: {}",idPerson,data);
+    public ResponseEntity<ResponseBody<Void>> updateTarjetas(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data) {
+        ResponseEntity<ResponseBody<Void>> res = null;
+        LOG.info("updateClient()-> id: {} data: {}", idPerson, data);
         try {
             tpersonaService.updateUserTarjetas(idPerson, idUser, data);
-            res= Utils.response(HttpStatus.ACCEPTED, "Informacion de tarjeta actualizada",null);
+            res = Utils.response(HttpStatus.ACCEPTED, "Informacion de tarjeta actualizada", null);
         } catch (Exception e) {
-            res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
+            res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), null);
         }
-        return  res;
+        return res;
     }
 
     @GetMapping("/findUserById")//Buscar una persona
-    public ResponseEntity<ResponseBody<TusuariosDTO>>  findAllProveedores(@RequestParam("id") int id) throws AppException {
-        LOG.info("findUserById()--> id: "+ id);
+    public ResponseEntity<ResponseBody<TusuariosDTO>> findAllProveedores(@RequestParam("id") int id) throws AppException {
+        LOG.info("findUserById()--> id: " + id);
         TusuariosDTO userDTO = null;
         TusuariosVO userVO = null;
-        ResponseEntity<ResponseBody<TusuariosDTO>> res=null;
-        try{
+        ResponseEntity<ResponseBody<TusuariosDTO>> res = null;
+        try {
             userVO = tusuariosService.findUserById(Long.valueOf(id));
-            if(userVO != null){
-                userDTO= TusuariosBuilder.fromVO(userVO);
-                res= Utils.response(HttpStatus.ACCEPTED,"Usuario existente",userDTO)  ;
+            if (userVO != null) {
+                userDTO = TusuariosBuilder.fromVO(userVO);
+                res = Utils.response(HttpStatus.ACCEPTED, "Usuario existente", userDTO);
             }
-        }catch (AppException e){
-            Utils.raise(e,"Error al buscar Usuario");
-            res = Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
+        } catch (AppException e) {
+            Utils.raise(e, "Error al buscar Usuario");
+            res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), null);
         }
         return res;
     }

@@ -291,12 +291,12 @@ public class TcarritoEndpoint {
     }
     */
     @PostMapping("/guardarCompra")
-    public ResponseEntity<ResponseBody<TcomprasVO>> guardarCompra(@RequestParam Long idUsuario, @RequestBody Map<String,String> data) throws ParseException, AppException {
+    public ResponseEntity<ResponseBody<TcomprasVO>> guardarCompra(@RequestParam Long idUsuario, @RequestBody Map<String, String> data) throws ParseException, AppException {
         GenerateCodigoCompra codigoCompraNew = new GenerateCodigoCompra();
         TcomprasVO newCompra = findCompras(idUsuario);
         ResponseEntity<ResponseBody<TcomprasVO>> res = null;
         String fechaVenta = data.get("fecha_venta");
-        Date date =new SimpleDateFormat("dd-MM-yyyy").parse(fechaVenta);
+        Date date = new SimpleDateFormat("dd-MM-yyyy").parse(fechaVenta);
         TpagosVO pago = new TpagosVO();
         TpedidosVO pedido = new TpedidosVO();
 
@@ -321,9 +321,9 @@ public class TcarritoEndpoint {
                 //guardar productos a tcarrito
                 for (TcarritoVO productos : newCompra.getCarrito()) {
                     //va a hasta producto y le resta la cantidad comprada
-                    LOG.info("PR1"+productos.getIdProducto().getCantidad()+" - "+productos.getCantidad());
+                    LOG.info("PR1" + productos.getIdProducto().getCantidad() + " - " + productos.getCantidad());
                     productos.getIdProducto().setCantidad(productos.getIdProducto().getCantidad() - productos.getCantidad());
-                    if(productos.getIdProducto().getCantidad()==0){
+                    if (productos.getIdProducto().getCantidad() == 0) {
                         productos.getIdProducto().setEstatus("Agotado");
                     }
                     //guarda en productos
@@ -335,9 +335,9 @@ public class TcarritoEndpoint {
 
             //guarda informacion de pago
             pago.setTipo_pago(data.get("tipo_pago"));
-            if(Objects.equals(pago.getTipo_pago(), "Efectivo")){
+            if (Objects.equals(pago.getTipo_pago(), "Efectivo")) {
                 pago.setEstatus("Pendiente");
-            }else{
+            } else {
                 pago.setEstatus("Pagado");
                 pago.setTarjetautilizada(data.get("tarjetaUtilizada"));
             }
@@ -355,7 +355,7 @@ public class TcarritoEndpoint {
             pedido.setEstatus("Nuevo");
             pedido.setIdCompra(newCompra);
             tpedidosRepository.save(pedido);
-            LOG.info("PEDIDO"+pedido);
+            LOG.info("PEDIDO" + pedido);
             //elimina de lista ordenes
             listOrdenes.remove(idx);
             idx = 0;

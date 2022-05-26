@@ -15,5 +15,6 @@ public interface TempleadosRepository extends JpaRepository<TempleadosVO, Long> 
     TempleadosVO findEmpleadoById(Integer id);
 
     List<TempleadosVO> findAllEmpleados();
+
     TempleadosVO buscarCurpDuplicado(String curp);
 }

@@ -91,7 +91,7 @@ public class TproductosEndPoint {
 
     //categoria: string
     @GetMapping("/findTipeProducts")
-    public ResponseEntity<ResponseBody<List<TproductosDTO>>> findTipeProductos(@RequestParam("categoria") String tipe) throws Exception{
+    public ResponseEntity<ResponseBody<List<TproductosDTO>>> findTipeProductos(@RequestParam("categoria") String tipe) throws Exception {
         List<TproductosDTO> listProductos = null;
         ResponseEntity<ResponseBody<List<TproductosDTO>>> res = null;
         LOG.info("findTipeProducts()");
@@ -105,7 +105,7 @@ public class TproductosEndPoint {
     }
 
     @GetMapping("/findRealProducts")
-    public ResponseEntity<ResponseBody<List<TproductosDTO>>> findRealProductos() throws Exception{
+    public ResponseEntity<ResponseBody<List<TproductosDTO>>> findRealProductos() throws Exception {
         List<TproductosDTO> listProductos = null;
         ResponseEntity<ResponseBody<List<TproductosDTO>>> res = null;
         LOG.info("findTipeProducts()");
@@ -199,12 +199,12 @@ public class TproductosEndPoint {
         LOG.info("MostraFavoritosPorUsuario()");
         try {
             tproductosDTOS = tusuariosService.mostrarFavoritosPorUsuario(idUsuario);
-            if(tproductosDTOS.isEmpty()){
-                res = Utils.response(HttpStatus.ACCEPTED,"No hay productos en favoritos",null);
+            if (tproductosDTOS.isEmpty()) {
+                res = Utils.response(HttpStatus.ACCEPTED, "No hay productos en favoritos", null);
             }
-            res = Utils.response200OK("Productos favoritos",tproductosDTOS);
+            res = Utils.response200OK("Productos favoritos", tproductosDTOS);
         } catch (Exception e) {
-            res= Utils.response(HttpStatus.BAD_REQUEST,e.getMessage(),null);
+            res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), null);
         }
         return res;
     }

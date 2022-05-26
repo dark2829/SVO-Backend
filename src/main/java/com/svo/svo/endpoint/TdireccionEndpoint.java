@@ -31,11 +31,11 @@ public class TdireccionEndpoint {
         ResponseEntity<ResponseBody<Void>> res = null;
         LOG.info("deleteDireccion()->idDireccion: {}", idDireccion);
         try {
-            if(idDireccion!=null){
+            if (idDireccion != null) {
                 tdireccionService.deleteDireccion(idDireccion, idPersona);
                 res = Utils.response200OK("La direccion fue eliminada exitosamente");
-            }else{
-                res =Utils.response(HttpStatus.ACCEPTED,"No se seleccionado ninguna direccion",null);
+            } else {
+                res = Utils.response(HttpStatus.ACCEPTED, "No se seleccionado ninguna direccion", null);
             }
 
         } catch (Exception e) {

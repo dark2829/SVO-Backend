@@ -13,5 +13,7 @@ public interface TusuariosService {
     ResponseEntity<ResponseBody<TusuariosVO>> login(Map<String, String> data) throws AppException;
     TusuariosVO findUserById(Long idPerson) throws AppException;
     List<TproductosDTO> mostrarFavoritosPorUsuario(Long idUsuario) throws AppException;
+    void deleteCuenta(Long idUsuario) throws AppException;
+    void actualizarContraseña(String correo, String contraseña) throws AppException;
 
 }

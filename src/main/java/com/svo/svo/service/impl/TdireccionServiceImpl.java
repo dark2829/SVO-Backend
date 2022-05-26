@@ -29,15 +29,15 @@ public class TdireccionServiceImpl implements TdireccionService {
 
     @Override
     public void deleteDireccion(Long idDireccion, Long idPersona) throws AppException {
-        LOG.info("deleteDireccion -> idDireccion: {}",idDireccion);
+        LOG.info("deleteDireccion -> idDireccion: {}", idDireccion);
         List<TdireccionVO> nuevasDirecciones = new ArrayList<>();
         try {
             TpersonaVO persona = tpersonaRepository.getById(idPersona);
             TdireccionVO tdireccion = tdireccionRepository.findDireccionById(idDireccion);
             List<TdireccionVO> listDirecciones = persona.getDireccion();
 
-            for(TdireccionVO direcciones: listDirecciones){
-                if(direcciones!=tdireccion){
+            for (TdireccionVO direcciones : listDirecciones) {
+                if (direcciones != tdireccion) {
                     nuevasDirecciones.add(direcciones);
                 }
             }
@@ -45,8 +45,8 @@ public class TdireccionServiceImpl implements TdireccionService {
             tpersonaRepository.save(persona);
             tpersonaRepository.flush();
             tdireccionRepository.delete(tdireccion);
-        } catch (Exception e){
-            Utils.raise(e,"Error Al eliminar una direccion");
+        } catch (Exception e) {
+            Utils.raise(e, "Error Al eliminar una direccion");
         }
     }
 }

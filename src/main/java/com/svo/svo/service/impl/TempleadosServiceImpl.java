@@ -62,8 +62,8 @@ public class TempleadosServiceImpl implements TempleadosService {
             userObject.put("contrasena", personObject.remove("contrasena")).toString();
 
             //buscarq ue el curp no este duplicado
-            TempleadosVO empleadoExiste= templeadosRepository.buscarCurpDuplicado(empObject.getString("curp"));
-            if(empleadoExiste != null){
+            TempleadosVO empleadoExiste = templeadosRepository.buscarCurpDuplicado(empObject.getString("curp"));
+            if (empleadoExiste != null) {
                 throw new RuntimeException("La CURP ya ha sido registrada");
             }
             per.setId(0L);
@@ -98,7 +98,7 @@ public class TempleadosServiceImpl implements TempleadosService {
             user.setId(tusuariosRepository.findIdByCorreo(user.getCorreo()).getId());
 
         } catch (Exception e) {
-            Utils.raise(e,e.getMessage());
+            Utils.raise(e, e.getMessage());
         }
     }
 

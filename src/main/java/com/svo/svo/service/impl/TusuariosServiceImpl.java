@@ -3,6 +3,7 @@ package com.svo.svo.service.impl;
 import com.svo.svo.model.*;
 import com.svo.svo.other.Regex;
 import com.svo.svo.other.Utils.AppException;
+import com.svo.svo.other.Utils.AppException404NotFound;
 import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.repository.TusuariosRepository;
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,8 +25,12 @@ import java.util.Objects;
 public class TusuariosServiceImpl implements TusuariosService {
 
     private static final Logger LOG = LoggerFactory.getLogger(TusuariosServiceImpl.class);
+
     @Autowired
     private TusuariosRepository tusuariosRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public void insert(TproveedoresDTO tproveedoresDTO) throws Exception {
 
@@ -111,6 +117,27 @@ public class TusuariosServiceImpl implements TusuariosService {
         }
         return productosFavoritosDTO;
 
+    }
+
+    @Override
+    public void deleteCuenta(Long idUsuario) throws AppException {
+        LOG.info("deleteCuenta -> id: {}",idUsuario);
+        try {
+            TusuariosVO tusuariosVO = tusuariosRepository.findUserById(idUsuario);
+            if (tusuariosVO == null){
+                throw new AppException404NotFound("No se encuentra el usuario");
+            }
+            tusuariosRepository.delete(tusuariosVO);
+        } catch (Exception e){
+            Utils.raise(e,"Error Al eliminar un usuario");
+        }
+    }
+
+    @Override
+    public void actualizarContraseña(String correo, String contraseña) throws AppException {
+        TusuariosVO usuario = tusuariosRepository.findByCorreo(correo);
+        usuario.setContraseña(passwordEncoder.encode(contraseña));
+        tusuariosRepository.save(usuario);
     }
 
 

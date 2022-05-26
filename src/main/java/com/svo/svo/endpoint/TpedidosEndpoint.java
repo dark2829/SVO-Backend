@@ -43,17 +43,18 @@ public class TpedidosEndpoint {
         }
         return res;
     }
+
     /*
     url: idCompra:number
     body: "motivoCancelacion":string
      */
     @PostMapping("/solicitarCancelacion")
     public ResponseEntity<ResponseBody<Void>> solicitarCancelacion(@RequestParam Long idCompra, @RequestBody String motivoCancelacion) {
-        LOG.info("<<<<<solicitarCancelacion() -> "+motivoCancelacion);
+        LOG.info("<<<<<solicitarCancelacion() -> " + motivoCancelacion);
         JSONObject solicitud = new JSONObject(motivoCancelacion);
         ResponseEntity<ResponseBody<Void>> res = null;
         try {
-            TpedidosDTO pedido= tpedidosService.crearSolicitudCancelacion(idCompra,solicitud.getString("motivoCancelacion"));
+            TpedidosDTO pedido = tpedidosService.crearSolicitudCancelacion(idCompra, solicitud.getString("motivoCancelacion"));
             LOG.info(String.valueOf(pedido));
             res = Utils.response200OK("Solicitud enviada");
         } catch (Exception e) {
@@ -64,10 +65,10 @@ public class TpedidosEndpoint {
 
     @GetMapping("/actualizarEstatusPedido")
     public ResponseEntity<ResponseBody<Void>> actualizarEstatusPedido(@RequestParam Long idPedido, @RequestParam String nuevoEstatus) {
-        LOG.info("<<<<<actualizarEstatusPedido() -> "+idPedido);
+        LOG.info("<<<<<actualizarEstatusPedido() -> " + idPedido);
         ResponseEntity<ResponseBody<Void>> res = null;
         try {
-            tpedidosService.actualizarEstatusPedido(idPedido,nuevoEstatus);
+            tpedidosService.actualizarEstatusPedido(idPedido, nuevoEstatus);
             res = Utils.response200OK("Pedido actualizado");
         } catch (Exception e) {
             res = Utils.response(HttpStatus.BAD_REQUEST, "Error al crear la solicitud", null);
@@ -102,11 +103,11 @@ public class TpedidosEndpoint {
     */
     @PostMapping("/responderSolicitarCancelacion")
     public ResponseEntity<ResponseBody<Void>> responderSolicitarCancelacion(@RequestParam Long idPedido, @RequestBody String respuesta) {
-        LOG.info("<<<<<responderSolicitarCancelacion() -> "+respuesta);
+        LOG.info("<<<<<responderSolicitarCancelacion() -> " + respuesta);
         JSONObject respuestaSolicitud = new JSONObject(respuesta);
         ResponseEntity<ResponseBody<Void>> res = null;
         try {
-            TpedidosDTO pedido= tpedidosService.responderSolicitudCancelacion(idPedido,respuestaSolicitud);
+            TpedidosDTO pedido = tpedidosService.responderSolicitudCancelacion(idPedido, respuestaSolicitud);
             LOG.info(String.valueOf(pedido));
             res = Utils.response200OK("Respuesta enviada");
         } catch (Exception e) {

@@ -30,7 +30,7 @@ public class TcomprasServiceImpl implements TcomprasService {
     public TcomprasDTO buscarCompraPorId(Long idCompra) throws AppException {
         LOG.info("buscarCompraPorId ()");
         TcomprasVO tcomprasVO = null;
-        TcomprasDTO  tcomprasDTO = null;
+        TcomprasDTO tcomprasDTO = null;
         try {
             tcomprasVO = tcomprasRepository.findCompraPorId(idCompra);
             tcomprasDTO = TcomprasBuilder.fromVO(tcomprasVO);
@@ -44,10 +44,10 @@ public class TcomprasServiceImpl implements TcomprasService {
     public List<TpedidosDTO> buscarComprasPorUsuario(Long idUsuario, String estatusPedido) throws AppException {
         LOG.info("buscarComprasPorUsuario ()");
         List<TpedidosVO> tpedidosVOS = null;
-        List<TpedidosDTO>  tpedidosList = new ArrayStack<>();
+        List<TpedidosDTO> tpedidosList = new ArrayStack<>();
         try {
             tpedidosVOS = tpedidosRepository.buscarPedidosPorIdUsuario(idUsuario, estatusPedido);
-            for(TpedidosVO tpedidoVO: tpedidosVOS){
+            for (TpedidosVO tpedidoVO : tpedidosVOS) {
                 TpedidosDTO tpedidosDTO = TpedidosBuilder.fromVO(tpedidoVO);
                 tpedidosList.add(tpedidosDTO);
             }
