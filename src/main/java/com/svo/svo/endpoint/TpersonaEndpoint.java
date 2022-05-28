@@ -4,6 +4,7 @@ import com.svo.svo.model.*;
 import com.svo.svo.other.Utils.AppException;
 import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
+import com.svo.svo.service.TdireccionService;
 import com.svo.svo.service.TpersonaService;
 import com.svo.svo.service.TusuariosService;
 import org.json.JSONObject;
@@ -28,6 +29,9 @@ public class TpersonaEndpoint {
 
     @Autowired
     private TusuariosService tusuariosService;
+
+    @Autowired
+    private TdireccionService tdireccionService;
 
 
         /*Datos para cliente
@@ -78,12 +82,26 @@ public class TpersonaEndpoint {
 //    n_exterior
 //    referencia
     @PostMapping("/updateClientDirecciones")
-    public ResponseEntity<ResponseBody<Void>> updateDirecciones(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data) {
+    public ResponseEntity<ResponseBody<Void>> updateDirecciones(@RequestParam("idPersona") Long idPerson, @RequestParam("index") int index, @RequestBody Map<String, String> data) {
         ResponseEntity<ResponseBody<Void>> res = null;
         LOG.info("updateClient()-> id: {} data: {}", idPerson, data);
         try {
-            tpersonaService.updateUserDirecciones(idPerson, idUser, data);
+            tpersonaService.updateUserDirecciones(idPerson, index, data);
             res = Utils.response(HttpStatus.ACCEPTED, "Informacion de direccion actualizada", null);
+        } catch (Exception e) {
+            res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), null);
+        }
+        return res;
+    }
+
+    @PostMapping("/inicializarDirecciones")
+    public ResponseEntity<ResponseBody<Void>> inicializarDirecciones(@RequestParam("id") Long idPerson) {
+        ResponseEntity<ResponseBody<Void>> res = null;
+        LOG.info("updateClient()-> id: {} data: {}", idPerson);
+        List<TdireccionDTO> listDirecciones = null;
+        try {
+            listDirecciones = tdireccionService.inicializarDirecciones(idPerson);
+            res = Utils.response(HttpStatus.ACCEPTED, "Lista de direcciones", null);
         } catch (Exception e) {
             res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), null);
         }
@@ -96,11 +114,11 @@ public class TpersonaEndpoint {
 //    fecha_vencimiento
 //    cvv
     @PostMapping("/updateClientTarjetas")
-    public ResponseEntity<ResponseBody<Void>> updateTarjetas(@RequestParam("id") Long idPerson, @RequestParam("idUser") Long idUser, @RequestBody Map<String, String> data) {
+    public ResponseEntity<ResponseBody<Void>> updateTarjetas(@RequestParam("id") Long idPerson, @RequestParam("index") int index, @RequestBody Map<String, String> data) {
         ResponseEntity<ResponseBody<Void>> res = null;
         LOG.info("updateClient()-> id: {} data: {}", idPerson, data);
         try {
-            tpersonaService.updateUserTarjetas(idPerson, idUser, data);
+            tpersonaService.updateUserTarjetas(idPerson, index, data);
             res = Utils.response(HttpStatus.ACCEPTED, "Informacion de tarjeta actualizada", null);
         } catch (Exception e) {
             res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), null);

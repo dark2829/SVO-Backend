@@ -10,6 +10,6 @@ import java.util.Map;
 public interface TpersonaService {
     TusuariosVO insertNewUser(String JSON) throws Exception, ParseException;
     void updateUserDatosGenerales(Long id,Long idUser, Map<String, String> data) throws AppException;
-    void updateUserDirecciones(Long id,Long idUser, Map<String, String> data) throws AppException;
-    void updateUserTarjetas(Long id,Long idUser, Map<String, String> data) throws AppException;
+    void updateUserDirecciones(Long idPersona,int index, Map<String, String> data) throws AppException;
+    void updateUserTarjetas(Long id,int index, Map<String, String> data) throws AppException;
 }

@@ -1,9 +1,11 @@
 package com.svo.svo.repository;
 
+import com.svo.svo.model.TpersonaVO;
 import com.svo.svo.model.TusuariosVO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -25,5 +27,7 @@ public interface TusuariosRepository extends JpaRepository<TusuariosVO, Long> {
     Boolean verificarContraseña(String correo, String contrasena);
 
     TusuariosVO findUserByIdEmpleado(Integer idEmpleado);
+
+    List<TusuariosVO> findUsuariosByRol(String tipo);
 
 }

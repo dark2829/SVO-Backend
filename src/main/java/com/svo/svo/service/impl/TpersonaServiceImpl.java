@@ -15,10 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class TpersonaServiceImpl implements TpersonaService {
@@ -56,6 +53,7 @@ public class TpersonaServiceImpl implements TpersonaService {
         TpersonaVO per = new TpersonaVO();
         TusuariosVO user = new TusuariosVO();
         TusuariosVO userExist;
+        List<TdireccionVO> direcciones = new ArrayList<>();
         try{
             JSONObject personObject = new JSONObject(JSON);
             JSONObject userObject = new JSONObject();
@@ -69,7 +67,13 @@ public class TpersonaServiceImpl implements TpersonaService {
                 throw new RuntimeException("Correo ya registrado");
             }else{
                 per.setCorreo(userObject.getString("correo"));
+                for(int i=0;i<3;i++){
+                    direcciones.add(new TdireccionVO());
+                    tdireccionRepository.save(direcciones.get(i));
+                }
+                per.setDireccion(direcciones);
                 tpersonaRepository.save(per);
+                tpersonaRepository.flush();
                 per.setId(tpersonaRepository.findIdByCorreo(per.getCorreo()).getId());
                 user.setId(0L);
                 user.setCorreo(userObject.getString("correo"));
@@ -80,6 +84,8 @@ public class TpersonaServiceImpl implements TpersonaService {
                 user.setId(tusuariosRepository.findIdByCorreo(user.getCorreo()).getId());
             }
             LOG.info(String.valueOf(user));
+            //actualizarDirecciones();
+            //actualizarTarjetas();
 
         }catch (Exception e){
             Utils.raise(e,e.getMessage());
@@ -169,19 +175,17 @@ public class TpersonaServiceImpl implements TpersonaService {
     }
 
     @Override
-    public void updateUserDirecciones(Long id, Long idUser, Map<String, String> data) throws AppException {
+    public void updateUserDirecciones(Long idPersona, int index, Map<String, String> data) throws AppException {
         //Direccion
         TdireccionVO direccion =null;
-        Optional<TusuariosVO> userVO = tusuariosRepository.findById(idUser);
-        Optional<TrolVO> rol= trolRepository.findById(userVO.get().getIdRol().getId());
-        if (!userVO.isPresent()) {
+        Optional <TpersonaVO> persona = Optional.of(tpersonaRepository.getById(idPersona));
+        if (!persona.isPresent()) {
             throw new AppException("No se encuentra la persona");
         }
-
         if(data.containsKey("idDireccion")) {
             direccion = tdireccionRepository.findDireccionById(Long.valueOf(data.get("idDireccion")));
         }else{
-            direccion = new TdireccionVO();
+            throw new RuntimeException("Te falto agregar el idDireccion");
         }
         if(data.containsKey("calle")){
             direccion.setCalle(data.get("calle"));
@@ -207,24 +211,38 @@ public class TpersonaServiceImpl implements TpersonaService {
         if(data.containsKey("referencia")){
             direccion.setReferencia(data.get("referencia"));
         }
-        if(!data.containsKey("idDireccion")){
-            tdireccionRepository.save(direccion);
-            userVO.get().getIdPersona().getDireccion().add(direccion);
-        }else{
-            tdireccionRepository.save(direccion);
-        }
-        tpersonaRepository.save(userVO.get().getIdPersona());
+        tdireccionRepository.save(direccion);
+        persona.get().getDireccion().set(index,direccion);
+        tpersonaRepository.save(persona.get());
         tpersonaRepository.flush();
-        tusuariosRepository.save(userVO.get());
 
     }
 
+    //metodo para actualizar usuarios anteriores
+    public void actualizarDirecciones() throws AppException {
+        List<TusuariosVO> usuarios = tusuariosRepository.findUsuariosByRol("Cliente");
+        TpersonaVO persona;
+        try{
+            for(TusuariosVO usuario: usuarios){
+                List<TdireccionVO> direccionesNuevas = new ArrayList<>();
+                persona = usuario.getIdPersona();
+                for(int i=0;i<3;i++){
+                    direccionesNuevas.add(new TdireccionVO());
+                    tdireccionRepository.save(direccionesNuevas.get(i));
+                }
+                persona.setDireccion(direccionesNuevas);
+                tpersonaRepository.saveAndFlush(persona);
+            }
+        }catch (Exception e){
+            Utils.raise(e,"Error agregando direccion vacias");
+        }
+    }
+
     @Override
-    public void updateUserTarjetas(Long id, Long idUser, Map<String, String> data) throws AppException {
+    public void updateUserTarjetas(Long idPersona, int index, Map<String, String> data) throws AppException {
         TtarjetasVO tarjeta = null;
-        Optional<TusuariosVO> userVO = tusuariosRepository.findById(idUser);
-        Optional<TrolVO> rol= trolRepository.findById(userVO.get().getIdRol().getId());
-        if (!userVO.isPresent()) {
+        Optional <TpersonaVO> persona = Optional.of(tpersonaRepository.getById(idPersona));
+        if (!persona.isPresent()) {
             throw new AppException("No se encuentra la persona");
         }
         //tarjetas
@@ -245,14 +263,29 @@ public class TpersonaServiceImpl implements TpersonaService {
         if(data.containsKey("cvv")){
             tarjeta.setCvv(Integer.parseInt(data.get("cvv")));
         }
-        if(!data.containsKey("idTarjeta")){
-            ttarjetasRepository.save(tarjeta);
-            userVO.get().getIdPersona().getTarjeta().add(tarjeta);
-        }else{
-            ttarjetasRepository.save(tarjeta);
-        }
-        tpersonaRepository.save(userVO.get().getIdPersona());
+        ttarjetasRepository.save(tarjeta);
+        persona.get().getTarjeta().add(tarjeta);
+        tpersonaRepository.save(persona.get());
         tpersonaRepository.flush();
-        tusuariosRepository.save(userVO.get());
+    }
+
+    //metodo para actualizar usuarios anteriores
+    public void actualizarTarjetas() throws AppException {
+        List<TusuariosVO> usuarios = tusuariosRepository.findUsuariosByRol("Cliente");
+        TpersonaVO persona;
+        try{
+            for(TusuariosVO usuario: usuarios){
+                List<TtarjetasVO> tarjetasNuevas = new ArrayList<>();
+                persona = usuario.getIdPersona();
+                for(int i=0;i<3;i++){
+                    tarjetasNuevas.add(new TtarjetasVO());
+                    ttarjetasRepository.save(tarjetasNuevas.get(i));
+                }
+                persona.setTarjeta(tarjetasNuevas);
+                tpersonaRepository.saveAndFlush(persona);
+            }
+        }catch (Exception e){
+            Utils.raise(e,"Error agregando tarjetas vacias");
+        }
     }
 }

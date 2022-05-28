@@ -19,6 +19,7 @@ import java.util.List;
         @NamedQuery(name = "TusuariosVO.findNoEmpleado", query = "select u from TusuariosVO u where u.idEmpleado.no_empleado =: noEmpleado"),
         @NamedQuery(name = "TusuariosVO.findByNoEmpleado", query = "select u from TusuariosVO u where u.idEmpleado.no_empleado =: noEmpleado"),
         @NamedQuery(name = "TusuariosVO.findUserByIdEmpleado", query = "select u from TusuariosVO u where u.idEmpleado.id =: idEmpleado"),
+        @NamedQuery(name = "TusuariosVO.findUsuariosByRol", query = "select u from TusuariosVO  u where u.idRol.tipo=: tipo")
 
 
 
