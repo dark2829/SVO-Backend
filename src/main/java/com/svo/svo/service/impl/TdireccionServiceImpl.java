@@ -51,21 +51,4 @@ public class TdireccionServiceImpl implements TdireccionService {
         }
     }
 
-    @Override
-    public List<TdireccionDTO> inicializarDirecciones(Long idPersona) throws AppException {
-        try {
-            TpersonaVO persona = tpersonaRepository.getById(idPersona);
-            List<TdireccionVO> direcciones = new ArrayList<>();
-
-            for(int i=0;i<3;i++){
-                direcciones.add(null);
-            }
-            persona.setDireccion(direcciones);
-            tpersonaRepository.save(persona);
-            LOG.info("numero de dirc"+String.valueOf(persona));
-        }catch (Exception e){
-            Utils.raise(e,"Error al inicializar direcciones");
-        }
-        return null;
-    }
 }

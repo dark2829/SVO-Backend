@@ -19,7 +19,7 @@ public class TpersonaVO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String foto;
+    private byte[] foto;
     private String nombre;
     private String apellido_paterno;
     private String apellido_materno;
@@ -50,11 +50,11 @@ public class TpersonaVO implements Serializable {
         this.id = id;
     }
 
-    public String getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 

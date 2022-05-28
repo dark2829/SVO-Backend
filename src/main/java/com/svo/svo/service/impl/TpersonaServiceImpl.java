@@ -269,6 +269,20 @@ public class TpersonaServiceImpl implements TpersonaService {
         tpersonaRepository.flush();
     }
 
+    @Override
+    public byte[] actualizarFotoPerfil(Long idPersona, byte[] img) throws AppException {
+        Optional <TpersonaVO> persona = Optional.of(tpersonaRepository.getById(idPersona));
+        byte[] img1 =null;
+        try {
+            persona.get().setFoto(img);
+            tpersonaRepository.save(persona.get());
+            img1=persona.get().getFoto();
+        }catch (Exception e){
+            Utils.raise(e,"Error al inserta foto de perfil");
+        }
+        return img1;
+    }
+
     //metodo para actualizar usuarios anteriores
     public void actualizarTarjetas() throws AppException {
         List<TusuariosVO> usuarios = tusuariosRepository.findUsuariosByRol("Cliente");

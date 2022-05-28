@@ -7,8 +7,5 @@ import com.svo.svo.other.Utils.AppException;
 import java.util.List;
 
 public interface TdireccionService {
-
-
     void deleteDireccion(Long idDireccion, Long idPersona) throws AppException;
-    List<TdireccionDTO> inicializarDirecciones(Long idPersona) throws AppException;
 }

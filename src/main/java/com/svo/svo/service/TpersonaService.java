@@ -12,4 +12,5 @@ public interface TpersonaService {
     void updateUserDatosGenerales(Long id,Long idUser, Map<String, String> data) throws AppException;
     void updateUserDirecciones(Long idPersona,int index, Map<String, String> data) throws AppException;
     void updateUserTarjetas(Long id,int index, Map<String, String> data) throws AppException;
+    byte[] actualizarFotoPerfil(Long idPersona, byte[] img) throws AppException;
 }
