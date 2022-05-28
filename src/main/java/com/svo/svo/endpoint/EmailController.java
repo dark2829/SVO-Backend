@@ -1,6 +1,7 @@
 package com.svo.svo.endpoint;
 
 import com.svo.svo.model.EmailValuesDTO;
+import com.svo.svo.model.PedidoValuesDTO;
 import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.repository.TusuariosRepository;
@@ -34,6 +35,19 @@ public class EmailController {
         try {
             emailService.sendEmailTemplate(dto);
             res = Utils.response200OK("Correo enviado con exito");
+        } catch (Exception e) {
+            res = Utils.response(HttpStatus.NOT_FOUND, e.getMessage(), null);
+        }
+
+        return res;
+    }
+
+    @PostMapping("/email/sendEmailResponseSolicitud")
+    public ResponseEntity<ResponseBody<String>> sendEmailResponseSolicitud(@RequestBody PedidoValuesDTO dto) {
+        ResponseEntity<ResponseBody<String>> res = null;
+        try {
+            emailService.sendEmailResponseSolicitud(dto);
+            res = Utils.response200OK("Correo de respuesta de solicitud enviado con exito");
         } catch (Exception e) {
             res = Utils.response(HttpStatus.NOT_FOUND, e.getMessage(), null);
         }
