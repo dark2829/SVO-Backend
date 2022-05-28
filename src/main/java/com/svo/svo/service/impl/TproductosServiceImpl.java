@@ -10,6 +10,7 @@ import com.svo.svo.service.TproductosService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -169,7 +170,7 @@ public class TproductosServiceImpl implements TproductosService {
     @Override
     public void anadirFavoritos(Long idProducto, Long idUsuario) throws AppException {
         TproductosVO producto = null;
-        TusuariosVO usuario =null;
+        TusuariosVO usuario =new TusuariosVO();
         try{
             List<TproductosVO> listProducto = new ArrayList<>();
             producto = tproductosRepository.findProductoById(idProducto);
@@ -177,11 +178,10 @@ public class TproductosServiceImpl implements TproductosService {
             listProducto= usuario.getProductosFavoritos();
             listProducto.add(producto);
             usuario.setProductosFavoritos(listProducto);
-            tusuariosRepository.save(usuario);
-            tusuariosRepository.flush();
+            tusuariosRepository.saveAndFlush(usuario);
 
-        }catch (Exception e){
-            Utils.raise(e,"Error al agregar agregar a carrito");
+        }catch (DataIntegrityViolationException e){
+            Utils.raise(e,"Error al agregar un producto a favopritos");
         }
     }
 

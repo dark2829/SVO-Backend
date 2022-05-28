@@ -42,8 +42,8 @@ public class TusuariosVO implements Serializable {
     @ManyToMany
     @JoinTable(
             name = "tfavoritos",
-            joinColumns = @JoinColumn(name = "tproductos_id"),
-            inverseJoinColumns = @JoinColumn(name = "tusuarios_id"))
+            joinColumns = @JoinColumn(name = "tusuarios_id"),
+            inverseJoinColumns = @JoinColumn(name = "tproductos_id"))
     private List<TproductosVO> productosFavoritos = new ArrayList<TproductosVO>();
 
 

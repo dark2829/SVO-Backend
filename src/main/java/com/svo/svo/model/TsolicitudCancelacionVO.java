@@ -1,5 +1,8 @@
 package com.svo.svo.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
 
 @Entity
@@ -45,5 +48,15 @@ public class TsolicitudCancelacionVO {
 
     public void setMotivo_resp(String motivo_resp) {
         this.motivo_resp = motivo_resp;
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

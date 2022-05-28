@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TpedidosServiceImpl implements TpedidosService {
@@ -113,6 +114,9 @@ public class TpedidosServiceImpl implements TpedidosService {
             solicitud.setEstatus(respuestaSolicitud.getString("estatus"));
             tsolicitudCancelacionRepository.save(solicitud);
             pedido.setSolicitudCancelacion(solicitud);
+            if(Objects.equals(pedido.getSolicitudCancelacion().getEstatus(), "Aceptado")){
+                pedido.setEstatus("Cancelado");
+            }
             tpedidosRepository.save(pedido);
             tpedidosDTO = TpedidosBuilder.fromVO(pedido);
         } catch (Exception e) {
