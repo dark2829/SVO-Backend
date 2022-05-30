@@ -240,7 +240,7 @@ public class TpersonaServiceImpl implements TpersonaService {
 
     @Override
     public void updateUserTarjetas(Long idPersona, int index, Map<String, String> data) throws AppException {
-        TtarjetasVO tarjeta = null;
+        TtarjetasVO tarjeta = new TtarjetasVO();
         Optional <TpersonaVO> persona = Optional.of(tpersonaRepository.getById(idPersona));
         if (!persona.isPresent()) {
             throw new AppException("No se encuentra la persona");
@@ -248,8 +248,6 @@ public class TpersonaServiceImpl implements TpersonaService {
         //tarjetas
         if(data.containsKey("idTarjeta")) {
             tarjeta = ttarjetasRepository.findTarjetaById(Long.valueOf(data.get("idTarjeta")));
-        }else{
-            tarjeta = new TtarjetasVO();
         }
         if(data.containsKey("nombre_propietario")){
             tarjeta.setNombre_propietario(data.get("nombre_propietario"));
@@ -264,7 +262,7 @@ public class TpersonaServiceImpl implements TpersonaService {
             tarjeta.setCvv(Integer.parseInt(data.get("cvv")));
         }
         ttarjetasRepository.save(tarjeta);
-        persona.get().getTarjeta().add(tarjeta);
+        persona.get().getTarjeta().set(index,tarjeta);
         tpersonaRepository.save(persona.get());
         tpersonaRepository.flush();
     }

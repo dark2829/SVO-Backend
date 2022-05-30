@@ -238,7 +238,7 @@ public class TcarritoEndpoint {
             }
             compraUsuario.setCarrito(carritoActualizado);
 
-            LOG.error("lista de ordenes" + listOrdenes);
+            LOG.info("lista de ordenes" + listOrdenes);
             res = Utils.response(HttpStatus.ACCEPTED, msj, compraUsuario);
         } catch (Exception e) {
             Utils.raise(e, "Error al actualizar carrito");
