@@ -73,12 +73,12 @@ public class TpersonaEndpoint {
     }
 
     /*url:idPerson:number
-      body    img : base64
+      body    foto : base64
      */
     @PostMapping("/actualizarFotoPerfil")
-    public ResponseEntity<ResponseBody<byte[]>> actualizarFotoPerfil(@RequestParam("idPerson") Long idPerson, @RequestBody byte[] img) {
+    public ResponseEntity<ResponseBody<byte[]>> actualizarFotoPerfil(@RequestParam("idPerson") Long idPerson, @RequestBody TpersonaDTO img) {
         ResponseEntity<ResponseBody<byte[]>> res = null;
-        LOG.info("actualizarFotoPerfil()-> id: {}", idPerson);
+        LOG.info("actualizarFotoPerfil()-> id: {}", img);
         byte[] fotoPerfil=null;
         try {
             fotoPerfil =tpersonaService.actualizarFotoPerfil(idPerson, img);
