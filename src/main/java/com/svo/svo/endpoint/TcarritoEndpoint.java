@@ -291,10 +291,10 @@ public class TcarritoEndpoint {
     }
     */
     @PostMapping("/guardarCompra")
-    public ResponseEntity<ResponseBody<TcomprasVO>> guardarCompra(@RequestParam Long idUsuario, @RequestBody Map<String, String> data) throws ParseException, AppException {
+    public ResponseEntity<ResponseBody<TpedidosVO>> guardarCompra(@RequestParam Long idUsuario, @RequestBody Map<String, String> data) throws ParseException, AppException {
         GenerateCodigoCompra codigoCompraNew = new GenerateCodigoCompra();
         TcomprasVO newCompra = findCompras(idUsuario);
-        ResponseEntity<ResponseBody<TcomprasVO>> res = null;
+        ResponseEntity<ResponseBody<TpedidosVO>> res = null;
         String fechaVenta = data.get("fecha_venta");
         Date date = new SimpleDateFormat("dd-MM-yyyy").parse(fechaVenta);
         TpagosVO pago = new TpagosVO();
@@ -359,7 +359,7 @@ public class TcarritoEndpoint {
             //elimina de lista ordenes
             listOrdenes.remove(idx);
             idx = 0;
-            res = Utils.response(HttpStatus.ACCEPTED, "Se registro compra correctamente", newCompra);
+            res = Utils.response(HttpStatus.ACCEPTED, "Se registro compra correctamente", pedido);
         } catch (Exception e) {
             res = Utils.response(HttpStatus.BAD_REQUEST, e.getMessage(), null);
         }
