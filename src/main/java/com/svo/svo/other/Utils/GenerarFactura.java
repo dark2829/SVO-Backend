@@ -122,7 +122,7 @@ public class GenerarFactura {
         table.addCell(createCell(pedido.getIdCompra().getDireccion(), fontText, Element.ALIGN_MIDDLE, Element.ALIGN_LEFT, 6, 1));
 
 
-        table.addCell(createCell("Lista de productos", fontText, Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, 1, 5));
+        table.addCell(createCell("Lista de productos", fontText, Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, 1, pedido.getIdCompra().getCarrito().size()+2));
 
         table.addCell(createCell("Código de producto", fontText, Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, 1, 1));
         table.addCell(createCell("Descripcion del producto", fontText, Element.ALIGN_MIDDLE, Element.ALIGN_CENTER, 2, 1));
