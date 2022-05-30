@@ -139,4 +139,16 @@ public class TpedidosServiceImpl implements TpedidosService {
         }
 
     }
+
+    @Override
+    public List<TpedidosDTO> buscarPedidoPorCodigoCompra(String codigoCompra) throws AppException {
+        List<TpedidosVO> pedidosEncontrados = new ArrayList<>();
+        List<TpedidosDTO> tpedidosDTOList = new ArrayList<>();
+        pedidosEncontrados = tpedidosRepository.buscarPedidoPorCodigoCompra("%"+codigoCompra+"%");
+        for (TpedidosVO tpedidosVO1 : pedidosEncontrados) {
+                TpedidosDTO tpedidosDTO = TpedidosBuilder.fromVO(tpedidosVO1);
+                tpedidosDTOList.add(tpedidosDTO);
+        }
+        return tpedidosDTOList;
+    }
 }

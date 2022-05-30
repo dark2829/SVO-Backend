@@ -16,5 +16,6 @@ public interface TpedidosService {
     TpedidosDTO buscarPedidoPorId(Long idPedido) throws AppException;
     TpedidosDTO responderSolicitudCancelacion(Long idPedido, JSONObject respuestaSolicitud) throws AppException;
     void actualizarEstatusPedido(Long idPedido, String estatus) throws  AppException;
+    List<TpedidosDTO> buscarPedidoPorCodigoCompra(String codigoCompra) throws AppException;
 }
 

@@ -11,10 +11,12 @@ import java.util.Date;
 @Entity
 @Table(name="tpedidos")
 @NamedQueries({
-        @NamedQuery(name = "TpedidosVO.buscarTodosPedidos", query = "select p from TpedidosVO p"),
+        @NamedQuery(name = "TpedidosVO.buscarTodosPedidos", query = "select p from TpedidosVO p order by p.fecha_entrega asc "),
         @NamedQuery(name = "TpedidosVO.buscarPedidoPorIdCompra", query = "select p from TpedidosVO p where p.idCompra.id=: idCompra"),
         @NamedQuery(name = "TpedidosVO.buscarPedidoPorId", query = "select p from TpedidosVO p where p.id=: idPedido"),
         @NamedQuery(name = "TpedidosVO.buscarPedidosPorIdUsuario", query = "select p from TpedidosVO p where p.idCompra.idUsuario.id=: idUsuario and p.estatus=: estatusPedido"),
+        @NamedQuery(name = "TpedidosVO.buscarPedidoPorCodigoCompra", query = "select p from TpedidosVO p where p.idCompra.codigo_compra like :codigoCompra"),
+
 
 
 

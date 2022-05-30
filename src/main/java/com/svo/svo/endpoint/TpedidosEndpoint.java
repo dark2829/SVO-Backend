@@ -152,4 +152,22 @@ public class TpedidosEndpoint {
         exporter.Export(response);
 
     }
+
+    @GetMapping("/buscarPedidoPorCodigoCompra")
+    public ResponseEntity<ResponseBody<List<TpedidosDTO>>> buscarPedidoPorCodigoCompra(@RequestParam("codigo_Compra") String codigoCompra) throws AppException {
+        LOG.info("buscarPedidoPorCodigoCompra(): " + codigoCompra);
+        List<TpedidosDTO> listPedidosDTO = null;
+        ResponseEntity<ResponseBody<List<TpedidosDTO>>> res = null;
+        try {
+            listPedidosDTO = tpedidosService.buscarPedidoPorCodigoCompra(codigoCompra);
+            if (!listPedidosDTO.isEmpty()) {
+                res = Utils.response(HttpStatus.ACCEPTED, "PEDIDO ENCONTRADO", listPedidosDTO);
+            } else {
+                res = Utils.response(HttpStatus.BAD_REQUEST, "Pedido no encontrada", null);
+            }
+        } catch (AppException e) {
+            Utils.raise(e, "Error al buscar pedido");
+        }
+        return res;
+    }
 }

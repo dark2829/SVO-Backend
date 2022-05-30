@@ -13,5 +13,6 @@ public interface TpedidosRepository extends JpaRepository<TpedidosVO,Long> {
     TpedidosVO buscarPedidoPorIdCompra(Long idCompra);
     TpedidosVO buscarPedidoPorId(Long idPedido);
     List<TpedidosVO> buscarPedidosPorIdUsuario(Long idUsuario, String estatusPedido);
+    List<TpedidosVO> buscarPedidoPorCodigoCompra(String codigoCompra);
 
 }
