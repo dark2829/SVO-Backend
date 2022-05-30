@@ -1,10 +1,9 @@
 package com.svo.svo.endpoint;
 
-import com.svo.svo.model.TcomprasDTO;
-import com.svo.svo.model.TpedidosDTO;
-import com.svo.svo.model.TproductosDTO;
-import com.svo.svo.model.TsolicitudCancelacionDTO;
+import com.lowagie.text.DocumentException;
+import com.svo.svo.model.*;
 import com.svo.svo.other.Utils.AppException;
+import com.svo.svo.other.Utils.GenerarFactura;
 import com.svo.svo.other.Utils.ResponseBody;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.service.TpedidosService;
@@ -18,7 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/pedidos")
@@ -128,5 +132,24 @@ public class TpedidosEndpoint {
             res = Utils.response(HttpStatus.BAD_REQUEST, "Error al responder la solicitud", null);
         }
         return res;
+    }
+    //Exporta en Pdf,
+    //idPedido:number
+    @GetMapping("/DescargarFactura/exportPdf")
+    public void ExportPDF(@RequestParam Long idPedido, HttpServletResponse response) throws DocumentException, IOException, AppException, java.io.IOException{
+        response.setContentType("aplication/pdf");
+        Long idPedido1= idPedido;
+        Date objDate = new Date();
+        String strDateFormat = "yyyy-MM-dd_HH:mm:ss";
+        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
+        String headerKey ="Content-Disposition";
+        String headerValue = "attachment; filename=factura_"+objSDF.format(objDate)+".pdf";
+        response.setHeader(headerKey, headerValue);
+        TpedidosDTO pedido = tpedidosService.buscarPedidoPorId(idPedido);
+        TpedidosVO tpedidosVO = TpedidosBuilder.fromDTO(pedido);
+        GenerarFactura exporter = new GenerarFactura(tpedidosVO);
+
+        exporter.Export(response);
+
     }
 }
