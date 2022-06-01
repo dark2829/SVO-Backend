@@ -16,6 +16,9 @@ public interface TproductosService {
 
     List<TproductosDTO> findAllProductos() throws Exception;
     List<TproductosDTO> findTipeProductos(String tipo) throws Exception;
+
+    List<TproductosDTO> busquedaProductos(String nombre) throws Exception;
+
     List<TproductosDTO> findRealProductos() throws Exception;
 
     TproductosVO findProductById(Long id) throws AppException;

@@ -321,7 +321,6 @@ public class TcarritoEndpoint {
                 //guardar productos a tcarrito
                 for (TcarritoVO productos : newCompra.getCarrito()) {
                     //va a hasta producto y le resta la cantidad comprada
-                    LOG.info("PR1" + productos.getIdProducto().getCantidad() + " - " + productos.getCantidad());
                     productos.getIdProducto().setCantidad(productos.getIdProducto().getCantidad() - productos.getCantidad());
                     if (productos.getIdProducto().getCantidad() == 0) {
                         productos.getIdProducto().setEstatus("Agotado");

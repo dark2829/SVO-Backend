@@ -11,6 +11,7 @@ import java.io.Serializable;
 @NamedQueries({
         @NamedQuery(name = "TproductosVO.findAllProductos", query = "select p from TproductosVO p"),
         @NamedQuery(name = "TproductosVO.findStockBajo", query = "select p from TproductosVO p where p.cantidad<=5"),
+        @NamedQuery(name = "TproductosVO.busquedaProductos", query = "select p from TproductosVO p where p.nombre like: nombre or p.categoria like: nombre or p.descripcion like: nombre"),
 })
 public class TproductosVO implements Serializable {
     @Id

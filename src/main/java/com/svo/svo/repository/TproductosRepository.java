@@ -13,6 +13,8 @@ public interface TproductosRepository extends JpaRepository<TproductosVO, Long> 
 
     List<TproductosVO> findStockBajo();
 
+    List<TproductosVO> busquedaProductos(String nombre);
+
     TproductosVO findProductoById(Long id);
 
 

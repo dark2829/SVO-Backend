@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 public class GenerateCodigoCompra {
@@ -32,7 +33,8 @@ public class GenerateCodigoCompra {
 
     public String generarCodigo(String nombre, String apePa, String apeMa, String fechaCompra) throws ParseException {
         Random random = new Random();
-        String codigo = nombre.substring(0, 1) + apePa.substring(0, 1) + apeMa.substring(0, 1) + fechaCompra.substring(0, 2) +
+        String v3 = apeMa == null ? apePa.substring(1, 2).toUpperCase(Locale.ROOT) : apeMa.substring(0, 1);
+        String codigo = nombre.substring(0, 1) + apePa.substring(0, 1) + v3 + fechaCompra.substring(0, 2) +
                 fechaCompra.substring(3, 5) + random.nextInt(99);
 
         return codigo;

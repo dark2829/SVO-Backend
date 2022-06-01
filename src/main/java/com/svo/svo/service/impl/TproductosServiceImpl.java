@@ -139,6 +139,23 @@ public class TproductosServiceImpl implements TproductosService {
     }
 
     @Override
+    public List<TproductosDTO> busquedaProductos(String nombre) throws Exception {
+        List<TproductosDTO> listProductos = null;
+        LOG.info(">>busquedaProductos()");
+        try {
+            List<TproductosVO> tproductosVOList = tproductosRepository.busquedaProductos("%"+nombre+"%");
+            listProductos = new ArrayList<>();
+            for (TproductosVO tproductosVO1 : tproductosVOList) {
+                TproductosDTO tproductosDTO = TproductosBuilder.fromVO(tproductosVO1);
+                listProductos.add(tproductosDTO);
+            }
+        } catch (Exception e) {
+            Utils.raise(e, "Error en buscar productos");
+        }
+        return listProductos;
+    }
+
+    @Override
     public TproductosVO findProductById(Long id) throws AppException {
         LOG.info("findProductById ()");
         TproductosVO tproductosVO = null;

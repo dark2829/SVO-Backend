@@ -118,6 +118,20 @@ public class TproductosEndPoint {
         return res;
     }
 
+    @GetMapping("/busquedaProductos")
+    public ResponseEntity<ResponseBody<List<TproductosDTO>>> busquedaProductos(@RequestParam String nombre) throws Exception {
+        List<TproductosDTO> listProductos = null;
+        ResponseEntity<ResponseBody<List<TproductosDTO>>> res = null;
+        LOG.info("busquedaProductos()");
+        try {
+            listProductos = tproductosService.busquedaProductos(nombre);
+            res = Utils.response200OK("Lista de productos encontrados", listProductos);
+        } catch (Exception e) {
+            Utils.raise(e, "Error al buscar todos los productos");
+        }
+        return res;
+    }
+
     @GetMapping("/findAllProductos")
     public ResponseEntity<ResponseBody<List<TproductosDTO>>> findAllProveedores() throws AppException {
         List<TproductosDTO> listProductos = null;
