@@ -127,7 +127,7 @@ public class TproductosServiceImpl implements TproductosService {
             List<TproductosVO> tproductosVOList = tproductosRepository.findAllProductos();
             listProductos = new ArrayList<>();
             for (TproductosVO tproductosVO1 : tproductosVOList) {
-                if(tproductosVO1.getCategoria().equals(tipo)){
+                if(tproductosVO1.getCategoria().equals(tipo) && tproductosVO1.getCantidad() != 0){
                     TproductosDTO tproductosDTO = TproductosBuilder.fromVO(tproductosVO1);
                     listProductos.add(tproductosDTO);
                 }
