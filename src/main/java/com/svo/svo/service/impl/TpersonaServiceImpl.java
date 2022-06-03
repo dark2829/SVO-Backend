@@ -64,7 +64,7 @@ public class TpersonaServiceImpl implements TpersonaService {
             per.setApellido_paterno(personObject.getString("apellido_paterno"));
             userExist = tusuariosRepository.findCorreo(userObject.getString("correo"));
             if(userExist != null){
-                throw new RuntimeException("Correo ya registrado");
+                throw new RuntimeException("Correo registrado, ingrese un correo distinto");
             }else{
                 per.setCorreo(userObject.getString("correo"));
                 for(int i=0;i<3;i++){

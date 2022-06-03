@@ -113,7 +113,7 @@ public class AuthController {
             user.setTokenAccess(tokenDTO.getTokenDeAcceso());
             user.setRol(authentication.getAuthorities());
         } catch (Exception e) {
-            Utils.raise(e, "Contraseña incorrecta, ¿Desea recuperar contraseña?” Presione recuperar contraseña");
+            Utils.raise(e, "Contraseña incorrecta, ¿Desea recuperar contraseña?”\n Presione recuperar contraseña");
         }
         return user;
     }
