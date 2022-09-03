@@ -46,22 +46,44 @@ public class TproductosEndPoint {
         LOG.info("<<<<<insertProducto() -> ");
         ResponseEntity<ResponseBody<Void>> res = null;
         try {
-            tproductosService.insert(tproductosDTO);
-            res = Utils.response200OK("Producto agregado");
+            if(!productoDuplicate(Long.valueOf(0), tproductosDTO.getCodigo_prod())){
+                tproductosService.insert(tproductosDTO);
+                res = Utils.response200OK("Producto agregado");
+            }else{
+                res = Utils.response(HttpStatus.BAD_REQUEST, "El codigo de producto ya a sido registrado", null);
+            }
         } catch (Exception e) {
             res = Utils.response(HttpStatus.BAD_REQUEST, "Error al guardar producto", null);
         }
         return res;
     }
 
+    public boolean productoDuplicate(Long id,String codProducto){
+        boolean encontrado = false;
+        TproductosVO productoEncontrado = null;
+        try{
+            productoEncontrado = tproductosService.findProductoByCodigo(id,codProducto);
+            if(productoEncontrado != null){
+                encontrado = true;
+
+            }
+        } catch (AppException e) {
+            e.printStackTrace();
+        }
+        return encontrado;
+    }
     @PreAuthorize("hasAuthority('Administrador') or hasAuthority('Empleado')")
     @PostMapping("/update")
     public ResponseEntity<ResponseBody<Void>> update(@RequestParam("id") Long id, @RequestBody TproductosDTO tproductosDTO) throws AppException {
         LOG.info("update()->id: {} data: {}", id, tproductosDTO);
         ResponseEntity<ResponseBody<Void>> res = null;
         try {
-            tproductosService.update(id, tproductosDTO);
-            res = Utils.response200OK("Producto actualizado correctamente");
+            if(!productoDuplicate(id, tproductosDTO.getCodigo_prod())) {
+                tproductosService.update(id, tproductosDTO);
+                res = Utils.response200OK("Producto actualizado correctamente");
+            }else{
+                res = Utils.response(HttpStatus.BAD_REQUEST, "El codigo de producto ya a sido registrado", null);
+            }
         } catch (Exception e) {
             res = Utils.response(HttpStatus.BAD_REQUEST, "Algo fallo al actualizar producto", null);
         }
