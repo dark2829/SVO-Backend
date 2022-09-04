@@ -87,7 +87,7 @@ public class TusuariosServiceImpl implements TusuariosService {
         TusuariosVO user = null;
         try {
             user = tusuariosRepository.findUserById(id);
-            LOG.info("Usuario encontrado: " + user);
+            //LOG.info("Usuario encontrado: " + user);
             if (user == null) {
                 throw new RuntimeException("Usuario no encontrado");
             }

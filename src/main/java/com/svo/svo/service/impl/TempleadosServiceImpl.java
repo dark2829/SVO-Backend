@@ -60,8 +60,6 @@ public class TempleadosServiceImpl implements TempleadosService {
             JSONObject userObject = new JSONObject();
             userObject.put("correo", personObject.remove("correo")).toString();
             userObject.put("contrasena", personObject.remove("contrasena")).toString();
-
-            //buscarq ue el curp no este duplicado
             TempleadosVO empleadoExiste = templeadosRepository.buscarCurpDuplicado(empObject.getString("curp"));
             if (empleadoExiste != null) {
                 throw new RuntimeException("La CURP ya ha sido registrada");
@@ -80,7 +78,7 @@ public class TempleadosServiceImpl implements TempleadosService {
             emp.setId(0);
             emp.setCurp(empObject.getString("curp"));
             emp.setIdPuesto(tpuestoRepository.findPuestoById(empObject.getInt("idPuesto")));
-            emp.setSalario(empObject.getLong("salario"));
+            emp.setSalario(Float.parseFloat(empObject.getString("salario")));
             emp.setEstatus("Activo");
             emp.setIdPersona(per);
             emp.setNo_empleado("0");

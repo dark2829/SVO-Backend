@@ -6,6 +6,7 @@ import com.svo.svo.other.Utils.AppException;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.repository.*;
 import com.svo.svo.service.TpersonaService;
+import jdk.jshell.execution.Util;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +65,7 @@ public class TpersonaServiceImpl implements TpersonaService {
             per.setApellido_paterno(personObject.getString("apellido_paterno"));
             userExist = tusuariosRepository.findCorreo(userObject.getString("correo"));
             if(userExist != null){
-                throw new RuntimeException("Correo registrado, ingrese un correo distinto");
+                throw new RuntimeException("Correo ya registrado, ingrese un correo distinto");
             }else{
                 per.setCorreo(userObject.getString("correo"));
                 for(int i=0;i<3;i++){
@@ -177,44 +178,57 @@ public class TpersonaServiceImpl implements TpersonaService {
     @Override
     public void updateUserDirecciones(Long idPersona, int index, Map<String, String> data) throws AppException {
         //Direccion
-        TdireccionVO direccion =null;
+
+        TdireccionVO direccion = new TdireccionVO();
         Optional <TpersonaVO> persona = Optional.of(tpersonaRepository.getById(idPersona));
         if (!persona.isPresent()) {
             throw new AppException("No se encuentra la persona");
         }
-        if(data.containsKey("idDireccion")) {
-            direccion = tdireccionRepository.findDireccionById(Long.valueOf(data.get("idDireccion")));
-        }else{
-            throw new RuntimeException("Te falto agregar el idDireccion");
+        try{
+            if(data.containsKey("idDireccion")) {
+                direccion = tdireccionRepository.findDireccionById(Long.valueOf(data.get("idDireccion")));
+            }else{
+                throw new RuntimeException("Te falto agregar el idDireccion");
+            }
+
+            if(data.containsKey("calle")){
+                direccion.setCalle(data.get("calle"));
+            }
+            if(data.containsKey("colonia")){
+                direccion.setColonia(data.get("colonia"));
+            }
+            if(data.containsKey("municipio")){
+                direccion.setMunicipio(data.get("municipio"));
+            }
+            if(data.containsKey("estado")){
+                direccion.setEstado(data.get("estado"));
+            }
+            if(data.containsKey("cp")){
+                if((data.get("cp"))!="") {
+                    direccion.setCp(Integer.parseInt(data.get("cp")));
+                }
+            }
+            if(data.containsKey("n_interior")){
+                if(data.get("n_interior") != null) {
+                    direccion.setN_interior(Integer.parseInt(data.get("n_interior")));
+                }
+            }
+            if(data.containsKey("n_exterior")){
+                if(data.get("n_exterior") != "") {
+                    direccion.setN_exterior(Integer.parseInt(data.get("n_exterior")));
+                }
+            }
+            if(data.containsKey("referencia")){
+                direccion.setReferencia(data.get("referencia"));
+            }
+            tdireccionRepository.save(direccion);
+            persona.get().getDireccion().set(index,direccion);
+            tpersonaRepository.save(persona.get());
+            tpersonaRepository.flush();
+        }catch (Exception e){
+            Utils.raise(e,"Error al editar una direccion");
         }
-        if(data.containsKey("calle")){
-            direccion.setCalle(data.get("calle"));
-        }
-        if(data.containsKey("colonia")){
-            direccion.setColonia(data.get("colonia"));
-        }
-        if(data.containsKey("municipio")){
-            direccion.setMunicipio(data.get("municipio"));
-        }
-        if(data.containsKey("estado")){
-            direccion.setEstado(data.get("estado"));
-        }
-        if(data.containsKey("cp")){
-            direccion.setCp(Integer.parseInt(data.get("cp")));
-        }
-        if(data.containsKey("n_interior")){
-            direccion.setN_interior(Integer.parseInt(data.get("n_interior")));
-        }
-        if(data.containsKey("n_exterior")){
-            direccion.setN_exterior(Integer.parseInt(data.get("n_exterior")));
-        }
-        if(data.containsKey("referencia")){
-            direccion.setReferencia(data.get("referencia"));
-        }
-        tdireccionRepository.save(direccion);
-        persona.get().getDireccion().set(index,direccion);
-        tpersonaRepository.save(persona.get());
-        tpersonaRepository.flush();
+
 
     }
 

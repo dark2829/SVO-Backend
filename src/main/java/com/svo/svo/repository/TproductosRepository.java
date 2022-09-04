@@ -17,5 +17,7 @@ public interface TproductosRepository extends JpaRepository<TproductosVO, Long> 
 
     TproductosVO findProductoById(Long id);
 
+    TproductosVO findProductoByCodigoProducto(String codProducto);
+
 
 }

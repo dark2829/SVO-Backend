@@ -30,7 +30,7 @@ public class TproductosServiceImpl implements TproductosService {
 
     @Override
     public void insert(TproductosDTO tproductosDTO) throws Exception {
-        //LOG.info("insert-> producto: {}",tproductosDTO);
+        LOG.info("insert-> producto: {}",tproductosDTO);
         TproductosVO producto = null;
         try {
             producto = TproductosBuilder.fromDTO(tproductosDTO);
@@ -165,6 +165,24 @@ public class TproductosServiceImpl implements TproductosService {
             Utils.raise(e, e.getMessage());
         }
         return tproductosVO;
+    }
+
+    @Override
+    public TproductosVO findProductoByCodigo(Long id, String codProducto) throws AppException {
+        TproductosVO productoCodigoEncontrado = null;
+        TproductosVO productoEncontrado = null;
+        try{
+            if(id != 0){
+                productoEncontrado = tproductosRepository.findProductoById(id);
+                productoCodigoEncontrado = tproductosRepository.findProductoByCodigoProducto(codProducto);
+                if(Objects.equals(productoCodigoEncontrado.getId(), productoEncontrado.getId())){
+                    productoCodigoEncontrado = null;
+                }
+            }
+        }catch (Exception e){
+            Utils.raise(e,"Error al buscar codigo duplicado");
+        }
+        return productoCodigoEncontrado;
     }
 
     @Override

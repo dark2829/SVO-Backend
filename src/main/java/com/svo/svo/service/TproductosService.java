@@ -23,6 +23,8 @@ public interface TproductosService {
 
     TproductosVO findProductById(Long id) throws AppException;
 
+    TproductosVO findProductoByCodigo(Long id,String codProducto) throws AppException;
+
     List<TproductosDTO> findStockBajo() throws AppException;
 
     void anadirFavoritos(Long idProducto, Long idUsuario) throws AppException;
