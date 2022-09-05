@@ -103,14 +103,16 @@ public class TproductosServiceImpl implements TproductosService {
     @Override
     public List<TproductosDTO> findRealProductos() throws Exception {
         List<TproductosDTO> listProductos = null;
-        LOG.info(">>findTipeProductos()");
+        LOG.info(">>findRealProductos()");
         try {
             List<TproductosVO> tproductosVOList = tproductosRepository.findAllProductos();
             listProductos = new ArrayList<>();
             for (TproductosVO tproductosVO1 : tproductosVOList) {
-                if(tproductosVO1.getCantidad() != 0){
-                    TproductosDTO tproductosDTO = TproductosBuilder.fromVO(tproductosVO1);
-                    listProductos.add(tproductosDTO);
+                if(tproductosVO1.getCantidad() == 0 || (Objects.equals(tproductosVO1.getEstatus(),"Agotado") || (Objects.equals(tproductosVO1.getEstatus(),"Inexistente")))){
+                   LOG.info("no entro");
+                }else {
+                	 TproductosDTO tproductosDTO = TproductosBuilder.fromVO(tproductosVO1);
+                     listProductos.add(tproductosDTO);
                 }
             }
         } catch (Exception e) {

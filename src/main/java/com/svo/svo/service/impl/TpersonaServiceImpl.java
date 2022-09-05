@@ -55,6 +55,7 @@ public class TpersonaServiceImpl implements TpersonaService {
         TusuariosVO user = new TusuariosVO();
         TusuariosVO userExist;
         List<TdireccionVO> direcciones = new ArrayList<>();
+        List<TtarjetasVO> tarjetas = new ArrayList<>();
         try{
             JSONObject personObject = new JSONObject(JSON);
             JSONObject userObject = new JSONObject();
@@ -75,6 +76,12 @@ public class TpersonaServiceImpl implements TpersonaService {
                 per.setDireccion(direcciones);
                 tpersonaRepository.save(per);
                 tpersonaRepository.flush();
+                for(int i=0;i<3;i++){
+                    tarjetas.add(new TtarjetasVO());
+                    ttarjetasRepository.save(tarjetas.get(i));
+                }
+                per.setTarjeta(tarjetas);
+                tpersonaRepository.saveAndFlush(per);
                 per.setId(tpersonaRepository.findIdByCorreo(per.getCorreo()).getId());
                 user.setId(0L);
                 user.setCorreo(userObject.getString("correo"));
@@ -121,6 +128,7 @@ public class TpersonaServiceImpl implements TpersonaService {
                 userVO.get().getIdPersona().setApellido_materno(data.get("apellido_materno"));
             }
             if(data.containsKey("fecha_nacimiento")){
+            	LOG.info(data.get("fecha_nacimiento"));
                 if (data.get("fecha_nacimiento") != null){
                     Date fechaN = new SimpleDateFormat("dd/MM/yyyy").parse(data.get("fecha_nacimiento"));
                     LOG.info(String.valueOf(new SimpleDateFormat("DD/MM/yyyy").parse(data.get("fecha_nacimiento"))));
@@ -128,7 +136,10 @@ public class TpersonaServiceImpl implements TpersonaService {
                 }
             }
             if(data.containsKey("genero")){
+            	LOG.info(data.get("genero"));
+            	if(data.get("genero")!= "") {
                 userVO.get().getIdPersona().setGenero(data.get("genero"));
+            	}
             }
             if(data.containsKey("correo")) {
                 correo = data.get("correo");
@@ -151,6 +162,10 @@ public class TpersonaServiceImpl implements TpersonaService {
             if(rol.get().getId() == 2){
                 emp = tusuariosRepository.findIdEmpleadoByIdUser(userVO.get().getId()).getIdEmpleado();
                 if(data.containsKey("curp")){
+                	TempleadosVO empleadoExiste = templeadosRepository.buscarCurpDuplicado(data.get("curp"));
+                    if (empleadoExiste != null) {
+                        throw new RuntimeException("La CURP ya ha sido registrada");
+                    }
                     emp.setCurp(data.get("curp"));
                 }
                 if(data.containsKey("idPuesto")){
