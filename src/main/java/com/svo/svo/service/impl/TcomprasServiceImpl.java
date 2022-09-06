@@ -5,15 +5,15 @@ import com.svo.svo.other.Utils.AppException;
 import com.svo.svo.other.Utils.Utils;
 import com.svo.svo.repository.TcomprasRepository;
 import com.svo.svo.repository.TpedidosRepository;
-import com.svo.svo.repository.TusuariosRepository;
 import com.svo.svo.service.TcomprasService;
-import com.svo.svo.service.TproductosService;
 import org.apache.tomcat.util.digester.ArrayStack;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -56,4 +56,26 @@ public class TcomprasServiceImpl implements TcomprasService {
         }
         return tpedidosList;
     }
+
+	@Override
+	public List<TpedidosDTO> buscarCompraPorFecha(Long idUsuario, String estatusPedido, String fecha)
+			throws AppException {
+		LOG.info("buscarCompraPorFecha ()");
+        List<TpedidosVO> tpedidosVOS = null;
+        List<TpedidosDTO> tpedidosList = new ArrayStack<>();
+        try {
+        	
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(fecha);
+            LOG.info("resturn "+date);
+            tpedidosVOS = tpedidosRepository.buscarCompraPorFecha(idUsuario, estatusPedido,date);
+            for (TpedidosVO tpedidoVO : tpedidosVOS) {
+                TpedidosDTO tpedidosDTO = TpedidosBuilder.fromVO(tpedidoVO);
+                tpedidosList.add(tpedidosDTO);
+            }
+        } catch (Exception e) {
+            Utils.raise(e, e.getMessage());
+        }
+        return tpedidosList;
+		
+	}
 }

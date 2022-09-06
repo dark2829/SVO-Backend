@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -56,6 +57,24 @@ public class TcomprasEndPoint {
         ResponseEntity<ResponseBody<List<TpedidosDTO>>> res = null;
         try {
             tpedidos = tcomprasService.buscarComprasPorUsuario(idUsuario, estatusPedido);
+            if (!tpedidos.isEmpty()) {
+                res = Utils.response(HttpStatus.ACCEPTED, "Compras encontradas", tpedidos);
+            } else {
+                res = Utils.response(HttpStatus.ACCEPTED, "No se encontro ninguna compra", null);
+            }
+        } catch (AppException e) {
+            Utils.raise(e, "Error al buscar compras");
+        }
+        return res;
+    }
+    
+    @GetMapping("/buscarCompraPorFecha")
+    public ResponseEntity<ResponseBody<List<TpedidosDTO>>> buscarCompraPorFecha(@RequestParam("idUsuario") Long idUsuario, @RequestParam("estatus") String estatusPedido, @RequestParam("fecha") String fecha) throws AppException {
+        LOG.info("buscarCompraPorFecha()--> idUsuario: " + idUsuario +"  "+fecha);
+        List<TpedidosDTO> tpedidos = null;
+        ResponseEntity<ResponseBody<List<TpedidosDTO>>> res = null;
+        try {
+            tpedidos = tcomprasService.buscarCompraPorFecha(idUsuario, estatusPedido, fecha);
             if (!tpedidos.isEmpty()) {
                 res = Utils.response(HttpStatus.ACCEPTED, "Compras encontradas", tpedidos);
             } else {

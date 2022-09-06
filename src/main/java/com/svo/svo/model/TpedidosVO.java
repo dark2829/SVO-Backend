@@ -16,6 +16,8 @@ import java.util.Date;
         @NamedQuery(name = "TpedidosVO.buscarPedidoPorId", query = "select p from TpedidosVO p where p.id=: idPedido"),
         @NamedQuery(name = "TpedidosVO.buscarPedidosPorIdUsuario", query = "select p from TpedidosVO p where p.idCompra.idUsuario.id=: idUsuario and p.estatus=: estatusPedido"),
         @NamedQuery(name = "TpedidosVO.buscarPedidoPorCodigoCompra", query = "select p from TpedidosVO p where p.idCompra.codigo_compra like :codigoCompra"),
+        @NamedQuery(name = "TpedidosVO.buscarCompraPorFecha", query = "select p from TpedidosVO p where (p.idCompra.idUsuario.id =: idUsuario and p.estatus =: estatusPedido) and (p.fecha_entrega =: fecha or p.idCompra.fecha_venta =: fecha)"),
+
 
 
 
