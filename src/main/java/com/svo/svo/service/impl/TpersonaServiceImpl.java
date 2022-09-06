@@ -71,10 +71,14 @@ public class TpersonaServiceImpl implements TpersonaService {
                 per.setCorreo(userObject.getString("correo"));
                 for(int i=0;i<3;i++){
                     direcciones.add(new TdireccionVO());
+                    direcciones.get(i).setCp(-1);
+                    direcciones.get(i).setN_exterior(-1);
+                    direcciones.get(i).setN_interior(-1);
+                    LOG.info(""+direcciones.get(i));
                     tdireccionRepository.save(direcciones.get(i));
                 }
                 per.setDireccion(direcciones);
-                tpersonaRepository.save(per);
+               // tpersonaRepository.save(per);
                 tpersonaRepository.flush();
                 for(int i=0;i<3;i++){
                     tarjetas.add(new TtarjetasVO());

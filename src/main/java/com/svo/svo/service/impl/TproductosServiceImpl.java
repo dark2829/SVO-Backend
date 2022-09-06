@@ -109,7 +109,6 @@ public class TproductosServiceImpl implements TproductosService {
             listProductos = new ArrayList<>();
             for (TproductosVO tproductosVO1 : tproductosVOList) {
                 if(tproductosVO1.getCantidad() == 0 || (Objects.equals(tproductosVO1.getEstatus(),"Agotado") || (Objects.equals(tproductosVO1.getEstatus(),"Inexistente")))){
-                   LOG.info("no entro");
                 }else {
                 	 TproductosDTO tproductosDTO = TproductosBuilder.fromVO(tproductosVO1);
                      listProductos.add(tproductosDTO);
@@ -129,13 +128,13 @@ public class TproductosServiceImpl implements TproductosService {
             List<TproductosVO> tproductosVOList = tproductosRepository.findAllProductos();
             listProductos = new ArrayList<>();
             for (TproductosVO tproductosVO1 : tproductosVOList) {
-                if(tproductosVO1.getCategoria().equals(tipo) && tproductosVO1.getCantidad() != 0){
+                if(tproductosVO1.getCategoria().equals(tipo) && tproductosVO1.getCantidad() != 0 && (!Objects.equals(tproductosVO1.getEstatus(),"Agotado") && (!Objects.equals(tproductosVO1.getEstatus(),"Inexistente")))){
                     TproductosDTO tproductosDTO = TproductosBuilder.fromVO(tproductosVO1);
                     listProductos.add(tproductosDTO);
                 }
             }
         } catch (Exception e) {
-            Utils.raise(e, "Error en buscar productos");
+            Utils.raise(e, "Error en buscar productos por categoria");
         }
         return listProductos;
     }
@@ -152,7 +151,7 @@ public class TproductosServiceImpl implements TproductosService {
                 listProductos.add(tproductosDTO);
             }
         } catch (Exception e) {
-            Utils.raise(e, "Error en buscar productos");
+            Utils.raise(e, "Error en buscar productos por busqueda");
         }
         return listProductos;
     }
