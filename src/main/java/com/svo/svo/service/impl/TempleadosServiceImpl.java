@@ -59,6 +59,10 @@ public class TempleadosServiceImpl implements TempleadosService {
             empObject.put("salario", personObject.remove("salario"));
             JSONObject userObject = new JSONObject();
             userObject.put("correo", personObject.remove("correo")).toString();
+            TusuariosVO correoExiste = tusuariosRepository.findIdByCorreo(userObject.getString("correo"));
+            if (correoExiste!= null) {
+                throw new RuntimeException("el correo ya ha sido registrado");
+            }
             userObject.put("contrasena", personObject.remove("contrasena")).toString();
             TempleadosVO empleadoExiste = templeadosRepository.buscarCurpDuplicado(empObject.getString("curp"));
             if (empleadoExiste != null) {

@@ -55,6 +55,7 @@ public class TproductosEndPoint {
         } catch (Exception e) {
             res = Utils.response(HttpStatus.BAD_REQUEST, "Error al guardar producto", null);
         }
+        LOG.info(String.valueOf(productoDuplicate(Long.valueOf(0), tproductosDTO.getCodigo_prod()+String.valueOf(res))));
         return res;
     }
 
@@ -67,8 +68,8 @@ public class TproductosEndPoint {
                 encontrado = true;
 
             }
-        } catch (AppException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            LOG.error(e.getMessage(),e);
         }
         return encontrado;
     }
@@ -87,6 +88,7 @@ public class TproductosEndPoint {
         } catch (Exception e) {
             res = Utils.response(HttpStatus.BAD_REQUEST, "Algo fallo al actualizar producto", null);
         }
+
         return res;
     }
 

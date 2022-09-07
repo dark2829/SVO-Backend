@@ -176,9 +176,15 @@ public class TproductosServiceImpl implements TproductosService {
             if(id != 0){
                 productoEncontrado = tproductosRepository.findProductoById(id);
                 productoCodigoEncontrado = tproductosRepository.findProductoByCodigoProducto(codProducto);
-                if(Objects.equals(productoCodigoEncontrado.getId(), productoEncontrado.getId())){
-                    productoCodigoEncontrado = null;
+                if(productoCodigoEncontrado!=null){
+                    if(Objects.equals(productoCodigoEncontrado.getId(), productoEncontrado.getId())){
+                        productoCodigoEncontrado = null;
+                    }
                 }
+
+            }else{
+                productoCodigoEncontrado = tproductosRepository.findProductoByCodigoProducto(codProducto);
+
             }
         }catch (Exception e){
             Utils.raise(e,"Error al buscar codigo duplicado");
