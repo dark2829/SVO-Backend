@@ -167,7 +167,7 @@ public class TpersonaServiceImpl implements TpersonaService {
                 emp = tusuariosRepository.findIdEmpleadoByIdUser(userVO.get().getId()).getIdEmpleado();
                 if(data.containsKey("curp")){
                 	TempleadosVO empleadoExiste = templeadosRepository.buscarCurpDuplicado(data.get("curp"));
-                    if (empleadoExiste != null) {
+                    if (empleadoExiste != null && !Objects.equals(empleadoExiste.getId(), userVO.get().getIdEmpleado().getId())) {
                         throw new RuntimeException("La CURP ya ha sido registrada");
                     }
                     emp.setCurp(data.get("curp"));
