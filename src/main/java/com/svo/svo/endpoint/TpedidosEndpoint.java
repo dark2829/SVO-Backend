@@ -138,18 +138,23 @@ public class TpedidosEndpoint {
     @GetMapping("/DescargarFactura/exportPdf")
     public void ExportPDF(@RequestParam Long idPedido, HttpServletResponse response) throws DocumentException, IOException, AppException, java.io.IOException{
         response.setContentType("aplication/pdf");
-        Long idPedido1= idPedido;
-        Date objDate = new Date();
-        String strDateFormat = "yyyy-MM-dd_HH:mm:ss";
-        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
-        String headerKey ="Content-Disposition";
-        String headerValue = "attachment; filename=factura_"+objSDF.format(objDate)+".pdf";
-        response.setHeader(headerKey, headerValue);
-        TpedidosDTO pedido = tpedidosService.buscarPedidoPorId(idPedido);
-        TpedidosVO tpedidosVO = TpedidosBuilder.fromDTO(pedido);
-        GenerarFactura exporter = new GenerarFactura(tpedidosVO);
-
-        exporter.Export(response);
+        try {
+        	Long idPedido1= idPedido;
+	        Date objDate = new Date();
+	        String strDateFormat = "yyyy-MM-dd_HH:mm:ss";
+	        SimpleDateFormat objSDF = new SimpleDateFormat(strDateFormat);
+	        String headerKey ="Content-Disposition";
+	        String headerValue = "attachment; filename=factura_"+objSDF.format(objDate)+".pdf";
+	        response.setHeader(headerKey, headerValue);
+	        TpedidosDTO pedido = tpedidosService.buscarPedidoPorId(idPedido);
+	        TpedidosVO tpedidosVO = TpedidosBuilder.fromDTO(pedido);
+	        GenerarFactura exporter = new GenerarFactura(tpedidosVO);
+	
+	        exporter.Export(response);
+        }catch(Exception e) {
+        	Utils.raise(e, e.getMessage());
+        }
+        
 
     }
 
