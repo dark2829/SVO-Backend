@@ -1,19 +1,27 @@
 package com.svo.svo.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="tproductos")
+@Table(name = "tproductos")
 @NamedQueries({
-        //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
+        @NamedQuery(name = "TproductosVO.findAllProductos", query = "select p from TproductosVO p"),
+        @NamedQuery(name = "TproductosVO.findStockBajo", query = "select p from TproductosVO p where p.cantidad<=5"),
+        @NamedQuery(name = "TproductosVO.busquedaProductos", query = "select p from TproductosVO p where (p.nombre like: nombre or p.categoria like: nombre or p.descripcion like: nombre) and (p.cantidad >0 and p.estatus not like 'Agotado' and p.estatus not like 'Inexistente')"),
+        @NamedQuery(name = "TproductosVO.findProductoByCodigoProducto", query = "select p from TproductosVO p where p.codigo_prod =: codProducto"),
+
 })
 public class TproductosVO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String imagen;
-    private  String codigo_prod;
+    @Lob
+    private byte[] imagen;
+    private String codigo_prod;
     private String nombre;
     private String categoria;
     private int cantidad;
@@ -22,7 +30,7 @@ public class TproductosVO implements Serializable {
     private float precio_descuento;
     private String descripcion;
     private String estatus;
-    //productos comprados
+    private int contactado;
 
 
     public Long getId() {
@@ -33,11 +41,11 @@ public class TproductosVO implements Serializable {
         this.id = id;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 
@@ -111,5 +119,22 @@ public class TproductosVO implements Serializable {
 
     public void setEstatus(String estatus) {
         this.estatus = estatus;
+    }
+
+    public int getContactado() {
+        return contactado;
+    }
+
+    public void setContactado(int contactado) {
+        this.contactado = contactado;
+    }
+
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class TproductosDTO {
     private Long id;
-    private String imagen;
-    private  String codigo_prod;
+    private byte[] imagen;
+    private String codigo_prod;
     private String nombre;
     private String categoria;
     private int cantidad;
@@ -15,7 +15,7 @@ public class TproductosDTO {
     private float precio_descuento;
     private String descripcion;
     private String estatus;
-    //productos comprados
+    private int contactado;
 
 
     public Long getId() {
@@ -26,11 +26,11 @@ public class TproductosDTO {
         this.id = id;
     }
 
-    public String getImagen() {
+    public byte[] getImagen() {
         return imagen;
     }
 
-    public void setImagen(String imagen) {
+    public void setImagen(byte[] imagen) {
         this.imagen = imagen;
     }
 
@@ -104,6 +104,14 @@ public class TproductosDTO {
 
     public void setEstatus(String estatus) {
         this.estatus = estatus;
+    }
+
+    public int getContactado() {
+        return contactado;
+    }
+
+    public void setContactado(int contactado) {
+        this.contactado = contactado;
     }
 
     @Override

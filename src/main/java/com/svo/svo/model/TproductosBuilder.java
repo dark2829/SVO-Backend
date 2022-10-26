@@ -19,6 +19,7 @@ public class TproductosBuilder {
         destin.setPrecio_descuento(origen.getPrecio_descuento());
         destin.setDescripcion(origen.getDescripcion());
         destin.setEstatus(origen.getEstatus());
+        destin.setContactado(origen.getContactado());
         return destin;
     }
 
@@ -37,6 +38,8 @@ public class TproductosBuilder {
         destin.setPrecio_descuento(origen.getPrecio_descuento());
         destin.setDescripcion(origen.getDescripcion());
         destin.setEstatus(origen.getEstatus());
+        destin.setContactado(origen.getContactado());
+
         return destin;
     }
 }

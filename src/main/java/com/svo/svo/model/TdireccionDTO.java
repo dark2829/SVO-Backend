@@ -15,7 +15,6 @@ public class TdireccionDTO {
     private int n_exterior;
     private int n_interior;
     private String referencia;
-    private List<TpersonaVO> persona = new ArrayList<TpersonaVO>();
 
 
     public Long getId() {
@@ -88,14 +87,6 @@ public class TdireccionDTO {
 
     public void setReferencia(String referencia) {
         this.referencia = referencia;
-    }
-
-    public List<TpersonaVO> getPersona() {
-        return persona;
-    }
-
-    public void setPersona(List<TpersonaVO> persona) {
-        this.persona = persona;
     }
 
     @Override

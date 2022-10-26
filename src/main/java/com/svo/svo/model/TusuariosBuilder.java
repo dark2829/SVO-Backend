@@ -13,6 +13,7 @@ public class TusuariosBuilder {
         destin.setIdPersona(origen.getIdPersona());
         destin.setIdEmpleado(origen.getIdEmpleado());
         destin.setIdRol(origen.getIdRol());
+        destin.setProductosFavoritos(origen.getProductosFavoritos());
         return destin;
     }
 
@@ -26,6 +27,7 @@ public class TusuariosBuilder {
         destin.setIdPersona(origen.getIdPersona());
         destin.setIdEmpleado(origen.getIdEmpleado());
         destin.setIdRol(origen.getIdRol());
+        destin.setProductosFavoritos(origen.getProductosFavoritos());
         return destin;
     }
 

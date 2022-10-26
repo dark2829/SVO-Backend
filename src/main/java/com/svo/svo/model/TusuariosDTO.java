@@ -3,6 +3,9 @@ package com.svo.svo.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TusuariosDTO {
     private Long id;
     private String correo;
@@ -10,6 +13,8 @@ public class TusuariosDTO {
     private TpersonaVO idPersona;
     private TempleadosVO idEmpleado;
     private TrolVO idRol;
+    private List<TproductosVO> productosFavoritos = new ArrayList<TproductosVO>();
+
 
     public Long getId() {
         return id;
@@ -57,6 +62,14 @@ public class TusuariosDTO {
 
     public void setIdRol(TrolVO idRol) {
         this.idRol = idRol;
+    }
+
+    public List<TproductosVO> getProductosFavoritos() {
+        return productosFavoritos;
+    }
+
+    public void setProductosFavoritos(List<TproductosVO> productosFavoritos) {
+        this.productosFavoritos = productosFavoritos;
     }
 
     @Override

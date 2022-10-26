@@ -1,4 +1,0 @@
-package com.svo.svo.repository
-
-interface TproveedoresRepository {
-}

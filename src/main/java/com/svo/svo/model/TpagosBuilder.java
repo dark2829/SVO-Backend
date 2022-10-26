@@ -12,6 +12,7 @@ public class TpagosBuilder {
         destin.setTipo_pago(origen.getTipo_pago());
         destin.setEstatus(origen.getEstatus());
         destin.setIdCompra(origen.getIdCompra());
+        destin.setTarjetautilizada(origen.getTarjetautilizada());
         return destin;
     }
 
@@ -23,6 +24,8 @@ public class TpagosBuilder {
         destin.setTipo_pago(origen.getTipo_pago());
         destin.setEstatus(origen.getEstatus());
         destin.setIdCompra(origen.getIdCompra());
+        destin.setTarjetautilizada(origen.getTarjetautilizada());
+
         return destin;
     }
 }

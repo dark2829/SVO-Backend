@@ -1,15 +1,21 @@
 package com.svo.svo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="tcompras")
 @NamedQueries({
-        //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
+        @NamedQuery(name = "TcomprasVO.findCompra", query = "select c from TcomprasVO c where c.codigo_compra =: codigo"),
+        @NamedQuery(name = "TcomprasVO.findCompraPorId", query = "select c from TcomprasVO c where c.id=: idCompra"),
+
 })
 public class TcomprasVO implements Serializable {
     @Id
@@ -19,13 +25,19 @@ public class TcomprasVO implements Serializable {
     private float pago_total;
     private String tipo_envio;
     @Temporal(TemporalType.DATE)
-    @JsonFormat(pattern="yyyy-MM-dd", timezone = "America/Mexico_City")
+    @JsonFormat(pattern="dd-MM-yyyy", timezone = "America/Mexico_City")
     private Date fecha_venta;
     private int facturado;
     private String direccion;
     @ManyToOne
-    @JoinColumn(name="tusuarios",referencedColumnName = "id")
+    @JoinColumn(name="tusuarios_id",referencedColumnName = "id")
     private TusuariosVO idUsuario;
+    @ManyToMany
+    @JoinTable(
+            name = "tcarrito_has_tcompras",
+            joinColumns = @JoinColumn(name = "tcompras_id"),
+            inverseJoinColumns = @JoinColumn(name = "tcarrito_id"))
+    private List<TcarritoVO> carrito = new ArrayList<TcarritoVO>();
 
 
     public Long getId() {
@@ -90,5 +102,23 @@ public class TcomprasVO implements Serializable {
 
     public void setIdUsuario(TusuariosVO idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public List<TcarritoVO> getCarrito() {
+        return carrito;
+    }
+
+    public void setCarrito(List<TcarritoVO> carrito) {
+        this.carrito = carrito;
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

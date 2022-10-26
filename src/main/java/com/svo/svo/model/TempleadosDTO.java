@@ -3,12 +3,12 @@ package com.svo.svo.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+
+
 
 public class TempleadosDTO {
     private Integer id;
-    private Integer no_empleado;
+    private String no_empleado;
     private String curp;
     private float salario;
     private String estatus;
@@ -23,11 +23,11 @@ public class TempleadosDTO {
         this.id = id;
     }
 
-    public Integer getNo_empleado() {
+    public String getNo_empleado() {
         return no_empleado;
     }
 
-    public void setNo_empleado(Integer no_empleado) {
+    public void setNo_empleado(String no_empleado) {
         this.no_empleado = no_empleado;
     }
 
