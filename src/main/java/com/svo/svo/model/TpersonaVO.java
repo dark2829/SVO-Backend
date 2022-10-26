@@ -1,21 +1,25 @@
 package com.svo.svo.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="tpersonas")
 @NamedQueries({
-        //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
+        @NamedQuery(name = "TpersonaVO.findIdByCorreo", query = "select p from TpersonaVO p where p.correo =:correo"),
 })
 public class TpersonaVO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String foto;
+    private byte[] foto;
     private String nombre;
     private String apellido_paterno;
     private String apellido_materno;
@@ -24,9 +28,19 @@ public class TpersonaVO implements Serializable {
     private Date fecha_nac;
     private String genero;
     private String telefono;
-    @ManyToOne
-    @JoinColumn(name="ttarjetas",referencedColumnName = "id")
-    private TtarjetasVO idTarjeta;
+    private String correo;
+    @ManyToMany
+    @JoinTable(
+            name = "tdireccion_has_tpersonas",
+            joinColumns = @JoinColumn(name = "tpersonas_id"),
+            inverseJoinColumns = @JoinColumn(name = "tdireccion_id"))
+    private List<TdireccionVO> direccion = new ArrayList<TdireccionVO>();
+    @ManyToMany
+    @JoinTable(
+            name = "ttarjetas_has_tpersonas",
+            joinColumns = @JoinColumn(name = "tpersonas_id"),
+            inverseJoinColumns = @JoinColumn(name = "ttarjetas_id"))
+    private List<TtarjetasVO> tarjeta = new ArrayList<TtarjetasVO>();
 
     public Long getId() {
         return id;
@@ -36,11 +50,11 @@ public class TpersonaVO implements Serializable {
         this.id = id;
     }
 
-    public String getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 
@@ -92,11 +106,37 @@ public class TpersonaVO implements Serializable {
         this.telefono = telefono;
     }
 
-    public TtarjetasVO getIdTarjeta() {
-        return idTarjeta;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setIdTarjeta(TtarjetasVO idTarjeta) {
-        this.idTarjeta = idTarjeta;
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public List<TdireccionVO> getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(List<TdireccionVO> direccion) {
+        this.direccion = direccion;
+    }
+
+    public List<TtarjetasVO> getTarjeta() {
+        return tarjeta;
+    }
+
+    public void setTarjeta(List<TtarjetasVO> tarjeta) {
+        this.tarjeta = tarjeta;
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

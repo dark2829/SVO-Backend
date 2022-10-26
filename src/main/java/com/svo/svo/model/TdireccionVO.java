@@ -1,5 +1,8 @@
 package com.svo.svo.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -8,11 +11,12 @@ import java.util.List;
 @Entity
 @Table(name="tdireccion")
 @NamedQueries({
-        //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
+        @NamedQuery(name = "Tproveedores.findAllProveedores", query = "select p from TproveedoresVO p"),
 })
 public class TdireccionVO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     private String calle;
     private String colonia;
@@ -22,12 +26,7 @@ public class TdireccionVO implements Serializable {
     private int n_exterior;
     private int n_interior;
     private String referencia;
-    @ManyToMany
-    @JoinTable(
-            name = "tdireccion_has_tpersonas",
-            joinColumns = @JoinColumn(name = "tdirecccion_id"),
-            inverseJoinColumns = @JoinColumn(name = "tpersonas_id"))
-    private List<TpersonaVO> persona = new ArrayList<TpersonaVO>();
+
 
     public Long getId() {
         return id;
@@ -101,11 +100,13 @@ public class TdireccionVO implements Serializable {
         this.referencia = referencia;
     }
 
-    public List<TpersonaVO> getPersona() {
-        return persona;
-    }
-
-    public void setPersona(List<TpersonaVO> persona) {
-        this.persona = persona;
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

@@ -8,6 +8,8 @@ public class TpagosDTO {
     private String tipo_pago;
     private String estatus;
     private TcomprasVO idCompra;
+    private String tarjetautilizada;
+
 
     public Long getId() {
         return id;
@@ -39,6 +41,14 @@ public class TpagosDTO {
 
     public void setIdCompra(TcomprasVO idCompra) {
         this.idCompra = idCompra;
+    }
+
+    public String getTarjetautilizada() {
+        return tarjetautilizada;
+    }
+
+    public void setTarjetautilizada(String tarjetautilizada) {
+        this.tarjetautilizada = tarjetautilizada;
     }
 
     @Override

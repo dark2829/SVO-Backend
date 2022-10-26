@@ -1,12 +1,28 @@
 package com.svo.svo.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="tusuarios")
 @NamedQueries({
-        //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
+        @NamedQuery(name = "TusuariosVO.findIdEmpleadoByIdUser", query = "select u from TusuariosVO u where u.id =:id"),
+        @NamedQuery(name = "TusuariosVO.findUserByCorreo", query = "select u from TusuariosVO u where (u.correo =:correo) and u.contraseña =: contrasena"),
+        @NamedQuery(name = "TusuariosVO.findUserById", query = "select u from TusuariosVO u where u.id =: id"),
+        @NamedQuery(name = "TusuariosVO.findCorreo", query = "select u from TusuariosVO u where u.correo =: correo"),
+        @NamedQuery(name = "TusuariosVO.verificarContraseña", query = "select u from TusuariosVO u where u.correo =: correo"),
+        @NamedQuery(name = "TusuariosVO.findNoEmpleado", query = "select u from TusuariosVO u where u.idEmpleado.no_empleado =: noEmpleado"),
+        @NamedQuery(name = "TusuariosVO.findByNoEmpleado", query = "select u from TusuariosVO u where u.idEmpleado.no_empleado =: noEmpleado"),
+        @NamedQuery(name = "TusuariosVO.findUserByIdEmpleado", query = "select u from TusuariosVO u where u.idEmpleado.id =: idEmpleado"),
+        @NamedQuery(name = "TusuariosVO.findUsuariosByRol", query = "select u from TusuariosVO  u where u.idRol.tipo=: tipo")
+
+
+
 })
 public class TusuariosVO implements Serializable {
     @Id
@@ -15,15 +31,23 @@ public class TusuariosVO implements Serializable {
     private String correo;
     private String contraseña;
     @ManyToOne
-    @JoinColumn(name="tpersonas",referencedColumnName = "id")
+    @JoinColumn(name="tpersonas_id",referencedColumnName = "id")
     private TpersonaVO idPersona;
     //tcompras
     @ManyToOne
-    @JoinColumn(name="templeados",referencedColumnName = "id")
+    @JoinColumn(name="templeados_id",referencedColumnName = "id")
     private TempleadosVO idEmpleado;
     @ManyToOne
-    @JoinColumn(name="trol",referencedColumnName = "id")
+    @JoinColumn(name="trol_id",referencedColumnName = "id")
     private TrolVO idRol;
+    @ManyToMany
+    @JoinTable(
+            name = "tfavoritos",
+            joinColumns = @JoinColumn(name = "tusuarios_id"),
+            inverseJoinColumns = @JoinColumn(name = "tproductos_id"))
+    private List<TproductosVO> productosFavoritos = new ArrayList<TproductosVO>();
+
+
 
     public Long getId() {
         return id;
@@ -71,5 +95,23 @@ public class TusuariosVO implements Serializable {
 
     public void setIdRol(TrolVO idRol) {
         this.idRol = idRol;
+    }
+
+    public List<TproductosVO> getProductosFavoritos() {
+        return productosFavoritos;
+    }
+
+    public void setProductosFavoritos(List<TproductosVO> productosFavoritos) {
+        this.productosFavoritos = productosFavoritos;
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

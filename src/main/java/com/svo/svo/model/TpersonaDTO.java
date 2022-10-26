@@ -6,11 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class TpersonaDTO {
     private Long id;
-    private String foto;
+    private byte[] foto;
     private String nombre;
     private String apellido_paterno;
     private String apellido_materno;
@@ -18,7 +20,9 @@ public class TpersonaDTO {
     private Date fecha_nac;
     private String genero;
     private String telefono;
-    private TtarjetasVO idTarjeta;
+    private String correo;
+    private List<TdireccionVO> direccion = new ArrayList<TdireccionVO>();
+    private List<TtarjetasVO> tarjeta = new ArrayList<TtarjetasVO>();
 
     public Long getId() {
         return id;
@@ -28,11 +32,11 @@ public class TpersonaDTO {
         this.id = id;
     }
 
-    public String getFoto() {
+    public byte[] getFoto() {
         return foto;
     }
 
-    public void setFoto(String foto) {
+    public void setFoto(byte[] foto) {
         this.foto = foto;
     }
 
@@ -84,12 +88,28 @@ public class TpersonaDTO {
         this.telefono = telefono;
     }
 
-    public TtarjetasVO getIdTarjeta() {
-        return idTarjeta;
+    public String getCorreo() {
+        return correo;
     }
 
-    public void setIdTarjeta(TtarjetasVO idTarjeta) {
-        this.idTarjeta = idTarjeta;
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public List<TdireccionVO> getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(List<TdireccionVO> direccion) {
+        this.direccion = direccion;
+    }
+
+    public List<TtarjetasVO> getTarjeta() {
+        return tarjeta;
+    }
+
+    public void setTarjeta(List<TtarjetasVO> tarjeta) {
+        this.tarjeta = tarjeta;
     }
 
     @Override

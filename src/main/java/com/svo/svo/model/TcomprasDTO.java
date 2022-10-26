@@ -3,7 +3,11 @@ package com.svo.svo.model;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class TcomprasDTO {
     private Long id;
@@ -14,6 +18,7 @@ public class TcomprasDTO {
     private int facturado;
     private String direccion;
     private TusuariosVO idUsuario;
+    private List<TcarritoVO> carrito = new ArrayList<TcarritoVO>();
 
     public Long getId() {
         return id;
@@ -77,6 +82,14 @@ public class TcomprasDTO {
 
     public void setIdUsuario(TusuariosVO idUsuario) {
         this.idUsuario = idUsuario;
+    }
+
+    public List<TcarritoVO> getCarrito() {
+        return carrito;
+    }
+
+    public void setCarrito(List<TcarritoVO> carrito) {
+        this.carrito = carrito;
     }
 
     @Override

@@ -17,7 +17,6 @@ public class TdireccionBuilder {
         destin.setN_interior(origen.getN_interior());
         destin.setN_exterior(origen.getN_exterior());
         destin.setReferencia(origen.getReferencia());
-        destin.setPersona(origen.getPersona());
 
         return destin;
     }
@@ -35,7 +34,6 @@ public class TdireccionBuilder {
         destin.setN_interior(origen.getN_interior());
         destin.setN_exterior(origen.getN_exterior());
         destin.setReferencia(origen.getReferencia());
-        destin.setPersona(origen.getPersona());
         return destin;
     }
 }

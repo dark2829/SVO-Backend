@@ -1,10 +1,13 @@
 package com.svo.svo.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="tusuarios")
+@Table(name="tpagos")
 @NamedQueries({
         //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
 })
@@ -15,8 +18,9 @@ public class TpagosVO implements Serializable {
     private String tipo_pago;
     private String estatus;
     @ManyToOne
-    @JoinColumn(name="tcompras",referencedColumnName = "id")
+    @JoinColumn(name="tcompras_id",referencedColumnName = "id")
     private TcomprasVO idCompra;
+    private String tarjetautilizada;
 
     public Long getId() {
         return id;
@@ -48,5 +52,22 @@ public class TpagosVO implements Serializable {
 
     public void setIdCompra(TcomprasVO idCompra) {
         this.idCompra = idCompra;
+    }
+
+    public String getTarjetautilizada() {
+        return tarjetautilizada;
+    }
+
+    public void setTarjetautilizada(String tarjetautilizada) {
+        this.tarjetautilizada = tarjetautilizada;
+    }
+
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

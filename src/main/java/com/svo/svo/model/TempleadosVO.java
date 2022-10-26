@@ -1,39 +1,48 @@
 package com.svo.svo.model;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name="templeados")
+@Table(name = "templeados")
 @NamedQueries({
-        //@NamedQuery(name = "TproveedoresVO.findAllProveedores", query = "select p from TproveedoresVO p"),
+        @NamedQuery(name = "TempleadosVO.findEmpleadoById", query = "select e from TempleadosVO e where e.id =:id"),
+        @NamedQuery(name = "TempleadosVO.findIdByCurp", query = "select e from TempleadosVO e where e.curp =: curp"),
+        @NamedQuery(name = "TempleadosVO.findAllEmpleados", query = "select e from TempleadosVO e"),
+        @NamedQuery(name = "TempleadosVO.buscarCurpDuplicado", query = "select e from TempleadosVO e where e.curp=:curp")
+
 })
 public class TempleadosVO implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer no_empleado;
+    private String no_empleado;
     private String curp;
     private float salario;
     private String estatus;
     @ManyToOne
-    @JoinColumn(name="tpersonas",referencedColumnName = "id")
+    @JoinColumn(name = "tpersonas_id", referencedColumnName = "id")
     private TpersonaVO idPersona;
     @ManyToOne
-    @JoinColumn(name="tpuesto",referencedColumnName = "id")
+    @JoinColumn(name = "tpuesto_id", referencedColumnName = "id")
     private TpuestoVO idPuesto;
 
     public Integer getId() {
         return id;
     }
 
-    public void setId(Integer id) { this.id = id; }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-    public Integer getNo_empleado() {
+    public String getNo_empleado() {
         return no_empleado;
     }
 
-    public void setNo_empleado(Integer no_empleado) {
+    public void setNo_empleado(String no_empleado) {
         this.no_empleado = no_empleado;
     }
 
@@ -53,9 +62,13 @@ public class TempleadosVO implements Serializable {
         this.salario = salario;
     }
 
-    public String getEstatus() { return estatus; }
+    public String getEstatus() {
+        return estatus;
+    }
 
-    public void setEstatus(String estatus) { this.estatus = estatus; }
+    public void setEstatus(String estatus) {
+        this.estatus = estatus;
+    }
 
     public TpersonaVO getIdPersona() {
         return idPersona;
@@ -71,5 +84,15 @@ public class TempleadosVO implements Serializable {
 
     public void setIdPuesto(TpuestoVO idPuesto) {
         this.idPuesto = idPuesto;
+    }
+
+    @Override
+    public String toString() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return e.getMessage();
+        }
     }
 }

@@ -16,6 +16,7 @@ public class TcomprasBuilder {
         destin.setFacturado(origin.getFacturado());
         destin.setDireccion(origin.getDireccion());
         destin.setIdUsuario(origin.getIdUsuario());
+        destin.setCarrito(origin.getCarrito());
         return destin;
     }
 
@@ -31,6 +32,7 @@ public class TcomprasBuilder {
         destin.setFacturado(origin.getFacturado());
         destin.setDireccion(origin.getDireccion());
         destin.setIdUsuario(origin.getIdUsuario());
+        destin.setCarrito(origin.getCarrito());
         return destin;
     }
 }
